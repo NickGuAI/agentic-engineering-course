@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-09-11 19:32:14 UTC",
+  "request": {
+    "open": [
+      {
+        "ref_id": "https://www.anthropic.com/engineering"
+      }
+    ],
+    "response_length": "long"
+  },
+  "url": "https://www.anthropic.com/engineering",
+  "source_ref": "turn2view0",
+  "outcome": "success",
+  "support_notes": "Listing contained 24 dated entries, all 2026-04-23 or earlier, plus one undated featured item. No pagination or load-more link was exposed.",
+  "source_location": "Returned listing line 16; featured item at line 15."
+}

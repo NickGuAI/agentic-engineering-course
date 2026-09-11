@@ -1,0 +1,30 @@
+{
+  "changed_condition": "Exclude Anthropic Engineering from the allowed sources.",
+  "baseline_run": "20260911T153119-0400-baseline",
+  "allowed_listing_urls": [
+    "https://www.anthropic.com/news",
+    "https://openai.com/news/"
+  ],
+  "excluded_source": {
+    "name": "Anthropic Engineering",
+    "listing_url": "https://www.anthropic.com/engineering",
+    "blocked_path_prefix": "/engineering"
+  },
+  "inherited_controls": {
+    "publication_window": {
+      "start": "2026-09-05",
+      "end": "2026-09-11",
+      "inclusive": true
+    },
+    "timezone": "America/New_York",
+    "limits": {
+      "max_digest_items": 5,
+      "max_summary_words": 100,
+      "max_article_pages": 15,
+      "max_retries_per_failed_url": 1
+    },
+    "selection_policy": "Descending publication date. For equal dates, prefer specific agent infrastructure, model capabilities, research workflows, and safety evidence across publishers over a general data-product announcement. Same-day entries have no claimed chronological order.",
+    "max_distinct_article_pages_per_remaining_source": 5
+  },
+  "timestamp": "2026-09-11T15:43:46-04:00"
+}

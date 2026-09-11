@@ -1,0 +1,19 @@
+{
+  "baseline_files": {
+    "evidence/anthropic-engineering-01-listing-evidence.json": "73d5366dabea7ab7ab3d4e2f854860abb57650b96d592951c9f9fd1674072bf9",
+    "evidence/anthropic-engineering-02-featured-evidence.json": "97847cd3af7f68bfa9e28aedd9be03ba5089adba70b2bde24643fef3614b29e3",
+    "evidence/anthropic-engineering-source-report.json": "e4f7d17564149e66357117a99dd6dc5fe2c375c28dc73642e42b3243f0bee508",
+    "evidence/anthropic-news-report.json": "5b672d21b5102747d43c5fc6fe9af181d2dddc9786a99fad23363cdae7a11fc4",
+    "evidence/openai-source-report.json": "e926ce4a6362b0f3336bc9175ba64351e3bad0f6ebb55f1c39ac0a25984c6fa1",
+    "evidence/openai-web-01.json": "d7eec2cc547ac816a51a027dd509204d8250f63e9c1bbf52611f683770df42ae",
+    "evidence/openai-web-02.json": "19fd1544e050bcf31a1a327d61653e848d4c7ed7d5df5513935dcae15ad18f6a",
+    "evidence/openai-web-03.json": "4a42bb0659eaebea080797caadb8fca565f47bf0d28f907ad0299037bc419851",
+    "execution-trace.jsonl": "d3c0b70c32db57cd22f526683ffb24e3c1765bd6f242e6fd8ce28ddacd4d8cdd",
+    "research-update.md": "3e8e5e1599051dde5e11c07d4295e1f2b99b4a2662682f33ab5e7288476556a8",
+    "run-log.md": "95471931e8dc752e8891896076c9fd8401b37c062e000c146b6509ed0eada496",
+    "run-manifest.json": "67fc1f1d4fa4b0ce01211a329a7b1f4b59ad424ce56429d3782b72a0a94cdcd4",
+    "validation.json": "13929f978b6ee1e870e79f91d175791543184144d687e10fe5287322e4807e34"
+  },
+  "card_sha256": "1ece73539b575b7585f299630f21d9ddb1c132c4546234292624f60fd4fb68d1",
+  "explanation_sha256": "0747a7db7502ad9461fc9e38bfc8162194c23a023ab97bbf7a97616702174c17"
+}

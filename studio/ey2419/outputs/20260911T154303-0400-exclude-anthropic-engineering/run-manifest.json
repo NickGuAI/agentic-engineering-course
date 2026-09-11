@@ -1,0 +1,109 @@
+{
+  "run_id": "20260911T154303-0400-exclude-anthropic-engineering",
+  "studio_step": 3,
+  "run_type": "excluded-source-rerun",
+  "executor": "Existing local Codex desktop session",
+  "started_at": "2026-09-11T15:43:03-04:00",
+  "timezone": "America/New_York",
+  "publication_window": {
+    "start": "2026-09-05",
+    "end": "2026-09-11",
+    "inclusive": true
+  },
+  "baseline_run": "20260911T153119-0400-baseline",
+  "changed_condition": "Anthropic Engineering excluded from allowed sources.",
+  "allowed_listing_urls": [
+    "https://www.anthropic.com/news",
+    "https://openai.com/news/"
+  ],
+  "excluded_listing_urls": [
+    "https://www.anthropic.com/engineering"
+  ],
+  "limits": {
+    "max_digest_items": 5,
+    "max_summary_words": 100,
+    "max_article_pages": 15,
+    "max_retries_per_failed_url": 1
+  },
+  "selection_policy": "Descending publication date. For equal dates, prefer specific agent infrastructure, model capabilities, research workflows, and safety evidence across publishers over a general data-product announcement. Same-day entries have no claimed chronological order.",
+  "source_reports": [
+    "evidence/anthropic-news-report.json",
+    "evidence/openai-source-report.json"
+  ],
+  "measurements": {
+    "eligible_candidates": 6,
+    "selected_items": 5,
+    "distinct_article_pages": 6,
+    "article_target_operations_including_find": 11,
+    "listing_target_operations": 2,
+    "web_tool_calls": 6,
+    "failed_urls": 0,
+    "retries": 0,
+    "excluded_source_network_requests": 0
+  },
+  "selected_items": [
+    {
+      "id": "openai-storage",
+      "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+      "publication_date": "2026-09-11",
+      "url": "https://openai.com/index/scaling-storage-one-billion-users-part-one/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "openai-agents",
+      "title": "Introducing the Agents API",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-the-agents-api/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "openai-live",
+      "title": "Build more natural voice experiences with GPT-Live-1 in the API",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-gpt-live-1-in-the-api/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "openai-antimicrobials",
+      "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "anthropic-misuse-20260910",
+      "title": "Detecting and countering misuse of AI: September 2026",
+      "publication_date": "2026-09-10",
+      "url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "source": "Anthropic News",
+      "source_report": "evidence/anthropic-news-report.json"
+    }
+  ],
+  "eligible_but_omitted": [
+    {
+      "id": "openai-data",
+      "source_report": "evidence/openai-source-report.json",
+      "reason": "Five-item cap; same-day tie resolved using the stated relevance and publisher-coverage preference."
+    }
+  ],
+  "coverage": "Reduced and incomplete: Anthropic Engineering excluded by policy; only initial listings and six candidate articles inspected.",
+  "preservation_evidence": "evidence/preservation-before.json",
+  "personal_explanation_status": "Contents changed during the run; agents did not edit the file. Current text preserved; authorship not verified.",
+  "completed_at": "2026-09-11T15:52:11-04:00",
+  "experiment_status": "complete",
+  "comparison_status": "complete",
+  "automated_inspection": {
+    "status": "PASS_WITH_NOTES",
+    "passed": 25,
+    "total": 25,
+    "file": "validation.json"
+  },
+  "independent_review": {
+    "status": "PASS",
+    "scope": "Saved artifacts and comparison consistency; original-baseline preservation and concurrent-file-change disclosure."
+  }
+}

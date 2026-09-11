@@ -1,0 +1,107 @@
+{
+  "run_id": "20260911T153119-0400-baseline",
+  "studio_step": 2,
+  "run_type": "baseline",
+  "executor": "Existing local Codex desktop session",
+  "started_at": "2026-09-11T15:31:19-04:00",
+  "timezone": "America/New_York",
+  "publication_window": {
+    "start": "2026-09-05",
+    "end": "2026-09-11",
+    "inclusive": true
+  },
+  "card_path": "../../delegation-card.md",
+  "card_sha256": "1ece73539b575b7585f299630f21d9ddb1c132c4546234292624f60fd4fb68d1",
+  "explanation_sha256_before": "8b1e45969bf9433500e7e2f31ca68841228fe6d55de479d6a3a1ca9a8df80038",
+  "allowed_listing_urls": [
+    "https://www.anthropic.com/news",
+    "https://www.anthropic.com/engineering",
+    "https://openai.com/news/"
+  ],
+  "source_reports": [
+    "evidence/anthropic-news-report.json",
+    "evidence/anthropic-engineering-source-report.json",
+    "evidence/openai-source-report.json"
+  ],
+  "limits": {
+    "max_digest_items": 5,
+    "max_summary_words": 100,
+    "max_article_pages": 15,
+    "max_retries_per_failed_url": 1
+  },
+  "measurements": {
+    "eligible_candidates": 6,
+    "selected_items": 5,
+    "distinct_article_pages": 7,
+    "article_target_operations_including_find": 12,
+    "listing_target_operations": 3,
+    "web_tool_calls": 8,
+    "failed_urls": 0,
+    "retries": 0
+  },
+  "selection_policy": "Descending publication date. For equal dates, prefer specific agent infrastructure, model capabilities, research workflows, and safety evidence across publishers over a general data-product announcement. Same-day entries have no claimed chronological order.",
+  "selected_items": [
+    {
+      "id": "openai-storage",
+      "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+      "publication_date": "2026-09-11",
+      "url": "https://openai.com/index/scaling-storage-one-billion-users-part-one/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "openai-agents",
+      "title": "Introducing the Agents API",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-the-agents-api/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "openai-live",
+      "title": "Build more natural voice experiences with GPT-Live-1 in the API",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-gpt-live-1-in-the-api/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "openai-antimicrobials",
+      "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials/",
+      "source": "OpenAI News",
+      "source_report": "evidence/openai-source-report.json"
+    },
+    {
+      "id": "anthropic-misuse-20260910",
+      "title": "Detecting and countering misuse of AI: September 2026",
+      "publication_date": "2026-09-10",
+      "url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "source": "Anthropic News",
+      "source_report": "evidence/anthropic-news-report.json"
+    }
+  ],
+  "eligible_but_omitted": [
+    {
+      "id": "openai-data",
+      "source_report": "evidence/openai-source-report.json",
+      "reason": "Five-item cap; same-day tie resolved using the stated relevance and publisher-coverage preference."
+    }
+  ],
+  "coverage": "Incomplete: initial listings and selected candidate pages only; no exhaustive archive/pagination crawl. No eligible Anthropic Engineering entry was verified.",
+  "step3_status": "Not run; this baseline is preserved for the later condition-change experiment.",
+  "artifacts_created_at_utc": "2026-09-11 19:35:57 UTC",
+  "completed_at": "2026-09-11T15:38:17-04:00",
+  "step2_status": "complete",
+  "automated_inspection": {
+    "status": "PASS",
+    "passed": 18,
+    "total": 18,
+    "file": "validation.json"
+  },
+  "independent_review": {
+    "status": "PASS",
+    "scope": "Digest, manifest, trace, and source-report consistency; no additional live source retrieval."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "inspected_at": "2026-09-11T15:37:43-04:00",
+  "status": "PASS",
+  "passed_checks": 18,
+  "total_checks": 18,
+  "checks": {
+    "exactly_four_card_fields": true,
+    "card_unchanged": true,
+    "student_explanation_unchanged": true,
+    "item_count_at_most_five": true,
+    "dates_in_inclusive_window": true,
+    "dates_sorted_newest_first": true,
+    "no_duplicate_urls_or_ids": true,
+    "selected_candidates_verified_in_reports": true,
+    "official_urls_discovered_from_allowed_listings": true,
+    "all_titles_dates_links_summaries_in_digest": true,
+    "each_summary_at_most_100_words": true,
+    "coverage_limit_disclosed": true,
+    "article_limit_respected": true,
+    "retry_limit_respected": true,
+    "all_eight_browse_calls_in_trace": true,
+    "all_json_artifacts_parse": true,
+    "step3_not_run": true,
+    "required_step2_files_exist": true
+  },
+  "summary_word_counts": {
+    "openai-storage": 60,
+    "openai-agents": 54,
+    "openai-live": 58,
+    "openai-antimicrobials": 55,
+    "anthropic-misuse-20260910": 70
+  },
+  "limits_of_automation": "Validates artifact consistency and recorded provenance; factual support requires the manual source inspection documented in the run log."
+}
