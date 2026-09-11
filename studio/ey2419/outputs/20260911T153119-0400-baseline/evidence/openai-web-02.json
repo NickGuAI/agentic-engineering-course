@@ -1,0 +1,38 @@
+{
+  "call": 2,
+  "started_at": "2026-09-11 19:32:34 UTC",
+  "finished_at": "2026-09-11 19:32:35 UTC",
+  "input": {
+    "click": [
+      {
+        "ref_id": "turn1view0",
+        "id": 14
+      },
+      {
+        "ref_id": "turn1view0",
+        "id": 15
+      },
+      {
+        "ref_id": "turn1view0",
+        "id": 16
+      },
+      {
+        "ref_id": "turn1view0",
+        "id": 18
+      },
+      {
+        "ref_id": "turn1view0",
+        "id": 19
+      }
+    ],
+    "response_length": "long"
+  },
+  "navigation_metadata": [
+    "Rapidly scaling online storage to serve over 1 billion ChatGPT users | OpenAI (https://openai.com/index/scaling-storage-one-billion-users-part-one/)\nciteturn5view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: click({\"ref_id\":\"turn1view0\",\"id\":14}); Total lines: 361",
+    "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules | OpenAI (https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials/)\nciteturn5view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: click({\"ref_id\":\"turn1view0\",\"id\":15}); Total lines: 159",
+    "Now everyone can put data to work | OpenAI (https://openai.com/index/put-data-to-work/)\nciteturn5view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: click({\"ref_id\":\"turn1view0\",\"id\":16}); Total lines: 295",
+    "Build more natural voice experiences with GPT‑Live‑1 in the API | OpenAI (https://openai.com/index/introducing-gpt-live-1-in-the-api/)\nciteturn5view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: click({\"ref_id\":\"turn1view0\",\"id\":18}); Total lines: 304",
+    "Introducing the Agents API | OpenAI (https://openai.com/index/introducing-the-agents-api/)\nciteturn5view4 [wordlim: 200] Crawled: today; Content type: text/html; Source: click({\"ref_id\":\"turn1view0\",\"id\":19}); Total lines: 420"
+  ],
+  "retention_note": "Only navigation metadata retained; full page bodies removed. Paraphrased claim support is in openai-source-report.json."
+}

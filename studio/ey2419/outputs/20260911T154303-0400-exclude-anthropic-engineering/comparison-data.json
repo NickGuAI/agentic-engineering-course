@@ -1,0 +1,56 @@
+{
+  "baseline_run": "20260911T153119-0400-baseline",
+  "changed_run": "20260911T154303-0400-exclude-anthropic-engineering",
+  "added_item_urls": [],
+  "removed_item_urls": [],
+  "same_item_order": true,
+  "summary_wording_changed_ids": [],
+  "baseline_file_count": 13,
+  "baseline_original_files_unchanged": true,
+  "baseline_added_files": [
+    ".DS_Store"
+  ],
+  "personal_explanation_changed_during_run": true,
+  "metric_differences": {
+    "eligible_candidates": {
+      "baseline": 6,
+      "changed": 6,
+      "delta": 0
+    },
+    "selected_items": {
+      "baseline": 5,
+      "changed": 5,
+      "delta": 0
+    },
+    "distinct_article_pages": {
+      "baseline": 7,
+      "changed": 6,
+      "delta": -1
+    },
+    "article_target_operations_including_find": {
+      "baseline": 12,
+      "changed": 11,
+      "delta": -1
+    },
+    "listing_target_operations": {
+      "baseline": 3,
+      "changed": 2,
+      "delta": -1
+    },
+    "web_tool_calls": {
+      "baseline": 8,
+      "changed": 6,
+      "delta": -2
+    },
+    "failed_urls": {
+      "baseline": 0,
+      "changed": 0,
+      "delta": 0
+    },
+    "retries": {
+      "baseline": 0,
+      "changed": 0,
+      "delta": 0
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "call": 1,
+  "started_at": "2026-09-11 19:44:09 UTC",
+  "finished_at": "2026-09-11 19:44:10 UTC",
+  "input": {
+    "open": [
+      {
+        "ref_id": "https://openai.com/news/"
+      }
+    ],
+    "response_length": "long"
+  },
+  "navigation_metadata": [
+    "OpenAI News | OpenAI (https://openai.com/news/)\nciteturn10view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({\"ref_id\":\"https://openai.com/news/\",\"lineno\":null}); Total lines: 138"
+  ],
+  "retention_note": "Full page body omitted; compact support notes are saved in the source report."
+}

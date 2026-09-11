@@ -1,0 +1,41 @@
+{
+  "inspected_at": "2026-09-11T15:49:12-04:00",
+  "status": "FAIL",
+  "passed_checks": 23,
+  "total_checks": 25,
+  "checks": {
+    "baseline_all_files_unchanged": false,
+    "card_unchanged": true,
+    "personal_explanation_unchanged": false,
+    "one_allowed_source_removed": true,
+    "date_window_timezone_limits_selection_unchanged": true,
+    "source_page_allocations_unchanged": true,
+    "baseline_plan_fails_changed_policy": true,
+    "corrected_plan_passes_changed_policy": true,
+    "no_excluded_engineering_fetch": true,
+    "all_requested_targets_allowed": true,
+    "fresh_inspection_after_run_start": true,
+    "two_allowed_listings_retrieved": true,
+    "at_most_five_digest_entries": true,
+    "dates_in_window_and_sorted": true,
+    "no_duplicate_urls_or_ids": true,
+    "summary_word_limits": true,
+    "selected_items_match_fresh_reports": true,
+    "digest_contains_verified_content": true,
+    "exclusion_and_reduced_coverage_disclosed": true,
+    "article_budget_respected": true,
+    "recorded_web_call_count_matches": true,
+    "recorded_url_operations_match": true,
+    "no_failed_url_retries": true,
+    "comparison_and_log_present": true,
+    "saved_json_parses": true
+  },
+  "summary_word_counts": {
+    "openai-storage": 60,
+    "openai-agents": 54,
+    "openai-live": 58,
+    "openai-antimicrobials": 55,
+    "anthropic-misuse-20260910": 70
+  },
+  "limits_of_automation": "Checks saved artifacts and recorded requests, not independent factual truth or the absence of unlogged actions."
+}

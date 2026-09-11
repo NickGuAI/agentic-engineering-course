@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-09-11T15:43:46-04:00",
+  "check": "Compare baseline source plan with changed allowlist before web access.",
+  "baseline_plan_allowed": false,
+  "rejected_baseline_targets": [
+    "https://www.anthropic.com/engineering"
+  ],
+  "observation": "The baseline source plan contains one source that the new policy excludes.",
+  "correction": "Remove Anthropic Engineering from the execution plan; retain the same date window, remaining-source page allocations, limits and selection policy; disclose exclusion in the digest.",
+  "corrected_listing_plan": [
+    "https://www.anthropic.com/news",
+    "https://openai.com/news/"
+  ],
+  "corrected_plan_allowed": true,
+  "excluded_source_network_requests": 0,
+  "scope_note": "Local policy validation, not a network-access failure. No excluded URL was fetched."
+}

@@ -1,0 +1,197 @@
+{
+  "source": "OpenAI News",
+  "listing_url": "https://openai.com/news/",
+  "run_started_at": "2026-09-11T15:31:19-04:00",
+  "timezone": "America/New_York",
+  "inclusive_date_window": {
+    "start": "2026-09-05",
+    "end": "2026-09-11"
+  },
+  "completed_at": "2026-09-11 19:34:33 UTC",
+  "source_status": "available",
+  "coverage": "incomplete",
+  "coverage_reason": "Inspected the first official news listing and five relevant article pages. The listing exposed nine entries and a Load more control; additional listing pages were not inspected. The five-page source allocation was reached. All selected candidate dates were verified directly on article pages, not inferred from the listing.",
+  "browse_call_count": 3,
+  "distinct_article_pages": 5,
+  "failed_urls": [],
+  "retry_count": 0,
+  "url_access_operations": 9,
+  "requests": [
+    {
+      "call": 1,
+      "started_at": "2026-09-11 19:32:10 UTC",
+      "finished_at": "2026-09-11 19:32:12 UTC",
+      "input": {
+        "open": [
+          {
+            "ref_id": "https://openai.com/news/"
+          }
+        ],
+        "response_length": "long"
+      },
+      "outcome": "success",
+      "url": "https://openai.com/news/",
+      "evidence_ref": "turn1view0"
+    },
+    {
+      "call": 2,
+      "started_at": "2026-09-11 19:32:34 UTC",
+      "finished_at": "2026-09-11 19:32:35 UTC",
+      "input": {
+        "click": [
+          {
+            "ref_id": "turn1view0",
+            "id": 14
+          },
+          {
+            "ref_id": "turn1view0",
+            "id": 15
+          },
+          {
+            "ref_id": "turn1view0",
+            "id": 16
+          },
+          {
+            "ref_id": "turn1view0",
+            "id": 18
+          },
+          {
+            "ref_id": "turn1view0",
+            "id": 19
+          }
+        ],
+        "response_length": "long"
+      },
+      "outcome": "all five article pages retrieved",
+      "urls": [
+        "https://openai.com/index/scaling-storage-one-billion-users-part-one/",
+        "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials/",
+        "https://openai.com/index/put-data-to-work/",
+        "https://openai.com/index/introducing-gpt-live-1-in-the-api/",
+        "https://openai.com/index/introducing-the-agents-api/"
+      ]
+    },
+    {
+      "call": 3,
+      "started_at": "2026-09-11 19:32:58 UTC",
+      "finished_at": "2026-09-11 19:32:59 UTC",
+      "input": {
+        "find": [
+          {
+            "ref_id": "turn5view2",
+            "pattern": "September"
+          },
+          {
+            "ref_id": "turn5view3",
+            "pattern": "September"
+          },
+          {
+            "ref_id": "turn5view4",
+            "pattern": "September"
+          }
+        ],
+        "response_length": "long"
+      },
+      "outcome": "three successful targeted inspections of already retrieved articles; not failed-URL retries"
+    }
+  ],
+  "eligible_candidates": [
+    {
+      "id": "openai-storage",
+      "title": "Rapidly scaling online storage to serve over 1 billion ChatGPT users",
+      "publication_date": "2026-09-11",
+      "url": "https://openai.com/index/scaling-storage-one-billion-users-part-one/",
+      "date_evidence": "turn5view0 line 13",
+      "claim_evidence": "turn5view0 lines 160-172, 197-209, 259-260",
+      "summary": "OpenAI describes moving Habitat from a shared Python library to a storage service, then rewriting it in Rust with two engineers, Codex, and GPT-5.5. OpenAI reports sixfold CPU efficiency and fifteenfold memory efficiency for the Rust service. Interpretation: the post is a useful systems case study in deployment coordination, event-loop delays, connection-pool feedback, and deciding when a rewrite becomes worthwhile.",
+      "selection_reason": "Newest verified engineering update in inspected source.",
+      "summary_word_count": 60
+    },
+    {
+      "id": "openai-antimicrobials",
+      "title": "How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials/",
+      "date_evidence": "turn5view1 line 13",
+      "claim_evidence": "turn5view1 lines 36-49",
+      "summary": "OpenAI profiles César de la Fuente’s lab, which combines its own biological sequence models with ChatGPT and Codex for hypotheses, code, data processing, and analysis. The article distinguishes computational candidate discovery from experimental and clinical validation. Interpretation: this is a concrete example of general-purpose assistants supporting a specialist research pipeline, where laboratory evidence remains necessary.",
+      "selection_reason": "Recent verified applied-AI research workflow.",
+      "summary_word_count": 55
+    },
+    {
+      "id": "openai-data",
+      "title": "Now everyone can put data to work",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/put-data-to-work/",
+      "date_evidence": "turn7view0 line 13",
+      "claim_evidence": "turn7view0 lines 39-43, 78-83",
+      "summary": "OpenAI introduces a Data agent in ChatGPT Work that connects to company data and produces analysis and interactive dashboards. The announcement says it uses business definitions and semantic context while enforcing connected-account permissions. Interpretation: it illustrates that useful data agents depend on data meaning and access control as well as query generation; this announcement does not independently establish analysis accuracy.",
+      "selection_reason": "Recent verified agent engineering/product update.",
+      "summary_word_count": 60
+    },
+    {
+      "id": "openai-live",
+      "title": "Build more natural voice experiences with GPT-Live-1 in the API",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-gpt-live-1-in-the-api/",
+      "date_evidence": "turn7view1 line 13",
+      "claim_evidence": "turn7view1 lines 36-45, 59-65",
+      "summary": "OpenAI announces GPT-Live-1 in the API, describing a voice model that listens and speaks simultaneously while delegating deeper reasoning and tool calls to a backend model. Developers can configure speaking style and choose their backend tools. Interpretation: separating conversational timing from deeper computation offers a useful architecture to study for interactive voice agents; capability claims here are company-reported.",
+      "selection_reason": "Recent verified model/API update relevant to interactive agents.",
+      "summary_word_count": 58
+    },
+    {
+      "id": "openai-agents",
+      "title": "Introducing the Agents API",
+      "publication_date": "2026-09-10",
+      "url": "https://openai.com/index/introducing-the-agents-api/",
+      "date_evidence": "turn7view2 line 13",
+      "claim_evidence": "turn7view2 lines 45-46, 201-223",
+      "summary": "OpenAI announces the Agents API in public beta, exposing the Codex harness for long-running agents. The article describes a managed harness, a choice of compute environments, OpenAI-hosted sandboxes, and automatic context compaction. Interpretation: this shifts some orchestration and session management into platform infrastructure, making environment choice, tool design, and application-specific evaluation useful engineering questions.",
+      "selection_reason": "Recent verified agent infrastructure announcement.",
+      "summary_word_count": 54
+    }
+  ],
+  "excluded_or_uninspected_listing_entries": [
+    {
+      "title": "Introducing ChatGPT for Financial Services",
+      "listing_date": "2026-09-10",
+      "article_verified": false,
+      "reason": "Sector-specific product introduction had lower direct research/model/engineering relevance than the five chosen candidates; not opened."
+    },
+    {
+      "title": "GPT-6 Astra: The next generation in intelligence for work",
+      "listing_date": "2026-09-09",
+      "article_verified": false,
+      "reason": "Older than the five more recent relevant candidates; source page allocation reached; not opened."
+    },
+    {
+      "title": "Paul Christiano joins OpenAI Foundation Board",
+      "listing_date": "2026-09-09",
+      "article_verified": false,
+      "reason": "Company governance announcement outside the selected research/model/engineering focus; not opened."
+    },
+    {
+      "title": "How GPT-5.6 Sol helps run quantum computing experiments",
+      "listing_date": "2026-09-08",
+      "article_verified": false,
+      "reason": "Older than the five more recent relevant candidates; source page allocation reached; not opened."
+    }
+  ],
+  "validation": {
+    "all_candidate_dates_directly_verified": true,
+    "all_candidate_dates_in_window": true,
+    "all_candidate_urls_allowed": true,
+    "duplicate_announcements_in_candidates": false,
+    "all_summary_words_at_most_100": true,
+    "only_openai_prefixed_evidence_files_written": true,
+    "full_article_bodies_retained": false,
+    "student_explanation_edited": false
+  },
+  "evidence_files": [
+    "openai-web-01.json",
+    "openai-web-02.json",
+    "openai-web-03.json"
+  ],
+  "scope_note": "These are eligible source candidates; the parent agent makes the final cross-source selection of at most five digest items. No comparison run was performed."
+}

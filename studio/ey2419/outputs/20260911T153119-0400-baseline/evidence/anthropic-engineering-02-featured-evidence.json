@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-09-11 19:32:22 UTC",
+  "request": {
+    "click": [
+      {
+        "ref_id": "turn2view0",
+        "id": 8
+      }
+    ],
+    "response_length": "long"
+  },
+  "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+  "source_ref": "turn4view0",
+  "outcome": "success",
+  "support_notes": "Featured article directly displays publication date 2026-05-25, outside the requested window.",
+  "source_location": "Returned article line 15.",
+  "publication_date": "2026-05-25"
+}

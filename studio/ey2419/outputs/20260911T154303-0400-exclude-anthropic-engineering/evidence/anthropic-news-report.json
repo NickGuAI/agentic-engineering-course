@@ -1,0 +1,127 @@
+{
+  "source": "Anthropic News",
+  "listing_url": "https://www.anthropic.com/news",
+  "window_start": "2026-09-05",
+  "window_end": "2026-09-11",
+  "timezone": "America/New_York",
+  "status": "accessible",
+  "coverage": "Initial official listing and its only visible in-window candidate inspected; older entries were screened by listing date. This is bounded coverage of pages inspected, not an exhaustive site crawl.",
+  "distinct_article_pages": 1,
+  "failed_url_retries": 0,
+  "attempts": [
+    {
+      "event_id": "anthropic-news-1",
+      "timestamp": "2026-09-11 19:44:00 UTC",
+      "tool": "web.run",
+      "request": {
+        "open": [
+          {
+            "ref_id": "https://www.anthropic.com/news"
+          }
+        ],
+        "response_length": "long"
+      },
+      "outcome": "success",
+      "source_url": "https://www.anthropic.com/news",
+      "source_refs": [
+        "turn8view0"
+      ]
+    },
+    {
+      "event_id": "anthropic-news-2",
+      "timestamp": "2026-09-11 19:44:04 UTC",
+      "tool": "web.run",
+      "request": {
+        "click": [
+          {
+            "ref_id": "turn8view0",
+            "id": 9
+          }
+        ],
+        "response_length": "long"
+      },
+      "outcome": "success",
+      "source_url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "source_refs": [
+        "turn9view0"
+      ]
+    },
+    {
+      "event_id": "anthropic-news-3",
+      "timestamp": "2026-09-11 19:44:14 UTC",
+      "tool": "web.run",
+      "request": {
+        "find": [
+          {
+            "ref_id": "turn9view0",
+            "pattern": "September 10"
+          },
+          {
+            "ref_id": "turn9view0",
+            "pattern": "Sep 10"
+          }
+        ],
+        "response_length": "short"
+      },
+      "outcome": "Both date-text searches returned no match; article content remains accessible.",
+      "source_url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "source_refs": [
+        "turn11view0",
+        "turn11view1"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "id": "anthropic-misuse-20260910",
+      "title": "Detecting and countering misuse of AI: September 2026",
+      "published_date": "2026-09-10",
+      "url": "https://www.anthropic.com/threat-intelligence-report-september-2026",
+      "date_evidence": {
+        "url": "https://www.anthropic.com/news",
+        "source_ref": "turn8view0",
+        "lines": "20-21",
+        "note": "The official newsroom labels the linked report Sep 10, 2026. The article's extracted text does not display a day-level publication date; the date is verified from the official listing."
+      },
+      "content_evidence": {
+        "source_ref": "turn9view0",
+        "lines": "41-47, 51-64",
+        "note": "The introduction describes disrupted misuse over December 2025-August 2026 in seven harm areas. The cyber section reports more direct execution and orchestration by AI."
+      },
+      "eligible": true,
+      "summary": "Anthropic reports disrupting Claude misuse across seven areas, including cyber operations, surveillance, fraud, and biological misuse. Its case studies cover December 2025–August 2026, while this report was published during the current window. The company describes cyber misuse shifting toward AI execution and orchestration. Relevance (interpretation): agent evaluations should examine multi-step behavior and misuse safeguards alongside task performance. These are Anthropic’s reported observations, not an independent measurement of overall misuse prevalence.",
+      "summary_revalidation": "Baseline wording retained after checking the freshly retrieved article. The supported facts and publication-date evidence remain consistent."
+    }
+  ],
+  "excluded_listing_entries": [
+    {
+      "title": "Introducing Claude Fable 5.1 and Claude Mythos 5.1",
+      "listing_date": "2026-09-01",
+      "reason": "Before the run window; article not opened."
+    },
+    {
+      "title": "Developing Enterprise Frontier Safeguards with our customers",
+      "listing_date": "2026-09-01",
+      "reason": "Before the run window; article not opened."
+    },
+    {
+      "group": "Other visible dated entries",
+      "latest_date": "2026-08-31",
+      "earliest_date": "2026-07-24",
+      "reason": "All before the run window; article pages not opened."
+    }
+  ],
+  "limitations": [
+    "Publication day for the eligible report is supported by the official newsroom listing rather than the article's extracted header.",
+    "No pagination or full archive crawl was performed."
+  ],
+  "run_started_at": "2026-09-11T15:43:03-04:00",
+  "changed_condition": "Anthropic Engineering excluded; this fresh retrieval uses Anthropic News only.",
+  "comparison_to_baseline": {
+    "eligible_candidate_ids_unchanged": true,
+    "observed_relevant_facts_changed": false,
+    "publication_date_evidence_unchanged": true,
+    "summary_wording_retained": true
+  },
+  "excluded_source_accessed": false
+}

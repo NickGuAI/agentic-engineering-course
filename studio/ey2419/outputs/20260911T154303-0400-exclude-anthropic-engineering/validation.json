@@ -1,0 +1,50 @@
+{
+  "inspected_at": "2026-09-11T15:51:01-04:00",
+  "status": "PASS_WITH_NOTES",
+  "passed_checks": 25,
+  "total_checks": 25,
+  "checks": {
+    "baseline_original_files_unchanged": true,
+    "baseline_additions_only_macos_metadata": true,
+    "card_unchanged": true,
+    "one_allowed_source_removed": true,
+    "date_window_timezone_limits_selection_unchanged": true,
+    "source_page_allocations_unchanged": true,
+    "baseline_plan_fails_changed_policy": true,
+    "corrected_plan_passes_changed_policy": true,
+    "no_excluded_engineering_fetch": true,
+    "all_requested_targets_allowed": true,
+    "fresh_inspection_after_run_start": true,
+    "two_allowed_listings_retrieved": true,
+    "at_most_five_digest_entries": true,
+    "dates_in_window_and_sorted": true,
+    "no_duplicate_urls_or_ids": true,
+    "summary_word_limits": true,
+    "selected_items_match_fresh_reports": true,
+    "digest_contains_verified_content": true,
+    "exclusion_and_reduced_coverage_disclosed": true,
+    "article_budget_respected": true,
+    "recorded_web_call_count_matches": true,
+    "recorded_url_operations_match": true,
+    "no_failed_url_retries": true,
+    "comparison_and_log_present": true,
+    "saved_json_parses": true
+  },
+  "observations": {
+    "baseline_added_files": [
+      ".DS_Store"
+    ],
+    "personal_explanation_changed_during_run": true,
+    "explanation_sha256_before": "0747a7db7502ad9461fc9e38bfc8162194c23a023ab97bbf7a97616702174c17",
+    "explanation_sha256_after": "3485a00af0cc399656d11cacc8d371d4fee8b4e74a9f2610c0917b986818a9ae",
+    "note": "Current explanation text is preserved. Hashes detect a change but do not identify its author. No explanation edits were performed by the agents in this run."
+  },
+  "summary_word_counts": {
+    "openai-storage": 60,
+    "openai-agents": 54,
+    "openai-live": 58,
+    "openai-antimicrobials": 55,
+    "anthropic-misuse-20260910": 70
+  },
+  "limits_of_automation": "Checks saved artifacts and recorded requests, not independent factual truth or the absence of unlogged actions."
+}

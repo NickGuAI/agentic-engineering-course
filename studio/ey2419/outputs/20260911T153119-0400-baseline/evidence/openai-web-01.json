@@ -1,0 +1,17 @@
+{
+  "call": 1,
+  "started_at": "2026-09-11 19:32:10 UTC",
+  "finished_at": "2026-09-11 19:32:12 UTC",
+  "input": {
+    "open": [
+      {
+        "ref_id": "https://openai.com/news/"
+      }
+    ],
+    "response_length": "long"
+  },
+  "navigation_metadata": [
+    "OpenAI News | OpenAI (https://openai.com/news/)\nciteturn1view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({\"ref_id\":\"https://openai.com/news/\",\"lineno\":null}); Total lines: 138"
+  ],
+  "retention_note": "Only navigation metadata retained; full page bodies removed. Paraphrased claim support is in openai-source-report.json."
+}

@@ -1,0 +1,65 @@
+{
+  "source": "Anthropic Engineering",
+  "run_start": "2026-09-11T15:31:19-04:00",
+  "timezone": "America/New_York",
+  "publication_window": {
+    "start": "2026-09-05",
+    "end": "2026-09-11",
+    "inclusive": true
+  },
+  "selected_items": [],
+  "selected_count": 0,
+  "article_pages_visited": 1,
+  "max_distinct_article_pages": 5,
+  "browse_call_count": 2,
+  "retry_count": 0,
+  "outcome": "No eligible items verifiable in the allowed publication window.",
+  "attempted_urls": [
+    {
+      "timestamp": "2026-09-11 19:32:14 UTC",
+      "url": "https://www.anthropic.com/engineering",
+      "method": "web.open",
+      "source_ref": "turn2view0",
+      "outcome": "success",
+      "attempt": 1,
+      "evidence_file": "anthropic-engineering-01-listing-evidence.json"
+    },
+    {
+      "timestamp": "2026-09-11 19:32:22 UTC",
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "method": "web.click listing link 8",
+      "source_ref": "turn4view0",
+      "outcome": "success",
+      "attempt": 1,
+      "evidence_file": "anthropic-engineering-02-featured-evidence.json"
+    }
+  ],
+  "excluded_candidates": [
+    {
+      "title": "How we contain Claude across products",
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "publication_date": "2026-05-25",
+      "date_verified_on": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "date_evidence": "Article line 15 directly shows the publication date.",
+      "reason": "Published before 2026-09-05."
+    },
+    {
+      "candidate_group": "All 24 dated listing entries",
+      "latest_listed_publication_date": "2026-04-23",
+      "oldest_listed_publication_date": "2024-09-19",
+      "date_evidence": "Official engineering listing line 16; individual articles not opened.",
+      "reason": "All listed publication dates precede 2026-09-05.",
+      "count": 24,
+      "listed_date_range": {
+        "start": "2024-09-19",
+        "end": "2026-04-23"
+      }
+    }
+  ],
+  "limitations": [
+    "This result covers the content exposed by the permitted listing at retrieval time; it does not establish that no other publications exist.",
+    "The returned listing exposed no pagination or load-more link.",
+    "No date expansion, source substitution, or simulated failure was used."
+  ],
+  "evidence_storage": "Public request metadata, timestamps, source references, and compact support notes retained. Full article responses omitted."
+}
