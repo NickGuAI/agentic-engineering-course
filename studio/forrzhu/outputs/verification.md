@@ -17,3 +17,7 @@ Inspected September 11, 2026, before upload. These are structural and provenance
 | Changed condition | Direct HTTPS returned HTTP 403; the same source was subsequently retrieved through the web tool. |
 
 Not established by these checks: independent scientific validation, universal benchmark superiority, causally identified productivity gains, realized investor returns or an objective influence ranking. The course-required human explanation is pending.
+
+## Checks after folder relocation
+
+The implementation is now under `studio/forrzhu/code/`, and the reports, source catalogs and logs are under `studio/forrzhu/outputs/`. The delegation card remains directly under `studio/forrzhu/`. Relative links and the documented current probe command were checked after the move. The source catalog still contains 115 distinct document URLs and matching receipts. The original retrieval result is retained; moving files does not require claiming another network experiment.
