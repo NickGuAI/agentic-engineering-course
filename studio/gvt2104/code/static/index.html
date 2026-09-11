@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent News Digest</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="title-row">
+        <div>
+          <h1>Agent News Digest</h1>
+          <p class="subtitle">
+            Updates from Anthropic &amp; OpenAI, ranked for people who
+            <strong>build AI agents</strong>. Rate the blocks to teach the ranker.
+          </p>
+        </div>
+        <button id="refresh-btn" class="btn primary">↻ Refresh sources</button>
+      </div>
+      <div id="status-bar" class="status-bar"></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="weights-panel" class="weights-panel" hidden>
+      <h2>What the ranker has learned from you</h2>
+      <p class="muted">
+        Each 👍 / 👎 (and any keywords in your notes) nudges these topic weights,
+        which re-order the digest. Positive = boosted, negative = buried.
+      </p>
+      <div id="weights-chips" class="chips"></div>
+      <button id="reset-btn" class="btn ghost small">Reset all ratings</button>
+    </section>
+
+    <div id="feed" class="feed" aria-live="polite"></div>
+  </main>
+
+  <template id="card-template">
+    <article class="card">
+      <div class="card-head">
+        <span class="rank"></span>
+        <span class="source-badge"></span>
+        <span class="category"></span>
+        <span class="date"></span>
+        <span class="score" title="Total ranking score"></span>
+      </div>
+      <h3 class="card-title"><a target="_blank" rel="noopener"></a></h3>
+      <p class="card-summary"></p>
+      <div class="tags"></div>
+      <div class="score-breakdown"></div>
+      <div class="rating-row">
+        <div class="vote">
+          <button class="btn vote-up" title="Boost topics like this">👍</button>
+          <button class="btn vote-down" title="Bury topics like this">👎</button>
+        </div>
+        <input type="text" class="note-input" maxlength="280"
+               placeholder="Optional note (e.g. 'more MCP + tool-use')" />
+        <button class="btn save-btn" hidden>Save note</button>
+        <span class="saved-flag" hidden>saved ✓</span>
+      </div>
+    </article>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>
