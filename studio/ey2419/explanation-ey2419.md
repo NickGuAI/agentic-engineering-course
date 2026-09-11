@@ -11,3 +11,7 @@ There were no human decisions made since no question was asked by the agent.
 The result was verified by myself.
 
 No uncertainties.
+
+However, it does seem like that the agent saved the code along with the generated document in the outputs folder instead of the code folder.
+
+So I asked it why the above question has happened, it said that it "executed the research directly through Codex’s browsing tools and saved the results and logs, without packaging the workflow as a reusable program."
