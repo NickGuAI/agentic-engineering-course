@@ -91,6 +91,12 @@ class ParserTests(unittest.TestCase):
         self.assertEqual(items[0].published, "2026-09-11")
         self.assertEqual(items[1].published, "2026-09-10")
 
+    def test_rss_rejects_html(self):
+        with self.assertRaises(ValueError):
+            parse_rss("<!DOCTYPE html><html><body>Just a page</body></html>", OAI)
+        with self.assertRaises(ValueError):
+            parse_rss("<html><body><p>well-formed xml but not a feed</p></body></html>", OAI)
+
     def test_article_text(self):
         text = extract_article_text(ARTICLE_HTML)
         self.assertIn("Sentence one is here.", text)
@@ -220,6 +226,16 @@ class JobTests(unittest.TestCase):
             self.assertIn("openai-news", r.source_errors)
             self.assertEqual(r.summarized, 5)
             self.assertTrue(r.outputs)
+
+    def test_html_feed_is_source_failure_not_crash(self):
+        with tempfile.TemporaryDirectory() as d:
+            fetch = self.fake_fetcher()
+            def f(url):
+                return "<!DOCTYPE html><html><body>blocked</body></html>" if url == OAI.fetch_url else fetch(url)
+            r = run_once(RunOptions(outputs_dir=Path(d), no_llm=True), fetcher=f)
+            self.assertEqual(r.status, "degraded")
+            self.assertIn("openai-news", r.source_errors)
+            self.assertEqual(r.summarized, 5)
 
     def test_all_sources_fail_is_error(self):
         with tempfile.TemporaryDirectory() as d:

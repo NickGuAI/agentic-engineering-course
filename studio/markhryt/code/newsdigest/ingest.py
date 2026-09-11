@@ -177,7 +177,15 @@ def parse_anthropic_listing(page_html: str, source: Source) -> list[Article]:
 
 def parse_rss(xml_text: str, source: Source) -> list[Article]:
     """Parse an RSS 2.0 feed into Articles (feed order preserved: newest first)."""
-    root = ET.fromstring(xml_text)
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError as e:
+        # ET.ParseError is a SyntaxError, not a ValueError; surface it as a source-level
+        # failure so the job records it and continues with the other sources.
+        head = xml_text.lstrip()[:60].replace("\n", " ")
+        raise ValueError(f"not a valid RSS/XML feed ({e}); response starts with {head!r}") from e
+    if root.find("channel") is None and root.tag.lower() != "rss":
+        raise ValueError(f"not an RSS feed (root element <{root.tag}>)")
     out: list[Article] = []
     seen: set[str] = set()
     for item in root.iter("item"):
