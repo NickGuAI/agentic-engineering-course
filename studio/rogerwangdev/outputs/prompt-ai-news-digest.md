@@ -8,7 +8,7 @@ Every Monday at 7:00 AM Eastern Time, check the following sources and prepare a 
 - https://www.anthropic.com/engineering
 - https://openai.com/news/
 
-For this Studio 01 run, simulate one manual execution of the weekly job. Do not enable a real schedule unless I explicitly approve it.
+For this Studio 01 run, perform one manual execution of the weekly job. Do not enable a real schedule unless I explicitly approve it.
 
 Focus on updates that matter to me as an Agentic Engineering student, especially:
 

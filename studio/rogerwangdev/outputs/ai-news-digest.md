@@ -1,4 +1,4 @@
-# Simulated Output: Weekly AI News Digest
+# Weekly AI News Digest Plan
 
 ## Sources Checked
 
@@ -6,7 +6,7 @@
 - Anthropic Engineering: https://www.anthropic.com/engineering
 - OpenAI News: https://openai.com/news/
 
-Note: This is a simulated Studio 01 artifact. A real run should fetch the live pages, capture article titles, dates, and links, and mark the exact run time.
+The generated digest for the current manual run is saved in `weekly-ai-news-digest.md`.
 
 ## Executive Summary
 
@@ -31,7 +31,7 @@ This recurring task is a good fit for Studio 01 because it is bounded, observabl
 
 ## Worth Reading Fully
 
-In a real run, the assistant should recommend full reads when an item meets at least one of these checks:
+The assistant should recommend full reads when an item meets at least one of these checks:
 
 - It explains an engineering pattern I could reuse in a project.
 - It introduces a new model, tool, API, or capability relevant to agents.
@@ -40,7 +40,7 @@ In a real run, the assistant should recommend full reads when an item meets at l
 
 ## Uncertainties Or Source Failures
 
-Because this is a simulated result, it does not claim any specific latest article as current. A real run should include:
+Each run should include:
 
 - Fetch timestamp.
 - Article title.
