@@ -1,0 +1,39 @@
+2026-09-11 15:48:10,192 INFO    newsdigest.ingest: anthropic-news: 12 articles listed
+2026-09-11 15:48:10,353 INFO    newsdigest.job: anthropic-news: 10 new (cap 10)
+2026-09-11 15:48:10,598 INFO    newsdigest.ingest: anthropic-engineering: 25 articles listed
+2026-09-11 15:48:10,740 INFO    newsdigest.job: anthropic-engineering: 10 new (cap 10)
+2026-09-11 15:48:10,966 ERROR   newsdigest.job: run failed
+Traceback (most recent call last):
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/job.py", line 205, in run_loop
+    results.append(run_once(opts, fetcher))
+                   ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/job.py", line 100, in run_once
+    listed = list_articles(src, fetcher)
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/ingest.py", line 206, in list_articles
+    items = parse_rss(raw, source)
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/ingest.py", line 180, in parse_rss
+    root = ET.fromstring(xml_text)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/xml/etree/ElementTree.py", line 1352, in XML
+    parser.feed(text)
+    ~~~~~~~~~~~^^^^^^
+xml.etree.ElementTree.ParseError: not well-formed (invalid token): line 726, column 301941
+2026-09-11 15:48:10,973 INFO    newsdigest.job: sleeping 60s until next run
+2026-09-11 15:50:36,807 INFO    newsdigest.ingest: anthropic-news: 12 articles listed
+2026-09-11 15:50:36,960 INFO    newsdigest.job: anthropic-news: 10 new (cap 10)
+2026-09-11 15:50:37,205 INFO    newsdigest.ingest: anthropic-engineering: 25 articles listed
+2026-09-11 15:50:37,505 INFO    newsdigest.job: anthropic-engineering: 10 new (cap 10)
+2026-09-11 15:50:37,723 ERROR   newsdigest.job: run failed
+Traceback (most recent call last):
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/job.py", line 205, in run_loop
+    results.append(run_once(opts, fetcher))
+                   ~~~~~~~~^^^^^^^^^^^^^^^
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/job.py", line 100, in run_once
+    listed = list_articles(src, fetcher)
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/ingest.py", line 206, in list_articles
+    items = parse_rss(raw, source)
+  File "/Users/markhrytchak/Documents/Columbia/agentic-eng/agentic-engineering-course/studio/markhryt/code/newsdigest/ingest.py", line 180, in parse_rss
+    root = ET.fromstring(xml_text)
+  File "/opt/homebrew/Cellar/python@3.14/3.14.5/Frameworks/Python.framework/Versions/3.14/lib/python3.14/xml/etree/ElementTree.py", line 1352, in XML
+    parser.feed(text)
+    ~~~~~~~~~~~^^^^^^
+xml.etree.ElementTree.ParseError: not well-formed (invalid token): line 726, column 301910

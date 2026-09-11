@@ -1,0 +1,227 @@
+{
+  "last_run": "2026-09-11T20:13:06+00:00",
+  "seen": {
+    "https://www.anthropic.com/engineering/AI-resistant-technical-evaluations": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-01-21",
+      "source": "anthropic-engineering",
+      "title": "Designing AI-resistant technical evaluations"
+    },
+    "https://www.anthropic.com/engineering/a-postmortem-of-three-recent-issues": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-09-17",
+      "source": "anthropic-engineering",
+      "title": "A postmortem of three recent issues"
+    },
+    "https://www.anthropic.com/engineering/advanced-tool-use": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-11-24",
+      "source": "anthropic-engineering",
+      "title": "Introducing advanced tool use on the Claude Developer Platform"
+    },
+    "https://www.anthropic.com/engineering/april-23-postmortem": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-04-23",
+      "source": "anthropic-engineering",
+      "title": "An update on recent Claude Code quality reports"
+    },
+    "https://www.anthropic.com/engineering/building-c-compiler": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-02-05",
+      "source": "anthropic-engineering",
+      "title": "Building a C compiler with a team of parallel Claudes"
+    },
+    "https://www.anthropic.com/engineering/building-effective-agents": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2024-12-19",
+      "source": "anthropic-engineering",
+      "title": "Building effective agents"
+    },
+    "https://www.anthropic.com/engineering/claude-code-auto-mode": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-03-25",
+      "source": "anthropic-engineering",
+      "title": "How we built Claude Code auto mode: a safer way to skip permissions"
+    },
+    "https://www.anthropic.com/engineering/claude-code-best-practices": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-04-18",
+      "source": "anthropic-engineering",
+      "title": "Claude Code: Best practices for agentic coding"
+    },
+    "https://www.anthropic.com/engineering/claude-code-sandboxing": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-10-20",
+      "source": "anthropic-engineering",
+      "title": "Beyond permission prompts: making Claude Code more secure and autonomous"
+    },
+    "https://www.anthropic.com/engineering/claude-think-tool": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-03-20",
+      "source": "anthropic-engineering",
+      "title": "The \"think\" tool: Enabling Claude to stop and think in complex tool use situations"
+    },
+    "https://www.anthropic.com/engineering/code-execution-with-mcp": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-11-04",
+      "source": "anthropic-engineering",
+      "title": "Code execution with MCP: Building more efficient agents"
+    },
+    "https://www.anthropic.com/engineering/contextual-retrieval": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2024-09-19",
+      "source": "anthropic-engineering",
+      "title": "Introducing Contextual Retrieval"
+    },
+    "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-01-09",
+      "source": "anthropic-engineering",
+      "title": "Demystifying evals for AI agents"
+    },
+    "https://www.anthropic.com/engineering/desktop-extensions": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-06-26",
+      "source": "anthropic-engineering",
+      "title": "Desktop Extensions: One-click MCP server installation for Claude Desktop"
+    },
+    "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-09-29",
+      "source": "anthropic-engineering",
+      "title": "Effective context engineering for AI agents"
+    },
+    "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-11-26",
+      "source": "anthropic-engineering",
+      "title": "Effective harnesses for long-running agents"
+    },
+    "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-10-16",
+      "source": "anthropic-engineering",
+      "title": "Equipping agents for the real world with Agent Skills"
+    },
+    "https://www.anthropic.com/engineering/eval-awareness-browsecomp": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-03-06",
+      "source": "anthropic-engineering",
+      "title": "Eval awareness in Claude Opus 4.6\u2019s BrowseComp performance"
+    },
+    "https://www.anthropic.com/engineering/harness-design-long-running-apps": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-03-24",
+      "source": "anthropic-engineering",
+      "title": "Harness design for long-running application development"
+    },
+    "https://www.anthropic.com/engineering/how-we-contain-claude": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-05-25",
+      "source": "anthropic-engineering",
+      "title": "How we contain Claude across products"
+    },
+    "https://www.anthropic.com/engineering/infrastructure-noise": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-02-05",
+      "source": "anthropic-engineering",
+      "title": "Quantifying infrastructure noise in agentic coding evals"
+    },
+    "https://www.anthropic.com/engineering/managed-agents": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-04-08",
+      "source": "anthropic-engineering",
+      "title": "Scaling Managed Agents: Decoupling the brain from the hands"
+    },
+    "https://www.anthropic.com/engineering/multi-agent-research-system": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-06-13",
+      "source": "anthropic-engineering",
+      "title": "How we built our multi-agent research system"
+    },
+    "https://www.anthropic.com/engineering/swe-bench-sonnet": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-01-06",
+      "source": "anthropic-engineering",
+      "title": "Raising the bar on SWE-bench Verified with Claude 3.5 Sonnet"
+    },
+    "https://www.anthropic.com/engineering/writing-tools-for-agents": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2025-09-11",
+      "source": "anthropic-engineering",
+      "title": "Writing effective tools for agents \u2014 with agents"
+    },
+    "https://www.anthropic.com/news/announcing-our-updated-responsible-scaling-policy": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2024-10-15",
+      "source": "anthropic-news",
+      "title": "Announcing our updated Responsible Scaling Policy"
+    },
+    "https://www.anthropic.com/news/claude-opus-5": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-07-24",
+      "source": "anthropic-news",
+      "title": "Introducing Claude Opus 5"
+    },
+    "https://www.anthropic.com/news/claude-text-watermark": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-14",
+      "source": "anthropic-news",
+      "title": "How Claude\u2019s text watermark works"
+    },
+    "https://www.anthropic.com/news/enterprise-frontier-safeguards": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-09-01",
+      "source": "anthropic-news",
+      "title": "Developing Enterprise Frontier Safeguards with our customers"
+    },
+    "https://www.anthropic.com/news/expanding-support-for-scientists": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-27",
+      "source": "anthropic-news",
+      "title": "Expanding our support for scientists"
+    },
+    "https://www.anthropic.com/news/improving-alignment-security-efforts": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-31",
+      "source": "anthropic-news",
+      "title": "Improving our alignment and security efforts"
+    },
+    "https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-07",
+      "source": "anthropic-news",
+      "title": "Improving Fable 5's biology safeguards"
+    },
+    "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-07-30",
+      "source": "anthropic-news",
+      "title": "Investigating three real-world incidents in our cybersecurity evaluations"
+    },
+    "https://www.anthropic.com/news/model-hardware-standard-research-preview": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-27",
+      "source": "anthropic-news",
+      "title": "Previewing the Model Hardware Standard"
+    },
+    "https://www.anthropic.com/news/position-open-weights-models": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-07-27",
+      "source": "anthropic-news",
+      "title": "Our position on open-weights models"
+    },
+    "https://www.anthropic.com/news/tino-cuellar": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-04",
+      "source": "anthropic-news",
+      "title": "Mariano-Florentino (Tino) Cu\u00e9llar to join Anthropic as Chief Global Affairs Officer"
+    },
+    "https://www.anthropic.com/news/wellbeing-research-grants": {
+      "first_seen": "2026-09-11T20:13:00+00:00",
+      "published": "2026-08-25",
+      "source": "anthropic-news",
+      "title": "Funding better evaluations of AI\u2019s impact on wellbeing"
+    }
+  }
+}
