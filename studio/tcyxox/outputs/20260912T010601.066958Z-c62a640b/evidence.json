@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "run_id": "20260912T010601.066958Z-c62a640b",
+  "started_at": "2026-09-12T01:06:01Z",
+  "finished_at": "2026-09-12T01:06:06Z",
+  "configured_sources": [
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news"
+    },
+    {
+      "id": "anthropic-engineering",
+      "name": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering"
+    },
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/"
+    }
+  ],
+  "sources_attempted": [
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "configured_url": "https://www.anthropic.com/news",
+      "attempted": true,
+      "attempted_at": "2026-09-12T01:06:01Z",
+      "landing_http_status": 200,
+      "landing_final_url": "https://www.anthropic.com/news",
+      "status": "SUCCESS",
+      "items_discovered": 12,
+      "items_processed": 6,
+      "selected_count": 2,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "id": "anthropic-engineering",
+      "name": "Anthropic Engineering",
+      "configured_url": "https://www.anthropic.com/engineering",
+      "attempted": true,
+      "attempted_at": "2026-09-12T01:06:02Z",
+      "landing_http_status": 200,
+      "landing_final_url": "https://www.anthropic.com/engineering",
+      "status": "SUCCESS",
+      "items_discovered": 25,
+      "items_processed": 6,
+      "selected_count": 3,
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "configured_url": "https://openai.com/news/",
+      "attempted": true,
+      "attempted_at": "2026-09-12T01:06:04Z",
+      "landing_http_status": 200,
+      "landing_final_url": "https://openai.com/news/",
+      "status": "SUCCESS",
+      "items_discovered": 13,
+      "items_processed": 6,
+      "selected_count": 1,
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "counts": {
+    "sources_configured": 3,
+    "sources_succeeded": 3,
+    "sources_failed": 0,
+    "items_discovered": 50,
+    "items_processed": 18,
+    "items_selected": 6
+  },
+  "selected_items": [
+    {
+      "title": "Introducing Claude Opus 5",
+      "source": "Anthropic News",
+      "source_id": "anthropic-news",
+      "publication_date": "Jul 24, 2026",
+      "url": "https://www.anthropic.com/news/claude-opus-5",
+      "summary": "Opus 5 is a step change improvement for the Opus tier powering long-running agents while delivering improvements in coding and professional work.",
+      "summary_basis": "source metadata or article excerpt",
+      "why_it_matters": "It bears directly on agentic engineering: designing systems that can reason, use tools, write code, or take reliable actions in an environment.",
+      "relevance_score": 13
+    },
+    {
+      "title": "Harness design for long-running application development",
+      "source": "Anthropic Engineering",
+      "source_id": "anthropic-engineering",
+      "publication_date": "Mar 24, 2026",
+      "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+      "summary": "Harness design is key to performance at the frontier of agentic coding. Here's how we pushed Claude further in frontend design and long-running autonomous software engineering.",
+      "summary_basis": "source metadata or article excerpt",
+      "why_it_matters": "It bears directly on agentic engineering: designing systems that can reason, use tools, write code, or take reliable actions in an environment.",
+      "relevance_score": 21
+    },
+    {
+      "title": "Introducing the Agents API",
+      "source": "OpenAI News",
+      "source_id": "openai-news",
+      "publication_date": "2026-09-10T08:00:00-07:00",
+      "url": "https://openai.com/index/introducing-the-agents-api/",
+      "summary": "Build and launch cloud agents with the Agents API, a managed service powered by the Codex harness for orchestration, long-running sessions, and tool use.",
+      "summary_basis": "source metadata or article excerpt",
+      "why_it_matters": "It bears directly on agentic engineering: designing systems that can reason, use tools, write code, or take reliable actions in an environment.",
+      "relevance_score": 20
+    },
+    {
+      "title": "Scaling Managed Agents: Decoupling the brain from the hands",
+      "source": "Anthropic Engineering",
+      "source_id": "anthropic-engineering",
+      "publication_date": "Apr 08, 2026",
+      "url": "https://www.anthropic.com/engineering/managed-agents",
+      "summary": "Harnesses encode assumptions that go stale as models improve. Managed Agents—our hosted service for long-horizon agent work—is built around interfaces that stay stable as harnesses change.",
+      "summary_basis": "source metadata or article excerpt",
+      "why_it_matters": "It bears directly on agentic engineering: designing systems that can reason, use tools, write code, or take reliable actions in an environment.",
+      "relevance_score": 14
+    },
+    {
+      "title": "How we contain Claude across products",
+      "source": "Anthropic Engineering",
+      "source_id": "anthropic-engineering",
+      "publication_date": "May 25, 2026",
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "summary": "As agents grow more capable, so does their potential blast radius. The engineering question is how to cap it. Here’s what we’ve learned building containment for claude.ai, Claude Code, and Cowork.",
+      "summary_basis": "source metadata or article excerpt",
+      "why_it_matters": "It bears directly on agentic engineering: designing systems that can reason, use tools, write code, or take reliable actions in an environment.",
+      "relevance_score": 11
+    },
+    {
+      "title": "Previewing the Model Hardware Standard",
+      "source": "Anthropic News",
+      "source_id": "anthropic-news",
+      "publication_date": "Aug 27, 2026",
+      "url": "https://www.anthropic.com/news/model-hardware-standard-research-preview",
+      "summary": "Anthropic is opening a research preview of the Model Hardware Standard (MHS), a shared specification for AI agents to safely operate physical devices, to a first group of scientific research labs and advanced manufacturers.",
+      "summary_basis": "source metadata or article excerpt",
+      "why_it_matters": "It bears directly on agentic engineering: designing systems that can reason, use tools, write code, or take reliable actions in an environment.",
+      "relevance_score": 10
+    }
+  ],
+  "warnings": [],
+  "errors": [],
+  "generated_output_path": "E:\\Columbia\\Course\\2026 Fall\\COMS4995_Agentic_Engineering\\agentic-engineering-course\\studio\\tcyxox\\outputs\\20260912T010601.066958Z-c62a640b\\digest.md",
+  "event_log_path": "E:\\Columbia\\Course\\2026 Fall\\COMS4995_Agentic_Engineering\\agentic-engineering-course\\studio\\tcyxox\\outputs\\20260912T010601.066958Z-c62a640b\\events.jsonl",
+  "verification_checks": {
+    "digest_exists": true,
+    "digest_nonempty": true,
+    "all_configured_sources_attempted": true,
+    "each_source_has_explicit_status": true,
+    "selected_items_present": true,
+    "selected_items_have_required_fields": true,
+    "selected_counts_consistent": true
+  },
+  "final_status": "SUCCESS"
+}
