@@ -5,7 +5,7 @@
     "card_exactly_four_fields": true,
     "missing_input_has_no_digest": true,
     "recovery_matches_baseline": true,
-    "explanation_not_ai_generated": true,
+    "reflection_draft_disclosed": true,
     "changed_source_stops": true,
     "existing_run_rejected": true
   },

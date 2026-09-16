@@ -19,7 +19,8 @@ checks['all_citations_resolve']=bool(citations) and all(n in manifest['sources']
 checks['card_exactly_four_fields']=re.findall(r'^## (.+)$',(ROOT/'delegation-card.md').read_text(),re.M)==['Task','Context','Success criteria','Restrictions']
 checks['missing_input_has_no_digest']=not (ROOT/'outputs/missing-input/digest.md').exists()
 checks['recovery_matches_baseline']=(ROOT/'outputs/baseline/digest.md').read_bytes()==(ROOT/'outputs/recovered/digest.md').read_bytes()
-checks['explanation_not_ai_generated']=not (ROOT/'explanation-yuanyunchen.md').exists()
+# Authorship is not inferable from file existence; only check honest disclosure.
+checks['reflection_draft_disclosed']='AI-assisted draft; this does not fulfill' in (ROOT/'explanation-yuanyunchen.md').read_text()
 runner=ROOT/'code/course_assistant.py'
 with tempfile.TemporaryDirectory(dir=ROOT/'outputs',prefix='validation-') as tmp:
     tmp=Path(tmp); inputs=tmp/'inputs';shutil.copytree(ROOT/'inputs',inputs)

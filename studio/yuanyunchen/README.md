@@ -1,6 +1,6 @@
 # Course Assistant — Studio 01
 
-**Status: implementation and experiment complete; personal explanation pending.**
+**Status: implementation and experiment complete; an AI-assisted reflection draft is included, but the required personally written explanation is still pending.**
 
 A source-linked study digest for reviewing the Studio 01 delegation exercise. Local Codex built the implementation and ran the experiment using the student's authenticated session. The reusable Python program is an **offline deterministic renderer**, not an autonomous LLM and not evidence of model reasoning quality. It packages an AI-authored, source-reviewed learning scaffold with explicit freshness checks.
 
@@ -38,6 +38,6 @@ The experiment changes exactly one input condition: a separate input copy lacks 
 
 ## Authorship and submission boundary
 
-Code, card, digest, and machine evidence are AI-assisted. This README and the comparison are not substitutes for the required personal explanation. **No `explanation-yuanyunchen.md` has been generated.** The student must write it personally, without AI-generated text, before the PR is ready for submission. The seven-minute peer exercise has not been claimed as completed.
+Code, card, digest, and machine evidence are AI-assisted. This README and the comparison are not substitutes for the required personal explanation. `explanation-yuanyunchen.md` is explicitly labeled as an AI-assisted draft. It does not satisfy the no-AI personal explanation requirement. The student must replace it with a personally written explanation before this is a complete submission. The seven-minute peer exercise has not been claimed as completed.
 
 CourseWorks owns official submission instructions and deadlines. On September 16 its assignments API returned an empty list for this course; no deadline is inferred. A draft PR is a review location, not confirmation of official submission. Do not delete this branch until its PR has actually merged.
