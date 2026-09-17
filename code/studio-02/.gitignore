@@ -1,6 +1,10 @@
 # Downloaded/derived corpus (setup.sh regenerates this from arXiv or a local PDF).
 corpus/
 
+# Raw public benchmark data (Graphwalks/BABILong/MRCR), downloaded from Hugging
+# Face by benchmark_pilot.py. Not ours to redistribute; re-downloadable.
+benchmarks/
+
 # Scratch working directories for pi processes (project trust settings, decisions.md
 # drafts, etc.). Not evidence; the scripts recreate what they need under evidence/.
 work/
