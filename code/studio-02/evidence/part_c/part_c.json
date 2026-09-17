@@ -1,25 +1,25 @@
 {
-  "model": "google/gemini-3.1-flash-lite",
+  "model": "openai/gpt-5.6-luna",
   "agents_md_source": "studio/studio-02/starter/AGENTS.md",
   "session1": {
     "ok": true,
     "error": null,
     "usage": {
-      "input": 2319,
-      "output": 95,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "reasoning": 12,
-      "totalTokens": 2414,
+      "input": 3,
+      "output": 61,
+      "cacheRead": 1734,
+      "cacheWrite": 183,
+      "reasoning": 0,
+      "totalTokens": 1981,
       "cost": {
-        "input": 0.00057975,
-        "output": 0.0001425,
-        "cacheRead": 0,
-        "cacheWrite": 0,
-        "total": 0.00072225
+        "input": 6.000000000000001e-07,
+        "output": 7.319999999999999e-05,
+        "cacheRead": 3.468e-05,
+        "cacheWrite": 4.575e-05,
+        "total": 0.00015423
       }
     },
-    "cost_usd": 0.002781,
+    "cost_usd": 0.00108,
     "retried": false,
     "decisions_md_created": true,
     "dated_entries": 3,
@@ -29,21 +29,21 @@
     "ok": true,
     "error": null,
     "usage": {
-      "input": 2618,
-      "output": 167,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "reasoning": 17,
-      "totalTokens": 2785,
+      "input": 3,
+      "output": 37,
+      "cacheRead": 2059,
+      "cacheWrite": 163,
+      "reasoning": 0,
+      "totalTokens": 2262,
       "cost": {
-        "input": 0.0006544999999999999,
-        "output": 0.0002505,
-        "cacheRead": 0,
-        "cacheWrite": 0,
-        "total": 0.000905
+        "input": 6.000000000000001e-07,
+        "output": 4.4399999999999995e-05,
+        "cacheRead": 4.118e-05,
+        "cacheWrite": 4.075e-05,
+        "total": 0.00012692999999999998
       }
     },
-    "cost_usd": 0.004666,
+    "cost_usd": 0.00147,
     "fib_py_created": true,
     "dated_entries_after": 4
   },
@@ -51,22 +51,22 @@
     "ok": true,
     "error": null,
     "usage": {
-      "input": 1234,
-      "output": 305,
+      "input": 3,
+      "output": 82,
       "cacheRead": 0,
-      "cacheWrite": 0,
-      "reasoning": 170,
-      "totalTokens": 1539,
+      "cacheWrite": 1026,
+      "reasoning": 0,
+      "totalTokens": 1111,
       "cost": {
-        "input": 0.00030849999999999996,
-        "output": 0.0004575,
+        "input": 6.000000000000001e-07,
+        "output": 9.839999999999999e-05,
         "cacheRead": 0,
-        "cacheWrite": 0,
-        "total": 0.000766
+        "cacheWrite": 0.0002565,
+        "total": 0.0003555
       }
     },
-    "cost_usd": 0.001188,
-    "answer_text": "Based on the `decisions.md` file, the following decisions were made regarding the note-taking tool:\n\n*   **File Format:** It was decided to use Markdown (`.md`) files for storage because they are human-readable, widely supported, and easy to parse with CLI tools.\n*   **Command Name:** The command is named `memo` because it is short, memorable, and clearly describes the tool's purpose.\n*   **Date Format:** It was decided to use the ISO 8601 (`YYYY-MM-DD`) format because it is a standard, sortable, and unambiguous format for both filenames and metadata.",
+    "cost_usd": 0.000606,
+    "answer_text": "In session 1, we decided to:\n\n- Store each note as its own plain-text file, because it\u2019s human-readable and requires no parsing library.\n- Name the tool `note`, because it\u2019s short, clear, and directly describes its purpose.\n- Record dates as `YYYY-MM-DD` (ISO 8601), because the format is unambiguous and sorts chronologically.",
     "recall": {
       "storage_format": "correct",
       "command_name": "correct",
@@ -77,22 +77,22 @@
     "ok": true,
     "error": null,
     "usage": {
-      "input": 2491,
-      "output": 249,
-      "cacheRead": 3913,
-      "cacheWrite": 0,
-      "reasoning": 165,
-      "totalTokens": 6653,
+      "input": 3,
+      "output": 43,
+      "cacheRead": 1355,
+      "cacheWrite": 676,
+      "reasoning": 0,
+      "totalTokens": 2077,
       "cost": {
-        "input": 0.0006227499999999999,
-        "output": 0.0003735,
-        "cacheRead": 9.7825e-05,
-        "cacheWrite": 0,
-        "total": 0.001094075
+        "input": 6.000000000000001e-07,
+        "output": 5.16e-05,
+        "cacheRead": 2.71e-05,
+        "cacheWrite": 0.000169,
+        "total": 0.0002483
       }
     },
-    "cost_usd": 0.03461,
-    "answer_text": "I have been unable to find any files in the current directory, `no-memory`, that contain information about session 1 or the note-taking tool decision. I also do not have a tool to list the directory contents, so I cannot confirm which files are available.\n\nIf you know the name of the file containing these notes, please let me know, and I will be happy to read it for you.",
+    "cost_usd": 0.001614,
+    "answer_text": "I can\u2019t determine that from the current workspace. There are no session-1 notes, transcript, or memory files available here, so I don\u2019t have evidence of what was decided or why.",
     "recall": {
       "storage_format": "missing",
       "command_name": "missing",
@@ -100,9 +100,10 @@
     }
   },
   "ground_truth_blocks": {
-    "storage_format": "- 2026-09-17: Decided to use Markdown (.md) files for storage because it is human-readable, widely supported, and easy to parse with CLI tools.\n- 2026-09-17: Decided to name the command `memo` because it is short, memorable, and clearly describes the purpose of the tool.\n- 2026-09-17: Decided to use ISO 8601 (YYYY-MM-DD) as the date format because it is a standard, sortable, and unambiguous format for filenames and metadata.\n- 2026-09-17: Decided to implement the Fibonacci sequence iteratively starting with 0 and 1 for the `fib.py` script, as it is more efficient than a naive recursive implementation.",
-    "command_name": "- 2026-09-17: Decided to use Markdown (.md) files for storage because it is human-readable, widely supported, and easy to parse with CLI tools.\n- 2026-09-17: Decided to name the command `memo` because it is short, memorable, and clearly describes the purpose of the tool.\n- 2026-09-17: Decided to use ISO 8601 (YYYY-MM-DD) as the date format because it is a standard, sortable, and unambiguous format for filenames and metadata.\n- 2026-09-17: Decided to implement the Fibonacci sequence iteratively starting with 0 and 1 for the `fib.py` script, as it is more efficient than a naive recursive implementation.",
-    "date_format": "- 2026-09-17: Decided to use Markdown (.md) files for storage because it is human-readable, widely supported, and easy to parse with CLI tools.\n- 2026-09-17: Decided to name the command `memo` because it is short, memorable, and clearly describes the purpose of the tool.\n- 2026-09-17: Decided to use ISO 8601 (YYYY-MM-DD) as the date format because it is a standard, sortable, and unambiguous format for filenames and metadata.\n- 2026-09-17: Decided to implement the Fibonacci sequence iteratively starting with 0 and 1 for the `fib.py` script, as it is more efficient than a naive recursive implementation."
+    "storage_format": "- 2026-09-17 \u2014 Storage format: Store notes as one plain-text file per note because it is human-readable and requires no parsing library.\n- 2026-09-17 \u2014 Command name: Name the tool `note` because it is short, clear, and directly describes its purpose.\n- 2026-09-17 \u2014 Note date format: Record each note date in ISO 8601 `YYYY-MM-DD` format because it is unambiguous and sorts chronologically.\n- 2026-09-17 \u2014 Fibonacci implementation: Start the sequence at 0 and generate it iteratively, printing each of the first 20 numbers on its own line because this is the conventional sequence definition and avoids recursive overhead.",
+    "command_name": "- 2026-09-17 \u2014 Storage format: Store notes as one plain-text file per note because it is human-readable and requires no parsing library.\n- 2026-09-17 \u2014 Command name: Name the tool `note` because it is short, clear, and directly describes its purpose.\n- 2026-09-17 \u2014 Note date format: Record each note date in ISO 8601 `YYYY-MM-DD` format because it is unambiguous and sorts chronologically.\n- 2026-09-17 \u2014 Fibonacci implementation: Start the sequence at 0 and generate it iteratively, printing each of the first 20 numbers on its own line because this is the conventional sequence definition and avoids recursive overhead.",
+    "date_format": "- 2026-09-17 \u2014 Storage format: Store notes as one plain-text file per note because it is human-readable and requires no parsing library.\n- 2026-09-17 \u2014 Command name: Name the tool `note` because it is short, clear, and directly describes its purpose.\n- 2026-09-17 \u2014 Note date format: Record each note date in ISO 8601 `YYYY-MM-DD` format because it is unambiguous and sorts chronologically.\n- 2026-09-17 \u2014 Fibonacci implementation: Start the sequence at 0 and generate it iteratively, printing each of the first 20 numbers on its own line because this is the conventional sequence definition and avoids recursive overhead."
   },
-  "total_cost_usd": 0.043245
+  "total_cost_usd": 0.00477,
+  "rescored_note": "Recall classifier anchors broadened; the saved answers were re-scored without new model calls."
 }

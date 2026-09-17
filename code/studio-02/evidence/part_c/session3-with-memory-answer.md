@@ -1,5 +1,5 @@
-Based on the `decisions.md` file, the following decisions were made regarding the note-taking tool:
+In session 1, we decided to:
 
-*   **File Format:** It was decided to use Markdown (`.md`) files for storage because they are human-readable, widely supported, and easy to parse with CLI tools.
-*   **Command Name:** The command is named `memo` because it is short, memorable, and clearly describes the tool's purpose.
-*   **Date Format:** It was decided to use the ISO 8601 (`YYYY-MM-DD`) format because it is a standard, sortable, and unambiguous format for both filenames and metadata.
+- Store each note as its own plain-text file, because it’s human-readable and requires no parsing library.
+- Name the tool `note`, because it’s short, clear, and directly describes its purpose.
+- Record dates as `YYYY-MM-DD` (ISO 8601), because the format is unambiguous and sorts chronologically.

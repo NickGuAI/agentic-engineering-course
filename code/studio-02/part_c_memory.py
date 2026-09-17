@@ -102,15 +102,19 @@ DATE_ENTRY_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
 CATEGORIES = {
     "storage_format": {
-        "anchor": re.compile(r"storage format|storage", re.IGNORECASE),
+        # The model paraphrases freely ("Store each note as its own plain-text file"),
+        # so anchor on the decision's SUBJECT, not on the label we happened to use in
+        # the prompt. An earlier version required the literal word "storage" and scored
+        # a perfectly correct answer as missing.
+        "anchor": re.compile(r"stor(?:e|age|ing)|file per note|plain[- ]text|markdown|\bjson\b|\bformat\b", re.IGNORECASE),
         "label": "storage format for notes",
     },
     "command_name": {
-        "anchor": re.compile(r"command name|command", re.IGNORECASE),
+        "anchor": re.compile(r"command|name the tool|tool name|call(?:ed|ing)? (?:it|the tool)|`[a-z]+`|\bcli\b", re.IGNORECASE),
         "label": "command name for the tool",
     },
     "date_format": {
-        "anchor": re.compile(r"date format", re.IGNORECASE),
+        "anchor": re.compile(r"date|iso[- ]?8601|yyyy[- ]mm[- ]dd|timestamp", re.IGNORECASE),
         "label": "date format for entries",
     },
 }

@@ -1,12 +1,7 @@
-def fibonacci(n):
-    fib_sequence = []
-    a, b = 0, 1
-    for _ in range(n):
-        fib_sequence.append(a)
-        a, b = b, a + b
-    return fib_sequence
+"""Print the first 20 Fibonacci numbers."""
 
-if __name__ == "__main__":
-    n = 20
-    print(f"First {n} Fibonacci numbers:")
-    print(fibonacci(n))
+
+a, b = 0, 1
+for _ in range(20):
+    print(a)
+    a, b = b, a + b
