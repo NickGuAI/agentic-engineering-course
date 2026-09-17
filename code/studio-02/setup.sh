@@ -85,7 +85,7 @@ if [ ! -f "$TXT" ]; then
   fi
 
   echo "Converting PDF to text with pdftotext..."
-  pdftotext -layout "$PDF" "$TXT"
+  pdftotext "$PDF" "$TXT"
 fi
 
 if [ ! -f "$TXT" ]; then
@@ -139,7 +139,7 @@ for id in "${NOISE_IDS[@]}"; do
       echo "  pdftotext (poppler-utils) is not installed; cannot convert ${id}.pdf."
       exit 1
     fi
-    pdftotext -layout "$DOC_PDF" "$DOC_TXT"
+    pdftotext "$DOC_PDF" "$DOC_TXT"
   fi
 done
 

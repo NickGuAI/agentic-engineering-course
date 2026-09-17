@@ -877,6 +877,65 @@ ANSWER_INSTRUCTIONS = (
 
 
 # ---------------------------------------------------------------------------
+# Comprehension check label parsing (contract addendum v3) -- comprehension_check.py
+# ---------------------------------------------------------------------------
+
+COMPREHENSION_LABELS = ("SUPPORTED", "CONTRADICTED", "NOT_FOUND")
+
+# Matches "<n>. LABEL - justification" (1-2 digit id; SUPPORTED / CONTRADICTED /
+# "NOT FOUND" / "NOT_FOUND", case-insensitive; the "- justification" tail is
+# optional and, if present, may itself start with any punctuation).
+_LABEL_LINE_RE = re.compile(
+    r"^\s*\**\s*(?:Q)?(\d{1,2})\s*[\.\):]\s*"
+    r"(SUPPORTED|CONTRADICTED|NOT[\s_]FOUND)\b"
+    r"\s*[-:–—]?\s*(.*)$",
+    re.IGNORECASE,
+)
+
+
+def _canonical_label(raw: str) -> str:
+    return "NOT_FOUND" if re.match(r"NOT[\s_]FOUND", raw, re.IGNORECASE) else raw.upper()
+
+
+def parse_labeled_lines(text: str, n: int = 20) -> Dict[int, Dict[str, str]]:
+    """Parse '<n>. SUPPORTED|CONTRADICTED|NOT FOUND|NOT_FOUND - justification'
+    lines, one per comprehension item, tolerating a 1-2 digit id and an
+    optional trailing justification. Same strict-sequence rule as
+    parse_numbered_answers (a line only starts a new item if its id is
+    exactly the next one expected), so a justification sentence that itself
+    contains "... 2. ..." style text cannot be misread as a new item.
+    Returns {id: {"label": "SUPPORTED"|"CONTRADICTED"|"NOT_FOUND"|None,
+    "justification": str, "raw": str}}; label is None if a line matched the
+    id but not a recognized label word (raw still captured for debugging)."""
+    items: Dict[int, Dict[str, List[str]]] = {}
+    current = None
+    expected_next = 1
+    for raw_line in text.splitlines():
+        m = _LABEL_LINE_RE.match(raw_line)
+        if m and int(m.group(1)) == expected_next and expected_next <= n:
+            current = expected_next
+            label = _canonical_label(m.group(2))
+            items[current] = {
+                "label": label if label in COMPREHENSION_LABELS else None,
+                "justification": [m.group(3).strip()],
+                "raw": [raw_line.strip()],
+            }
+            expected_next += 1
+            continue
+        if current is not None and raw_line.strip():
+            items[current]["justification"].append(raw_line.strip())
+            items[current]["raw"].append(raw_line.strip())
+    return {
+        k: {
+            "label": v["label"],
+            "justification": " ".join(v["justification"]).strip(),
+            "raw": " ".join(v["raw"]).strip(),
+        }
+        for k, v in items.items()
+    }
+
+
+# ---------------------------------------------------------------------------
 # Small formatting helpers shared by part_a/b/c for summary.md tables
 # ---------------------------------------------------------------------------
 

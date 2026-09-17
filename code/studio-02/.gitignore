@@ -22,3 +22,5 @@ evidence/**/*.raw.jsonl
 __pycache__/
 *.pyc
 evidence/context_sweep/sessions/2026-09-17T14-07-19-004Z_01a0afb1-79dc-72fa-9b05-9e9c20c7872a.jsonl
+evidence/comprehension/sessions/2026-09-17T17-17-30-091Z_01a0b05f-986b-7067-bc15-4ba02766b792.jsonl
+evidence/comprehension/sessions/2026-09-17T17-19-13-120Z_01a0b061-2ae0-71f7-ab98-f43311111154.jsonl

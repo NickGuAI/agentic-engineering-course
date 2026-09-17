@@ -225,6 +225,14 @@ questions: 17 answerable, each with a measured `needle_depth_tokens` position in
 and 3 marked `expect_not_found` (verified by grep that the topic is not in the corpus at all -- the
 correct answer is always NOT FOUND).
 
+**Extraction-method note.** The sweep run recorded below (and all of `evidence/context_sweep/`) used
+`pdftotext -layout` to convert every PDF, which interleaves the two-column academic layout of several
+of these papers into garbled reading order on the pages where it triggers. `setup.sh` was later switched
+to plain `pdftotext` (reading order, no `-layout`) for all 13 documents, and `corpus/combined.txt`,
+`corpus/manifest.json`, and `questions.json`'s `needle_depth_tokens` were rebuilt/re-measured against
+the clean text; the sweep evidence itself was left exactly as recorded and was not re-run, so its
+numbers below reflect the older `-layout` extraction, not the corpus as it now sits on disk.
+
 Command actually run:
 
 ```bash
