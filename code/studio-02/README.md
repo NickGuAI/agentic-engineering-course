@@ -5,9 +5,12 @@ W4995-009 Agentic Engineering at Columbia University. It uses pi, the open-sourc
 agent (package `@earendil-works/pi-coding-agent`), as the harness, instead of "choose your own
 harness."
 
-There are four scripts: `setup.sh`, `part_a_stress.py`, `part_b_isolate_compress.py`, and
-`part_c_memory.py`. Run all of them from inside `code/studio-02/`. The Python scripts need Python 3.9
-or newer and use only the standard library -- there is nothing extra to install.
+There are five scripts: `setup.sh`, `part_a_stress.py`, `part_b_isolate_compress.py`,
+`part_c_memory.py`, and `context_sweep.py`. Run all of them from inside `code/studio-02/`. The Python
+scripts need Python 3.9 or newer. Most of the code is standard library only; real-token counting and
+the two charts need two extra packages: `pip install --user tiktoken matplotlib` (both are already
+installed on the validation machine). Everything degrades to a word-count estimate if `tiktoken` is
+missing, but the two context-sweep charts need `matplotlib`.
 
 # Install pi
 
@@ -27,16 +30,20 @@ pi --version
 
 This should print a version number (validated on this machine: `0.85.1`).
 
-pi can use a provider two ways. The first is a subscription -- Anthropic Claude Pro/Max, OpenAI
-ChatGPT Plus/Pro (for Codex), GitHub Copilot, and others -- through `pi` and then `/login` in
-interactive mode. On a headless machine with no browser, the Codex login's OAuth (Open Authorization)
-callback cannot complete; you paste the final redirect URL into the prompt instead, but this whole flow
-is interactive only, and it was not used for this validation.
+**This studio's validated path is the ChatGPT/Codex subscription**, through pi's `openai-codex`
+provider. On the validation machine it is already logged in (an OAuth -- Open Authorization -- token in
+`~/.pi/agent/auth.json`, a pooled team account); none of the scripts in this folder call `/login` or
+touch that file, and no API key is used, needed, or read from the environment for the default model. On
+your own machine, log in once yourself, interactively: `pi` then `/login`, and select ChatGPT/Codex. On
+a headless machine with no browser, the OAuth callback cannot complete; paste the final redirect URL
+into the prompt instead.
 
-The second way is an API key through an environment variable. The exact names pi reads are
-`ANTHROPIC_API_KEY` (Anthropic), `OPENAI_API_KEY` (OpenAI), `GEMINI_API_KEY` (Google Gemini -- note
-this is `GEMINI_API_KEY`, not a "GOOGLE_..." name), and `DEEPSEEK_API_KEY` (DeepSeek). Export whichever
-one you have before running any script here. Never print, log, or commit an API key.
+Without Codex access, you can still use an API-key provider (Anthropic, OpenAI, Google Gemini,
+DeepSeek) by passing `--model` explicitly. The exact environment variable names pi reads are
+`ANTHROPIC_API_KEY` (Anthropic), `OPENAI_API_KEY` (OpenAI), `GEMINI_API_KEY` (Google Gemini -- note this
+is `GEMINI_API_KEY`, not a "GOOGLE_..." name), and `DEEPSEEK_API_KEY` (DeepSeek). Export whichever one
+you have before running any script here. Never print, log, or commit an API key, and never edit
+`~/.pi/agent/auth.json` by hand.
 
 # Setup
 
@@ -52,60 +59,67 @@ Add `--install` if pi is not yet installed, and you want the script to install i
 bash setup.sh --install
 ```
 
-`setup.sh` does four things, in order: (1) checks Node.js and pi are installed and prints their
-versions; (2) downloads the corpus PDF (arXiv 2507.13334, "A Survey of Context Engineering for Large
-Language Models," Mei et al. 2025) if it is not already present, converts it to `corpus/survey.txt`
-with `pdftotext`, and splits it into `corpus/sections/section-01.txt` through `section-NN.txt` of about
-12,000 words each (this corpus produces 6 section files, the last one shorter); (3) prints the word
-count and an estimated token count (words times 1.33) for the whole corpus and each section --
-validated at 70,802 words, about 94,167 estimated tokens; (4) prints which model providers are
-currently usable, based on which environment variables are set, without ever printing a secret value.
+`setup.sh` does six things, in order: (1) checks Node.js and pi are installed and prints their versions;
+(2) downloads the survey PDF (arXiv 2507.13334, "A Survey of Context Engineering for Large Language
+Models," Mei et al. 2025) if not already present and converts it to `corpus/survey.txt` with
+`pdftotext`; (3) prints the word count and an estimated token count (words times 1.33) for
+`corpus/survey.txt` -- validated at 70,802 words, about 94,167 estimated tokens; (4) prints which model
+providers are currently usable, based on which environment variables are set, without ever printing a
+secret value; (5) downloads the 12 additional arXiv papers used by `context_sweep.py` (see that section
+below) if not already present, converts each to text, and builds `corpus/combined.txt` and
+`corpus/manifest.json` from all 13 documents, in order, using the real tiktoken token count (`o200k_base`)
+-- validated at 579,456 real tokens total; (6) splits `corpus/combined.txt` into
+`corpus/sections/section-01.txt` through `section-NN.txt` of about 30,000 real tokens each, for Part B
+(this corpus produces 20 section files, the last one shorter).
 
-It is safe to run more than once: it will not re-download or re-split anything if `corpus/survey.txt`
-already exists, and it never touches `evidence/`.
+It is safe to run more than once: it will not re-download or re-convert any PDF already present, and it
+never touches `evidence/`.
 
 # Part A: stress test
 
 ```bash
-python3 part_a_stress.py --model <provider/id> --sizes 8k,16k,32k,64k,full --out evidence
+python3 part_a_stress.py --model openai-codex/gpt-5.6-luna --sizes 64k,128k,256k,full --out evidence
 ```
 
-The `--sizes` value shown is also the default. `--model` defaults to the Codex spark model,
-`openai-codex/gpt-5.3-codex-spark` (see "How we chose a model" below), which needs a ChatGPT/Codex login
-(`pi` then `/login`) and was not validated on this machine. To use the model every recorded run in this
-folder actually used, pass it explicitly:
+Both flags shown are also the defaults (as of contract addendum v2 section 7), so `python3
+part_a_stress.py` alone does the same thing. Expect progress lines as each size is tested and scored.
 
-```bash
-python3 part_a_stress.py --model google/gemini-3.1-flash-lite
-```
+Part A now shares its corpus, its real-token slicing, and its section-5 scoring (overall / in-slice /
+abstention accuracy) with `context_sweep.py` -- see that section below for what those three accuracies
+mean. Its default corpus is `corpus/combined.txt` (the same 579,456-real-token, 13-document corpus the
+sweep uses), not the single-document `corpus/survey.txt`; pass `--corpus corpus/survey.txt` to run the
+smaller, original version instead. Sizes `8k`,`16k`,`32k`,`200k` are still accepted too (not just the
+four defaults), and slices are always real tiktoken tokens now, not the word-based estimate.
 
-Expect progress lines as each size is tested and scored.
+For each size, the script takes the first that-many real tokens of the corpus, builds one prompt with
+that slice of text plus every question in `questions.json`, and asks pi to answer them all, numbered to
+match, saying NOT FOUND for anything not in the text. It disables pi's automatic compaction for this run
+(a project settings file, `work/part_a/.pi/settings.json`, sets `"compaction": {"enabled": false}`), so
+if a slice were ever too large for the model's real context window, that would show up as a genuine API
+error instead of being silently summarized away -- though see the context sweep section below: on
+`openai-codex/gpt-5.6-luna`, even a slice past its documented context window did not actually error.
+Tools are disabled entirely (`--no-tools`), since the whole slice is pasted directly into the prompt
+(sent over stdin, not as a command-line argument).
 
-For each size, the script takes the first that-many estimated tokens of the corpus, builds one prompt
-with that slice of text plus the five questions from `questions.json`, and asks pi to answer all five,
-numbered 1 to 5, saying NOT FOUND for anything not in the text. It disables pi's automatic compaction
-for this run (a project settings file, `work/part_a/.pi/settings.json`, sets `"compaction": {"enabled":
-false}`), so if a slice were ever too large for the model's real context window, that would show up as
-a genuine API error instead of being silently summarized away. Tools are disabled entirely
-(`--no-tools`), since the whole slice is pasted directly into the prompt.
+Two optional sizes, `2x` and `3x`, are also accepted: the full corpus followed by 1 or 2 extra rounds of
+its own section files, reshuffled into a different order each round, appended as distractor padding, for
+a model whose context window is too large for "full" alone to threaten. Run them with `python3
+part_a_stress.py --sizes 2x,3x`.
 
-Two optional sizes, `2x` and `3x`, are also accepted (but are not part of the default `--sizes` and
-were not added to it): the full corpus followed by 1 or 2 extra rounds of its own section files,
-reshuffled into a different order each round, appended as distractor padding. These exist for models
-whose context window is too large for "full" alone to threaten -- for example
-`google/gemini-3.1-flash-lite`'s 1,048,576-token window is nearly 7 times the corpus's real token count,
-so `2x`/`3x` push the total context to roughly a third and a half of that window instead. Run them with
-`python3 part_a_stress.py --model <provider/id> --sizes 2x,3x`.
-
-It writes, for each size: `evidence/part_a/run-<size>.json` (score, the five parsed answers, token
-usage, cost, and any error) and `evidence/part_a/run-<size>.raw.jsonl` (the complete raw stream of
-events pi produced, exactly as pi wrote it; this raw file stays local and is not committed -- see
-"Evidence size note" below). Once all sizes have run, it writes `evidence/part_a/summary.md`: a table
-across all sizes, plus one line stating the first size where the score dropped below an earlier best, or
-where the call errored -- whichever came first. If neither ever happened, it says so.
+It writes, for each size: `evidence/part_a/run-<size>.json` (accuracy, the parsed answers, token usage,
+cost, and any error) and `evidence/part_a/run-<size>.raw.jsonl` (the complete raw stream of events pi
+produced, exactly as pi wrote it; this raw file stays local and is not committed -- see "Evidence size
+note" below). Once all sizes have run, it writes `evidence/part_a/summary.md`: a table across all sizes,
+plus one line stating the first size where overall accuracy dropped below an earlier best, or where the
+call errored -- whichever came first. If neither ever happened, it says so.
 
 Re-running is safe: each run only overwrites its own files, and nothing under `evidence/` is ever
-deleted.
+deleted. **Note:** the `evidence/part_a/` (and `part_b/`, `part_c/`) files currently in this repository
+were produced by an earlier round of this studio, before the Codex subscription and the combined corpus
+existed, using `--model google/gemini-3.1-flash-lite` and the single-document survey corpus -- they have
+not been regenerated at the new defaults (doing so was optional and was not run, to conserve the shared
+Codex quota after the context sweep). `evidence/context_sweep/` is the one deliverable validated against
+the new defaults end to end.
 
 # Part B: isolate and compress
 
@@ -117,20 +131,27 @@ This needs `evidence/part_a/` to already exist -- run Part A first, since Part B
 best-scoring run as input for one of its three demonstrations. Expect progress logging for each
 demonstration, then a comparison table.
 
+Part B's corpus sections are `corpus/sections/section-NN.txt`, built by `setup.sh` from
+`corpus/combined.txt` at about 30,000 real tokens each (20 section files for the current 13-document
+corpus; see "Setup" above) -- since section 7 of contract addendum v2, no longer the original
+12,000-word, single-document survey sections.
+
 The three demonstrations, run in one pass:
 
 1. **Isolate.** One pi process runs per corpus section file, each told to return only a short numbered
-   list of findings relevant to the five questions (at most 150 words, never a full transcript). One
-   more "lead" pi process then answers using only the combined findings plus the five questions -- no
-   raw corpus text.
+   list of findings relevant to the questions in `questions.json` (at most 150 words, never a full
+   transcript). One more "lead" pi process then answers using only the combined findings plus the
+   questions -- no raw corpus text. With 20 sections, this means 20 sub-agent calls plus 1 lead call.
 2. **Compress, summary artifact.** pi writes a short markdown briefing summarizing Part A's best run's
-   answers (what was found, what was not), then the five questions are re-asked using only that
-   briefing as context.
+   answers (what was found, what was not), then the questions are re-asked using only that briefing as
+   context.
 3. **Compress, pi's own compaction.** pi runs in a work directory whose `.pi/settings.json` turns
    compaction back on, with a `reserveTokens` value computed from the model's real context window so
    that compaction should trigger around 50,000 tokens of context. The agent reads the corpus section
    files one by one through its own `read` tool calls, so context actually grows turn by turn (the way
-   compaction is meant to be triggered), then the five questions are asked.
+   compaction is meant to be triggered), then the questions are asked. With 20 sections instead of the
+   original 6, this demonstration now reads much more text before answering, so compaction firing is
+   more likely, not less.
 
 It writes: `evidence/part_b/findings/section-NN.md` (each section's findings), `evidence/part_b/
 isolate.json`, `evidence/part_b/summary-of-part-a.md` and `evidence/part_b/summary-artifact.json`,
@@ -194,100 +215,134 @@ not committed -- see "Evidence size note" below.
 Re-running is safe; use `--fresh` if you want the three sessions to start over rather than continuing
 in an already-used `work/part_c/` directory.
 
+# Context sweep: accuracy vs. context length
+
+`context_sweep.py` measures accuracy against context length over a bigger, 13-document combined corpus:
+the original survey plus 12 more arXiv papers on context engineering, memory, and retrieval, used as
+bulk length and distractor text. `setup.sh` builds it into `corpus/combined.txt` and
+`corpus/manifest.json`, 579,456 real tokens total (tiktoken `o200k_base`). `questions.json` has 20
+questions: 17 answerable, each with a measured `needle_depth_tokens` position in the combined corpus,
+and 3 marked `expect_not_found` (verified by grep that the topic is not in the corpus at all -- the
+correct answer is always NOT FOUND).
+
+Command actually run:
+
+```bash
+python3 context_sweep.py --model openai-codex/gpt-5.6-luna \
+    --sizes 16k,32k,64k,128k,200k,256k,full --out evidence/context_sweep --thinking low
+```
+
+For each size, the script takes the first N real tokens of `combined.txt` (a line-safe cut) and asks all
+20 questions in one turn: auto-compaction disabled (a project `.pi/settings.json`), tools disabled
+(`--no-tools`), pi's own parent-directory context-file discovery disabled (`--no-context-files`), and
+the bulk text sent over stdin rather than as a command-line argument (to stay under the operating
+system's per-argument size limit).
+
+Three accuracies are computed per size, and `results.json` / `results.csv` record a correct / wrong /
+hallucinated verdict for every question at every size: **overall accuracy** (correct out of all 20
+questions), **in-slice accuracy** (correct out of only the questions whose needle sits inside that
+size's slice), and **abstention accuracy** (correct out of only the questions whose needle is beyond the
+slice, or marked `expect_not_found` -- does the model correctly say NOT FOUND instead of guessing).
+`summary.md` also lists, per size, which question ids were in-slice, and separately flags any
+"verbose-but-correct" case: an answer that matched every required gold keyword but also mentioned a
+`must_not_contain` distractor term, which the scoring rule marks wrong but which is worth a human
+double-checking by hand. None were flagged in this run.
+
+**Real result: the `full` size did not fail.** At 579,456 real tokens (580,786 by pi's own usage
+report) -- more than double `gpt-5.6-luna`'s documented 272,000-token context window -- there was no
+context-length error, no error of any kind. The model returned a complete, coherent answer to all 20
+questions. This contradicts what was expected going in (a context-length failure was predicted). It is
+a real, verified finding, not a mistake: compaction was disabled and confirmed absent from the event
+log, the full corpus was genuinely sent (token counts match), and the answer was complete and on-topic,
+not truncated.
+
+**Correction (see `evidence/context_sweep/summary.md` for the full note).** The first scoring pass had
+two bugs, both in the scorer, not in the model calls: the answer parser matched only single-digit
+question numbers, so answers 10-20 were silently read as leftover text of answer 9 and scored wrong or
+hallucinated regardless of their real content; and some keyword groups required only terms already
+present in the question text, so a terse correct answer could not match, and number-format variants
+like "2,048K" vs "2048K" were not normalized. All 7 model calls are the original ones -- nothing was
+re-run. `python3 context_sweep.py --rescore --out evidence/context_sweep` re-parses and re-scores the
+same saved `answer_text` with the fixed parser and the revised `questions.json`, at no cost (no pi
+calls), and rewrites `results.json` / `results.csv` / `summary.md` and both charts; the original
+`run-<size>.json` files (usage, timing, raw text) are left untouched, and every changed verdict is
+listed in `rescore_diff.json`. 91 of 140 (size x question) verdicts changed, every one of them from
+wrong or hallucinated to correct; none moved the other way. The numbers below are the corrected ones.
+
+| size | real input tokens | overall accuracy | in-slice accuracy | abstention accuracy | wall time |
+| --- | --- | --- | --- | --- | --- |
+| 16k | 16,875 | 100% (20/20) | 100% (n=4) | 100% (n=16) | 10.67s |
+| 32k | 32,729 | 100% (20/20) | 100% (n=4) | 100% (n=16) | 11.97s |
+| 64k | 64,333 | 100% (20/20) | 100% (n=5) | 100% (n=15) | 16.33s |
+| 128k | 127,610 | 100% (20/20) | 100% (n=5) | 100% (n=15) | 13.75s |
+| 200k | 198,865 | 100% (20/20) | 100% (n=11) | 100% (n=9) | 13.0s |
+| 256k | 253,860 | 100% (20/20) | 100% (n=15) | 100% (n=5) | 15.85s |
+| full | 580,786 | 100% (20/20) | 100% (n=17) | 100% (n=3) | 18.16s |
+
+With the scorer fixed, `openai-codex/gpt-5.6-luna` answered every question correctly at every size
+tested, both the ones whose needle was in the slice and the ones it correctly declined (NOT FOUND) --
+including the 3 `expect_not_found` questions (ids 18, 19, 20), which were never actually hallucinated;
+that claim in an earlier draft of this README was itself an artifact of the parser bug above.
+
+Total real cost for this sweep: $0.3745 across the 7 calls above (the `--rescore` pass itself made no
+pi calls and cost nothing).
+
+Two charts are written to `evidence/context_sweep/`: `accuracy_vs_length.png` (the three accuracies
+above, as lines, against real input tokens) and `heatmap.png` (a correct / wrong / hallucinated grid,
+questions ordered by needle depth, with a step-line boundary marking which cells were inside that size's
+window). Both use this project's `dataviz`-skill palette: categorical blue/orange/aqua for the three
+accuracy lines, and a fixed status-color grid (green/amber/red) for the heatmap.
+
 # How we chose a model
 
-The instructions were: use the cheapest tool-capable model in pi's `openai` catalog whose context
-window fits the roughly 95,000-token corpus, falling back to Gemini or DeepSeek if OpenAI fails. List
-models non-interactively with:
+**This studio's validated path is the ChatGPT/Codex subscription**, through pi's `openai-codex`
+provider (see "Install pi" above). The model used for every run of real evidence in this folder --
+`context_sweep.py` and Part A alike -- is `openai-codex/gpt-5.6-luna`, with pi's `--thinking low` flag.
+Its context window is 272,000 tokens per pi's catalog. This model is now validated end to end,
+including a real run past its documented context window with no error at all (see "Context sweep"
+above). List available models non-interactively with `pi --list-models` (add a search term to narrow
+it down, e.g. `pi --list-models codex`); this needs at least one provider's credentials configured
+first (a login, or an API key), or it prints nothing for that provider.
 
-```bash
-pi --list-models
-```
-
-Add a search term to narrow it down, for example:
-
-```bash
-pi --list-models codex
-```
-
-This needs at least one provider's credentials configured first, or it prints nothing for that
-provider.
-
-The cheapest qualifying OpenAI model was `gpt-5-nano` (400,000-token context window, $0.05 per million
-input tokens, $0.40 per million output tokens) -- but this machine's OpenAI API key had no credits left
-(pi's own error: "You have no credits remaining"). Falling back to DeepSeek's `deepseek-flash` also
-failed ("402 Insufficient Balance"). Falling back to Gemini worked, but the obvious first choice,
-`gemini-2.5-flash-lite`, is deprecated (the API's error said it is "no longer available to new users"
-and suggested `gemini-3.5-flash-lite` instead).
-
-The model actually used for every validated run in this folder is `google/gemini-3.1-flash-lite`:
-cheaper than the suggested replacement ($0.25 per million input tokens and $1.50 per million output
-tokens, versus $0.30 / $2.50), with a 1,048,576-token context window (comfortably larger than the whole
-corpus), and confirmed working with real tool calls before committing to the full run. Use a different
-model by passing `--model provider/model-id` to any of the three part scripts.
-
-**On the "spark" model, and the scripts' default.** Nick asked for the Codex model
-`gpt-5.3-codex-spark`, and whether it exists. It does: `gpt-5.3-codex-spark` is a real model ID, listed
-both under the `openai-codex` provider (the ChatGPT/Codex subscription provider, 128,000-token context
-window) and under the plain `openai` API-key provider (also a real, listable model, 128,000-token
-context window, $1.75 per million input tokens, $14 per million output tokens -- not cheap). Since the
-contract asks for the spark model as the default whenever it exists, `--model` defaults to
-`openai-codex/gpt-5.3-codex-spark` in all three part scripts.
-
-**This default is untested on the validation machine and every piece of recorded evidence in this
-folder actually used `google/gemini-3.1-flash-lite` instead**, passed explicitly with `--model
-google/gemini-3.1-flash-lite`. The `openai-codex` provider needs the interactive ChatGPT/Codex browser
-login, which cannot complete headlessly, and this machine's Codex quota was reported as exhausted
-regardless, so the default could not be exercised end to end here. If a script fails on you with an
-authentication or model-not-found error, it now prints one hint line: log in (`pi` then `/login`) or
-fall back to the validated model (`--model google/gemini-3.1-flash-lite`). Students with a working
-ChatGPT Plus/Pro subscription can reach the default with:
-
-```bash
-pi
-```
-
-then, inside the interactive session:
-
-```text
-/login
-```
-
-and select ChatGPT/Codex. After that, launch pi with:
-
-```bash
-pi --model openai-codex/gpt-5.3-codex-spark
-```
+**Historical note.** An earlier round of this studio, before the Codex subscription was available, used
+an API-key provider instead. The cheapest tool-capable OpenAI model, `gpt-5-nano`, failed because the
+OpenAI API key on the validation machine had no credits ("You have no credits remaining"); DeepSeek's
+`deepseek-flash` also failed ("402 Insufficient Balance"); Google Gemini's `gemini-2.5-flash-lite` is
+deprecated ("no longer available to new users"). `google/gemini-3.1-flash-lite` worked and was used for
+that round's evidence, still recorded under `evidence/part_a`, `evidence/part_b`, and `evidence/part_c`.
+To use that fallback model now, pass `--model google/gemini-3.1-flash-lite` and export `GEMINI_API_KEY`.
 
 # Cost and time observed
 
-Total real API spend for the evidence kept in this folder: $0.3151, across 69 model calls (Part A,
-including the optional 2x/3x sizes, plus Part B plus Part C). Wall time for the three scripts run back
-to back: about 95 seconds total. All of this is far under a $10 budget for one validation pass with
-this model.
+Two rounds of real spending are recorded here. The context sweep (current round, Codex subscription,
+`openai-codex/gpt-5.6-luna`): $0.3745 across the 7 calls in `evidence/context_sweep/`. The earlier round
+(`google/gemini-3.1-flash-lite`, API key): $0.3151 across 69 calls in `evidence/part_a`, `part_b`, and
+`part_c`, over about 95 seconds of wall time for the three scripts run back to back. Both totals are far
+under a $10 budget for one validation pass.
 
 # Evidence size note
 
 Every pi call in these scripts saves its own session file under `evidence/sessions/` (via pi's
-`--session-dir` flag), and the scripts separately save the complete raw `--mode json` event stream for
-each call next to that part's other output files (`evidence/part_*/raw/*.raw.jsonl` or, for Part A,
-`evidence/part_a/run-<size>.raw.jsonl`). The scripts always write both, locally, on every run.
+`--session-dir` flag; `context_sweep.py` uses its own `--out`-relative `sessions/` directory), and the
+scripts separately save the complete raw `--mode json` event stream for each call next to that part's
+other output files (`evidence/part_*/raw/*.raw.jsonl`, `evidence/context_sweep/raw/<size>.raw.jsonl`, or,
+for Part A, `evidence/part_a/run-<size>.raw.jsonl`). The scripts always write both, locally, on every run.
 
-Only the session files and each part's extracted `.json`/`.md` summaries are committed to the
+Only the session files and each part's extracted `.json`/`.md`/`.png` outputs are committed to the
 repository. The raw event streams are excluded through `.gitignore` (`evidence/**/*.raw.jsonl`) and stay
-local only: in this run they added up to about 9.5 MB, all of it the same information already captured
-in more compact form by the ~6.9 MB of session files (each one comfortably under 2 MB) plus the scripts'
-own summary files. A committed course repository should not carry that much duplicate log data. If you
-need the full verbatim event-by-event record for a specific call -- for example to see every streamed
-delta of a long compaction run -- it is sitting locally in the matching `raw/*.raw.jsonl` file; it is
-just not pushed to GitHub.
+local only -- they carry the same information already captured in more compact form by the session
+files (each one comfortably under 2 MB) plus the scripts' own summary files. A committed course
+repository should not carry that much duplicate log data. If you need the full verbatim event-by-event
+record for a specific call -- for example to see every streamed delta of a long run -- it is sitting
+locally in the matching `raw/*.raw.jsonl` file; it is just not pushed to GitHub.
 
 # Files in this folder
 
-`setup.sh`, `questions.json`, `lib/pi_runner.py` (shared code used by every script), `part_a_stress.py`,
-`part_b_isolate_compress.py`, `part_c_memory.py`, `.gitignore`, `README.md` (this file), and `evidence/`
-(the recorded real run, including `EXPLANATION.md`, the graded write-up).
+`setup.sh`, `questions.json`, `lib/pi_runner.py` and `lib/charts.py` (shared code used by every script),
+`part_a_stress.py`, `part_b_isolate_compress.py`, `part_c_memory.py`, `context_sweep.py`, `.gitignore`,
+`README.md` (this file), and `evidence/` (the recorded real runs, including `EXPLANATION.md`, the graded
+write-up, and `context_sweep/accuracy_vs_length.png` / `context_sweep/heatmap.png`, the two charts).
 
 `corpus/` and `work/` are created by the scripts and are not committed (see `.gitignore`): running
-`bash setup.sh` recreates `corpus/`, and running the three part scripts recreates whatever they need
-under `work/`.
+`bash setup.sh` recreates `corpus/` (including `combined.txt` and `manifest.json`), and running the
+scripts recreates whatever they need under `work/`.

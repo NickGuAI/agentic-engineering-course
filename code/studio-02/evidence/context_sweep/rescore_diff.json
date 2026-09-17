@@ -1,0 +1,551 @@
+{
+  "changed_verdicts": [
+    {
+      "size": "128k",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 10,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 11,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 12,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 13,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 14,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 15,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 16,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 17,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "128k",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 10,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 11,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 12,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 13,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 14,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 15,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 16,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 17,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "16k",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 10,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 11,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 12,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 13,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 14,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 15,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 16,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 17,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "200k",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 10,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 11,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 12,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 13,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 14,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 15,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 16,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 17,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "256k",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 10,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 11,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 12,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 13,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 14,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 15,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 16,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 17,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "32k",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 10,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 11,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 12,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 13,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 14,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 15,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 16,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 17,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "64k",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 2,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 3,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 10,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 11,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 12,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 13,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 14,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 15,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 16,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 17,
+      "old_verdict": "wrong",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 18,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 19,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    },
+    {
+      "size": "full",
+      "id": 20,
+      "old_verdict": "hallucinated",
+      "new_verdict": "correct"
+    }
+  ],
+  "n_changed": 91
+}

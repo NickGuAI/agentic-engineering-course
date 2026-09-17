@@ -131,7 +131,7 @@ def run_isolate(model, questions, out_dir, sessions_dir, timeout):
         approve=True,
         no_context_files=True,
     )
-    answers = parse_numbered_answers(lead_result.answer_text, n=5) if lead_result.ok else {}
+    answers = parse_numbered_answers(lead_result.answer_text, n=len(questions)) if lead_result.ok else {}
     score, wrong = score_all(answers, questions) if lead_result.ok else (0, [q["id"] for q in questions])
 
     record = {
@@ -204,7 +204,7 @@ def run_compress_summary(model, questions, out_dir, sessions_dir, timeout):
         approve=True,
         no_context_files=True,
     )
-    answers = parse_numbered_answers(reask_result.answer_text, n=5) if reask_result.ok else {}
+    answers = parse_numbered_answers(reask_result.answer_text, n=len(questions)) if reask_result.ok else {}
     score, wrong = score_all(answers, questions) if reask_result.ok else (0, [q["id"] for q in questions])
 
     record = {
@@ -290,7 +290,7 @@ def run_compress_compaction(model, questions, out_dir, sessions_dir, timeout, ta
         approve=True,
         no_context_files=True,
     )
-    answers = parse_numbered_answers(result.answer_text, n=5) if result.ok else {}
+    answers = parse_numbered_answers(result.answer_text, n=len(questions)) if result.ok else {}
     score, wrong = score_all(answers, questions) if result.ok else (0, [q["id"] for q in questions])
 
     compactions = []

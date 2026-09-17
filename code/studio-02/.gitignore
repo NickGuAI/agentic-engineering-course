@@ -21,3 +21,4 @@ evidence/**/*.raw.jsonl
 # Python cache
 __pycache__/
 *.pyc
+evidence/context_sweep/sessions/2026-09-17T14-07-19-004Z_01a0afb1-79dc-72fa-9b05-9e9c20c7872a.jsonl

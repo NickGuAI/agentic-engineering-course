@@ -1,0 +1,141 @@
+size,question_id,needle_depth_tokens,expected,in_slice,verdict,correct,verbose_but_correct,answer
+16k,1,448,answerable,True,correct,True,False,"1,400 research papers"
+16k,2,13430,answerable,True,correct,True,False,"2,048K tokens, in two stages"
+16k,3,12739,answerable,True,correct,True,False,Approximately 20%
+16k,4,35012,not_found,False,correct,True,False,NOT FOUND
+16k,5,4456,answerable,True,correct,True,False,"Retrieval-Augmented Generation, Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems"
+16k,6,146075,not_found,False,correct,True,False,NOT FOUND
+16k,7,145389,not_found,False,correct,True,False,NOT FOUND
+16k,8,168043,not_found,False,correct,True,False,NOT FOUND
+16k,9,166307,not_found,False,correct,True,False,NOT FOUND
+16k,10,179100,not_found,False,correct,True,False,NOT FOUND
+16k,11,185176,not_found,False,correct,True,False,NOT FOUND
+16k,12,209025,not_found,False,correct,True,False,NOT FOUND
+16k,13,208173,not_found,False,correct,True,False,NOT FOUND
+16k,14,208625,not_found,False,correct,True,False,NOT FOUND
+16k,15,244437,not_found,False,correct,True,False,NOT FOUND
+16k,16,269547,not_found,False,correct,True,False,NOT FOUND
+16k,17,327324,not_found,False,correct,True,False,NOT FOUND
+16k,18,,not_found,False,correct,True,False,NOT FOUND
+16k,19,,not_found,False,correct,True,False,NOT FOUND
+16k,20,,not_found,False,correct,True,False,NOT FOUND
+32k,1,448,answerable,True,correct,True,False,"Over 1,400 research papers"
+32k,2,13430,answerable,True,correct,True,False,"2,048K tokens, in two stages"
+32k,3,12739,answerable,True,correct,True,False,Approximately 20%
+32k,4,35012,not_found,False,correct,True,False,NOT FOUND
+32k,5,4456,answerable,True,correct,True,False,Retrieval-Augmented Generation; Memory Systems; Tool-Integrated Reasoning; Multi-Agent Systems
+32k,6,146075,not_found,False,correct,True,False,NOT FOUND
+32k,7,145389,not_found,False,correct,True,False,NOT FOUND
+32k,8,168043,not_found,False,correct,True,False,NOT FOUND
+32k,9,166307,not_found,False,correct,True,False,NOT FOUND
+32k,10,179100,not_found,False,correct,True,False,NOT FOUND
+32k,11,185176,not_found,False,correct,True,False,NOT FOUND
+32k,12,209025,not_found,False,correct,True,False,NOT FOUND
+32k,13,208173,not_found,False,correct,True,False,NOT FOUND
+32k,14,208625,not_found,False,correct,True,False,NOT FOUND
+32k,15,244437,not_found,False,correct,True,False,NOT FOUND
+32k,16,269547,not_found,False,correct,True,False,NOT FOUND
+32k,17,327324,not_found,False,correct,True,False,NOT FOUND
+32k,18,,not_found,False,correct,True,False,NOT FOUND
+32k,19,,not_found,False,correct,True,False,NOT FOUND
+32k,20,,not_found,False,correct,True,False,NOT FOUND
+64k,1,448,answerable,True,correct,True,False,"Over 1,400 research papers"
+64k,2,13430,answerable,True,correct,True,False,"2,048K tokens, in two stages"
+64k,3,12739,answerable,True,correct,True,False,Approximately 20%
+64k,4,35012,answerable,True,correct,True,False,Humans: 92%; advanced models like GPT-4: 15%
+64k,5,4456,answerable,True,correct,True,False,Retrieval-Augmented Generation; Memory Systems; Tool-Integrated Reasoning; Multi-Agent Systems
+64k,6,146075,not_found,False,correct,True,False,NOT FOUND
+64k,7,145389,not_found,False,correct,True,False,NOT FOUND
+64k,8,168043,not_found,False,correct,True,False,NOT FOUND
+64k,9,166307,not_found,False,correct,True,False,NOT FOUND
+64k,10,179100,not_found,False,correct,True,False,NOT FOUND
+64k,11,185176,not_found,False,correct,True,False,NOT FOUND
+64k,12,209025,not_found,False,correct,True,False,NOT FOUND
+64k,13,208173,not_found,False,correct,True,False,NOT FOUND
+64k,14,208625,not_found,False,correct,True,False,NOT FOUND
+64k,15,244437,not_found,False,correct,True,False,NOT FOUND
+64k,16,269547,not_found,False,correct,True,False,NOT FOUND
+64k,17,327324,not_found,False,correct,True,False,NOT FOUND
+64k,18,,not_found,False,correct,True,False,NOT FOUND
+64k,19,,not_found,False,correct,True,False,NOT FOUND
+64k,20,,not_found,False,correct,True,False,NOT FOUND
+128k,1,448,answerable,True,correct,True,False,"Over 1,400 research papers"
+128k,2,13430,answerable,True,correct,True,False,"2,048K tokens, in two stages"
+128k,3,12739,answerable,True,correct,True,False,Approximately 20%
+128k,4,35012,answerable,True,correct,True,False,Humans: 92%; GPT-4: 15%
+128k,5,4456,answerable,True,correct,True,False,"RAG systems, Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems"
+128k,6,146075,not_found,False,correct,True,False,NOT FOUND
+128k,7,145389,not_found,False,correct,True,False,NOT FOUND
+128k,8,168043,not_found,False,correct,True,False,NOT FOUND
+128k,9,166307,not_found,False,correct,True,False,NOT FOUND
+128k,10,179100,not_found,False,correct,True,False,NOT FOUND
+128k,11,185176,not_found,False,correct,True,False,NOT FOUND
+128k,12,209025,not_found,False,correct,True,False,NOT FOUND
+128k,13,208173,not_found,False,correct,True,False,NOT FOUND
+128k,14,208625,not_found,False,correct,True,False,NOT FOUND
+128k,15,244437,not_found,False,correct,True,False,NOT FOUND
+128k,16,269547,not_found,False,correct,True,False,NOT FOUND
+128k,17,327324,not_found,False,correct,True,False,NOT FOUND
+128k,18,,not_found,False,correct,True,False,NOT FOUND
+128k,19,,not_found,False,correct,True,False,NOT FOUND
+128k,20,,not_found,False,correct,True,False,NOT FOUND
+200k,1,448,answerable,True,correct,True,False,"Over 1,400 research papers."
+200k,2,13430,answerable,True,correct,True,False,"2,048K tokens, using a two-stage approach."
+200k,3,12739,answerable,True,correct,True,False,Approximately 20%.
+200k,4,35012,answerable,True,correct,True,False,Humans: 92%; advanced models such as GPT-4: 15%.
+200k,5,4456,answerable,True,correct,True,False,"RAG, Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems."
+200k,6,146075,answerable,True,correct,True,False,56.1%.
+200k,7,145389,answerable,True,correct,True,False,"A U-shaped curve: best at the beginning and end, worst in the middle."
+200k,8,168043,answerable,True,correct,True,False,"8,192 tokens."
+200k,9,166307,answerable,True,correct,True,False,"System instructions, working context, and FIFO queue."
+200k,10,179100,answerable,True,correct,True,False,10.6%.
+200k,11,185176,answerable,True,correct,True,False,TGC means Task Goal Completion; online ACE surpasses IBM CUGA by 8.4% on test-challenge TGC.
+200k,12,209025,not_found,False,correct,True,False,NOT FOUND.
+200k,13,208173,not_found,False,correct,True,False,NOT FOUND.
+200k,14,208625,not_found,False,correct,True,False,NOT FOUND.
+200k,15,244437,not_found,False,correct,True,False,NOT FOUND.
+200k,16,269547,not_found,False,correct,True,False,NOT FOUND.
+200k,17,327324,not_found,False,correct,True,False,NOT FOUND.
+200k,18,,not_found,False,correct,True,False,NOT FOUND.
+200k,19,,not_found,False,correct,True,False,NOT FOUND.
+200k,20,,not_found,False,correct,True,False,NOT FOUND.
+256k,1,448,answerable,True,correct,True,False,"Over 1,400 research papers."
+256k,2,13430,answerable,True,correct,True,False,"2,048K tokens, achieved in two stages: fine-tuning to 256K, then positional interpolation to 2,048K."
+256k,3,12739,answerable,True,correct,True,False,Approximately 20%.
+256k,4,35012,answerable,True,correct,True,False,Humans: 92%; GPT-4-class models: 15%.
+256k,5,4456,answerable,True,correct,True,False,"RAG, Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems."
+256k,6,146075,answerable,True,correct,True,False,56.1%.
+256k,7,145389,answerable,True,correct,True,False,"A U-shaped curve: best at the beginning and end, worst in the middle."
+256k,8,168043,answerable,True,correct,True,False,"8,192 tokens."
+256k,9,166307,answerable,True,correct,True,False,"System instructions, working context, and FIFO queue."
+256k,10,179100,answerable,True,correct,True,False,10.6%.
+256k,11,185176,answerable,True,correct,True,False,TGC means Task Goal Completion; online ACE surpasses IBM CUGA by 8.4%.
+256k,12,209025,answerable,True,correct,True,False,"Retrieval, Multi-hop Tracing, Aggregation, and Question Answering."
+256k,13,208173,answerable,True,correct,True,False,17.
+256k,14,208625,answerable,True,correct,True,False,Variable Tracking (VT).
+256k,15,244437,answerable,True,correct,True,False,Recognize unanswerable questions and abstain by saying “I don’t know.”
+256k,16,269547,not_found,False,correct,True,False,NOT FOUND.
+256k,17,327324,not_found,False,correct,True,False,NOT FOUND.
+256k,18,,not_found,False,correct,True,False,NOT FOUND.
+256k,19,,not_found,False,correct,True,False,NOT FOUND.
+256k,20,,not_found,False,correct,True,False,NOT FOUND.
+full,1,448,answerable,True,correct,True,False,"Over 1,400 research papers"
+full,2,13430,answerable,True,correct,True,False,"2,048K tokens, in two stages"
+full,3,12739,answerable,True,correct,True,False,Approximately 20% absolute improvement
+full,4,35012,answerable,True,correct,True,False,Humans: 92%; GPT-4: 15%
+full,5,4456,answerable,True,correct,True,False,"RAG, Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems"
+full,6,146075,answerable,True,correct,True,False,56.1%
+full,7,145389,answerable,True,correct,True,False,"A U-shaped curve: best at the beginning and end, worst in the middle"
+full,8,168043,answerable,True,correct,True,False,"8,192 tokens"
+full,9,166307,answerable,True,correct,True,False,"System instructions, working context, and FIFO queue"
+full,10,179100,answerable,True,correct,True,False,10.6%
+full,11,185176,answerable,True,correct,True,False,Task Goal Completion; 8.4%
+full,12,209025,answerable,True,correct,True,False,"Retrieval, Multi-hop Tracing, Aggregation, and Question Answering"
+full,13,208173,answerable,True,correct,True,False,17
+full,14,208625,answerable,True,correct,True,False,Variable Tracking (VT)
+full,15,244437,answerable,True,correct,True,False,Identify unknown or unmentioned information and abstain from answering
+full,16,269547,answerable,True,correct,True,False,34 percentage points
+full,17,327324,answerable,True,correct,True,False,Smallville
+full,18,,not_found,False,correct,True,False,NOT FOUND
+full,19,,not_found,False,correct,True,False,NOT FOUND
+full,20,,not_found,False,correct,True,False,NOT FOUND
