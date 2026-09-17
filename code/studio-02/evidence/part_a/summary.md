@@ -1,18 +1,21 @@
-# Part A: Context Window Stress Test -- summary
+# Part A: BABILong qa1, accuracy vs context length
 
-Model: `google/gemini-3.1-flash-lite`
-Corpus: 70802 words (~94167 estimated tokens)
-Compaction: disabled for this run (`work/part_a/.pi/settings.json`)
-Sizes 2x/3x are optional and not part of the default `--sizes`: the full corpus followed by 1 or 2 extra rounds of its own section files, reshuffled, appended as distractor padding (for models whose context window is too large for "full" alone to stress).
+Model `openai/gpt-5.6-luna`, thinking low, single-message delivery, compaction disabled, exact-match scoring.
 
-| size | est. tokens | input tokens | cached tokens | output tokens | score | wrong/missing Qs | error |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 8k | 7993 | 10842 | 0 | 295 | 2/5 | 2, 3, 4 |  |
-| 16k | 16000 | 21140 | 0 | 195 | 3/5 | 3, 4 |  |
-| 32k | 31997 | 21248 | 20462 | 1076 | 5/5 |  |  |
-| 64k | 63994 | 59652 | 40945 | 1150 | 5/5 |  |  |
-| full | 94167 | 159142 | 0 | 1043 | 5/5 |  |  |
-| 2x | 188341 | 317611 | 0 | 799 | 5/5 |  |  |
-| 3x | 282516 | 164807 | 311273 | 993 | 5/5 |  |  |
+| bucket | n | mean | 95% CI | mean input tokens |
+| --- | --- | --- | --- | --- |
+| 32k | 20 | 85.0% | [69.4%, 100.0%] | 30,549 |
+| 128k | 20 | 75.0% | [56.0%, 94.0%] | 122,552 |
+| 256k | 20 | 65.0% | [44.1%, 85.9%] | 241,380 |
+| 512k | 10 | 70.0% | [41.6%, 98.4%] | 481,833 |
+| 768k | 10 | 40.0% | [9.6%, 70.4%] | 766,944 |
 
-**No failure observed: score never dropped below an earlier best, and no call errored.**
+32k/128k/256k are n=20; 512k/768k are n=10.
+
+The 768K bucket has no native BABILong equivalent: it was built by truncating 1M-bucket items to 768,000 tokens and
+keeping only those whose qa1 supporting fact survived (68 of 100). Surviving needles never sit past about 80 percent
+of the original document, so that bucket is structurally easier than an unbiased sample and the decline it shows is
+if anything an understatement.
+
+At 768K, four of the six wrong answers name the wrong room; the other two ("London", "Fairy Knowe") are places from
+the PG-19 novels used as filler, not BABILong locations at all -- the model answering the haystack instead of the task.

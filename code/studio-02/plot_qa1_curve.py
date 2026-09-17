@@ -1,5 +1,8 @@
 """qa1_curve.png -- BABILong qa1 accuracy vs. real input tokens, 32K-768K,
-95% CI error bars, n annotated per point (contract addendum v7)."""
+95% CI error bars, n annotated per point. Reads the consolidated Part A
+curve (contract addendum v8; the 5 points now live in evidence/part_a/,
+previously split across the since-deleted evidence/benchmark_sweep/ and
+evidence/babilong_qa1_topend/)."""
 from pathlib import Path
 
 import matplotlib
@@ -8,7 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "evidence" / "babilong_qa1_topend"
+OUT = HERE / "evidence" / "part_a"
 
 SURFACE = "#fcfcfb"
 INK_PRIMARY = "#0b0b0b"
