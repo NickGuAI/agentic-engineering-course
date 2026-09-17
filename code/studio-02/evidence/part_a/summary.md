@@ -19,3 +19,8 @@ if anything an understatement.
 
 At 768K, four of the six wrong answers name the wrong room; the other two ("London", "Fairy Knowe") are places from
 the PG-19 novels used as filler, not BABILong locations at all -- the model answering the haystack instead of the task.
+
+Ground-truth answers are recorded in results.csv for the 512K and 768K rows. The 32K/128K/256K rows carry the
+answer given and the score assigned at run time but not the expected answer; those targets are regenerated for
+free when setup.sh acquires the BABILong qa1 splits. An independent re-score of the 20 rows that do carry targets
+agreed with every recorded score.

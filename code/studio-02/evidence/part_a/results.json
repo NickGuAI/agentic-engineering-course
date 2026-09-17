@@ -1034,7 +1034,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "garden"
  },
  {
   "id": 2,
@@ -1051,7 +1052,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "bedroom"
  },
  {
   "id": 3,
@@ -1068,7 +1070,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "bathroom"
  },
  {
   "id": 4,
@@ -1085,7 +1088,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "bedroom"
  },
  {
   "id": 5,
@@ -1102,7 +1106,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "kitchen"
  },
  {
   "id": 6,
@@ -1119,7 +1124,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "bathroom"
  },
  {
   "id": 7,
@@ -1136,7 +1142,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "hallway"
  },
  {
   "id": 8,
@@ -1153,7 +1160,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "garden"
  },
  {
   "id": 9,
@@ -1170,7 +1178,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "bathroom"
  },
  {
   "id": 10,
@@ -1187,7 +1196,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "bathroom"
  },
  {
   "id": 11,
@@ -1204,7 +1214,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "kitchen"
  },
  {
   "id": 12,
@@ -1221,7 +1232,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "garden"
  },
  {
   "id": 13,
@@ -1238,7 +1250,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "hallway"
  },
  {
   "id": 14,
@@ -1255,7 +1268,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "bedroom"
  },
  {
   "id": 15,
@@ -1272,7 +1286,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "bathroom"
  },
  {
   "id": 16,
@@ -1289,7 +1304,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "office"
  },
  {
   "id": 17,
@@ -1306,7 +1322,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": true,
-  "score": 1.0
+  "score": 1.0,
+  "target": "hallway"
  },
  {
   "id": 18,
@@ -1323,7 +1340,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "bedroom"
  },
  {
   "id": 19,
@@ -1340,7 +1358,8 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "garden"
  },
  {
   "id": 20,
@@ -1357,6 +1376,7 @@
   "length_refusal": false,
   "format_ok": true,
   "correct": false,
-  "score": 0.0
+  "score": 0.0,
+  "target": "hallway"
  }
 ]
