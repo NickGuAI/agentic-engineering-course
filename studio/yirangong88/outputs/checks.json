@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "input_hashes_unchanged": true,
+    "explanation_left_absent": true,
+    "first_result_exists": true,
+    "exactly_two_closing_questions": true,
+    "freshness_limitation_explicit": true,
+    "local_output_links_resolve": true,
+    "simulation_labeled": true,
+    "git_changes_only_in_student_folder": true
+  },
+  "all_passed": true,
+  "note": "Passing artifact checks does not establish publication freshness. Run 01 remains blocked on that criterion."
+}
