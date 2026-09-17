@@ -1,6 +1,7 @@
 # Run 3 log
 
-Captured from local Codex CLI; not reconstructed from the earlier email attempts.
+Captured from an immediate local Codex CLI test of the briefing task.
+For the recurring email instruction, see [Recurring email prompt](observations-and-changes.md#recurring-email-prompt).
 
 - Started: 2026-09-16T18:00:53.888924+00:00
 - Finished: 2026-09-16T18:02:18.877435+00:00
@@ -11,7 +12,7 @@ Captured from local Codex CLI; not reconstructed from the earlier email attempts
 - Output words: 553
 - Web calls: 6
 
-## Prompt
+## Captured local-test prompt (unchanged)
 
 ```text
 Produce one local research briefing for Hiba. This is a rerunnable daily job;
