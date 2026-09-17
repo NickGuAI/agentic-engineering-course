@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "id": 10,
+      "benchmark": "babilong",
+      "task": "qa1",
+      "bucket": "512k",
+      "real_input_tokens": 480600,
+      "output_tokens": 48,
+      "cost_usd": 0.2403861,
+      "wall_time_s": 5.02,
+      "raw_answer": "bathroom",
+      "error": null,
+      "ok": true,
+      "length_refusal": false,
+      "format_ok": true,
+      "correct": true,
+      "score": 1.0
+    },
+    {
+      "id": 12,
+      "benchmark": "babilong",
+      "task": "qa1",
+      "bucket": "768k",
+      "real_input_tokens": 766266,
+      "output_tokens": 67,
+      "cost_usd": 0.3832533,
+      "wall_time_s": 7.59,
+      "raw_answer": "garden",
+      "error": null,
+      "ok": true,
+      "length_refusal": false,
+      "format_ok": true,
+      "correct": true,
+      "score": 1.0
+    }
+  ],
+  "cumulative_cost_usd": 0.6236394000000001,
+  "stop_reason": null,
+  "model": "openai/gpt-5.6-luna",
+  "n_planned": 2,
+  "n_run": 2
+}

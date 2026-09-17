@@ -48,6 +48,24 @@ def is_quota_error(text):
     return any(k in low for k in QUOTA_KEYWORDS)
 
 
+# Measured pricing (contract v6/v7): at or below 272K input, $0.25/M cache-write
+# + $1.20/M output; above 272K, exactly 2x: $0.50/M + $2.40/M, applied to the
+# whole request. Output is a small bare-word/short-phrase answer in every case
+# here, so a fixed ~1,500-token output allowance is a safe overestimate (real
+# runs are far shorter) rather than a source of surprise cost.
+PRICING_TIER_TOKENS = 272_000
+OUTPUT_ALLOWANCE_TOKENS = 1_500
+
+
+def estimate_call_cost(real_tokens_estimate):
+    if real_tokens_estimate is None:
+        return None
+    above = real_tokens_estimate > PRICING_TIER_TOKENS
+    input_rate = 0.50 if above else 0.25
+    output_rate = 2.40 if above else 1.20
+    return (real_tokens_estimate / 1e6) * input_rate + (OUTPUT_ALLOWANCE_TOKENS / 1e6) * output_rate
+
+
 def looks_like_length_refusal(result):
     """A hard refusal (pi/provider declines before generating) OR the silent
     empty-answer failure mode seen in the comprehension check: the model's
@@ -251,12 +269,27 @@ def main():
         idx = 0
 
         def submit_next():
+            """Only submits if the NEXT item's estimated cost, added to the
+            cumulative cost of calls already completed OR already in flight,
+            would not cross the hard stop -- checked BEFORE dispatch, not
+            just after completion (a prior run let 5 already-in-flight calls
+            land after the post-hoc check tripped; this closes that gap)."""
             nonlocal idx
-            if idx < len(items):
-                it = items[idx]
-                idx += 1
-                fut = pool.submit(run_one_item, it, args.model, args.thinking, work_root, args.timeout)
-                futures[fut] = it
+            if idx >= len(items):
+                return
+            it = items[idx]
+            est = estimate_call_cost(it.get("real_tokens_estimate"))
+            with lock:
+                committed = cumulative_cost + sum(
+                    estimate_call_cost(fitem.get("real_tokens_estimate")) or 0.0 for fitem in futures.values()
+                )
+                if est is not None and committed + est > args.hard_stop:
+                    print(f"  SKIPPING id={it['id']}: estimated cost ${est:.4f} would take committed "
+                          f"${committed:.4f} over hard stop ${args.hard_stop:.2f}", file=sys.stderr)
+                    return
+            idx += 1
+            fut = pool.submit(run_one_item, it, args.model, args.thinking, work_root, args.timeout)
+            futures[fut] = it
 
         for _ in range(min(args.max_workers, len(items))):
             submit_next()
