@@ -1,0 +1,23 @@
+# Downloaded/derived corpus (setup.sh regenerates this from arXiv or a local PDF).
+corpus/
+
+# Scratch working directories for pi processes (project trust settings, decisions.md
+# drafts, etc.). Not evidence; the scripts recreate what they need under evidence/.
+work/
+
+# Never commit environment/secret files.
+*.env
+.env*
+
+# Raw --mode json event streams (evidence/part_*/raw/*.raw.jsonl, about 9.5 MB
+# total). These are the scripts' own verbose capture of every event pi printed;
+# pi's own session files under evidence/sessions/ (about 6.9 MB, all under 2 MB
+# each) plus the scripts' extracted *.json summaries already carry the same run
+# record in far less space. The raw files are still written locally by every
+# script (nothing about how the scripts run changes), just not committed. See
+# README.md "Evidence size note".
+evidence/**/*.raw.jsonl
+
+# Python cache
+__pycache__/
+*.pyc

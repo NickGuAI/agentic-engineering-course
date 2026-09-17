@@ -1,0 +1,108 @@
+{
+  "model": "google/gemini-3.1-flash-lite",
+  "agents_md_source": "studio/studio-02/starter/AGENTS.md",
+  "session1": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 2319,
+      "output": 95,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "reasoning": 12,
+      "totalTokens": 2414,
+      "cost": {
+        "input": 0.00057975,
+        "output": 0.0001425,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0.00072225
+      }
+    },
+    "cost_usd": 0.002781,
+    "retried": false,
+    "decisions_md_created": true,
+    "dated_entries": 3,
+    "missing_after_retry": []
+  },
+  "session2": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 2618,
+      "output": 167,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "reasoning": 17,
+      "totalTokens": 2785,
+      "cost": {
+        "input": 0.0006544999999999999,
+        "output": 0.0002505,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0.000905
+      }
+    },
+    "cost_usd": 0.004666,
+    "fib_py_created": true,
+    "dated_entries_after": 4
+  },
+  "session3_with_memory": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 1234,
+      "output": 305,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "reasoning": 170,
+      "totalTokens": 1539,
+      "cost": {
+        "input": 0.00030849999999999996,
+        "output": 0.0004575,
+        "cacheRead": 0,
+        "cacheWrite": 0,
+        "total": 0.000766
+      }
+    },
+    "cost_usd": 0.001188,
+    "answer_text": "Based on the `decisions.md` file, the following decisions were made regarding the note-taking tool:\n\n*   **File Format:** It was decided to use Markdown (`.md`) files for storage because they are human-readable, widely supported, and easy to parse with CLI tools.\n*   **Command Name:** The command is named `memo` because it is short, memorable, and clearly describes the tool's purpose.\n*   **Date Format:** It was decided to use the ISO 8601 (`YYYY-MM-DD`) format because it is a standard, sortable, and unambiguous format for both filenames and metadata.",
+    "recall": {
+      "storage_format": "correct",
+      "command_name": "correct",
+      "date_format": "correct"
+    }
+  },
+  "session3_no_memory_baseline": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 2491,
+      "output": 249,
+      "cacheRead": 3913,
+      "cacheWrite": 0,
+      "reasoning": 165,
+      "totalTokens": 6653,
+      "cost": {
+        "input": 0.0006227499999999999,
+        "output": 0.0003735,
+        "cacheRead": 9.7825e-05,
+        "cacheWrite": 0,
+        "total": 0.001094075
+      }
+    },
+    "cost_usd": 0.03461,
+    "answer_text": "I have been unable to find any files in the current directory, `no-memory`, that contain information about session 1 or the note-taking tool decision. I also do not have a tool to list the directory contents, so I cannot confirm which files are available.\n\nIf you know the name of the file containing these notes, please let me know, and I will be happy to read it for you.",
+    "recall": {
+      "storage_format": "missing",
+      "command_name": "missing",
+      "date_format": "missing"
+    }
+  },
+  "ground_truth_blocks": {
+    "storage_format": "- 2026-09-17: Decided to use Markdown (.md) files for storage because it is human-readable, widely supported, and easy to parse with CLI tools.\n- 2026-09-17: Decided to name the command `memo` because it is short, memorable, and clearly describes the purpose of the tool.\n- 2026-09-17: Decided to use ISO 8601 (YYYY-MM-DD) as the date format because it is a standard, sortable, and unambiguous format for filenames and metadata.\n- 2026-09-17: Decided to implement the Fibonacci sequence iteratively starting with 0 and 1 for the `fib.py` script, as it is more efficient than a naive recursive implementation.",
+    "command_name": "- 2026-09-17: Decided to use Markdown (.md) files for storage because it is human-readable, widely supported, and easy to parse with CLI tools.\n- 2026-09-17: Decided to name the command `memo` because it is short, memorable, and clearly describes the purpose of the tool.\n- 2026-09-17: Decided to use ISO 8601 (YYYY-MM-DD) as the date format because it is a standard, sortable, and unambiguous format for filenames and metadata.\n- 2026-09-17: Decided to implement the Fibonacci sequence iteratively starting with 0 and 1 for the `fib.py` script, as it is more efficient than a naive recursive implementation.",
+    "date_format": "- 2026-09-17: Decided to use Markdown (.md) files for storage because it is human-readable, widely supported, and easy to parse with CLI tools.\n- 2026-09-17: Decided to name the command `memo` because it is short, memorable, and clearly describes the purpose of the tool.\n- 2026-09-17: Decided to use ISO 8601 (YYYY-MM-DD) as the date format because it is a standard, sortable, and unambiguous format for filenames and metadata.\n- 2026-09-17: Decided to implement the Fibonacci sequence iteratively starting with 0 and 1 for the `fib.py` script, as it is more efficient than a naive recursive implementation."
+  },
+  "total_cost_usd": 0.043245
+}

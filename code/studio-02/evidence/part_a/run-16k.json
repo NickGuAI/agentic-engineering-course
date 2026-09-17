@@ -1,0 +1,38 @@
+{
+  "size": "16k",
+  "estimated_input_tokens": 16000,
+  "model": "google/gemini-3.1-flash-lite",
+  "ok": true,
+  "error": null,
+  "usage": {
+    "input": 21140,
+    "output": 195,
+    "cacheRead": 0,
+    "cacheWrite": 0,
+    "reasoning": 95,
+    "totalTokens": 21335,
+    "cost": {
+      "input": 0.005285,
+      "output": 0.0002925,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0.0055775
+    }
+  },
+  "cost_usd": 0.005577,
+  "wall_time_s": 1.62,
+  "answer_text": "1. 1400 research papers.\n2. LongRoPE achieves a 2048K token context window through two stages: first, fine-tuning models to 256K length, then conducting positional interpolation to reach the maximum context length.\n3. Approximately 20% absolute performance improvement.\n4. NOT FOUND.\n5. Retrieval-Augmented Generation (RAG), Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems.",
+  "answers": {
+    "1": "1400 research papers.",
+    "2": "LongRoPE achieves a 2048K token context window through two stages: first, fine-tuning models to 256K length, then conducting positional interpolation to reach the maximum context length.",
+    "3": "Approximately 20% absolute performance improvement.",
+    "4": "NOT FOUND.",
+    "5": "Retrieval-Augmented Generation (RAG), Memory Systems, Tool-Integrated Reasoning, and Multi-Agent Systems."
+  },
+  "score": 3,
+  "wrong_or_missing": [
+    3,
+    4
+  ],
+  "raw_events_path": "evidence/part_a/run-16k.raw.jsonl"
+}
