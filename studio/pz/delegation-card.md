@@ -2,15 +2,13 @@
 
 ## Task
 Produce a weekly AI briefing from only these sources:
-- https://www.anthropic.com/news
-- https://www.anthropic.com/engineering
 - https://openai.com/news/
 
 Cover posts published in the last 7 days relative to the run date. Select the **top 5 most important** items across all three sources (hard cap: fewer than 10; prefer exactly 5 unless fewer exist). Rank by practical impact on AI/agent builders and students (new models/APIs, tooling, methods, evals, safety-relevant product changes) over marketing or hiring posts.
 
 For each item include:
 - title
-- source name (`Anthropic News` / `Anthropic Engineering` / `OpenAI News`)
+- source name (`OpenAI News`)
 - publication date (as shown on the page)
 - canonical URL
 - one short paragraph summarizing main outcomes in **method + result** form (what they did / shipped, and what changed or was demonstrated)
@@ -18,7 +16,7 @@ For each item include:
 Include both news and engineering posts when they fall in-range. Do not create separate source dumps of everything—curate the ranked shortlist only. If a source contributes zero selected items, note that under a brief Sources checked note.
 
 Write one new dated markdown file under `studio/pz/outputs/` named:
-`ai-news-brief_YYYY-MM-DD_to_YYYY-MM-DD.md`
+`ai-news-brief_YYYY-MM-DD_to_YYYY-MM-DD_ver2.md`
 (start/end dates of the covered week). Never overwrite prior weekly files.
 
 ## Context
