@@ -17,6 +17,10 @@ jobs:
   sync:
     if: github.repository != 'NickGuAI/agentic-engineering-course' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
+    # Repository variables exist so this workflow can be tested against a branch; students leave them unset.
+    env:
+      COURSE_UPSTREAM: ${{ vars.COURSE_UPSTREAM || 'https://github.com/NickGuAI/agentic-engineering-course.git' }}
+      COURSE_UPSTREAM_BRANCH: ${{ vars.COURSE_UPSTREAM_BRANCH || 'main' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,10 +30,10 @@ jobs:
         run: |
           git config user.name "course-sync"
           git config user.email "course-sync@users.noreply.github.com"
-          git remote add upstream https://github.com/NickGuAI/agentic-engineering-course.git
-          git fetch upstream main
+          git remote add upstream "$COURSE_UPSTREAM"
+          git fetch upstream "$COURSE_UPSTREAM_BRANCH"
           BEFORE="$(git rev-parse HEAD)"
-          if ! git merge --no-edit upstream/main; then
+          if ! git merge --no-edit "upstream/$COURSE_UPSTREAM_BRANCH"; then
             echo "::error::Merge conflict with course materials. Run 'git pull upstream main' locally, resolve, commit, push."
             exit 1
           fi
