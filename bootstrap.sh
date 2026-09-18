@@ -66,10 +66,12 @@ else
   echo "    renamed 'origin' to 'upstream'."
 fi
 
+GH_LOGIN="$(gh api user -q .login)"
+
 echo "==> Creating your private GitHub repo..."
 ORIGIN_IS_PRIVATE=false
 if git remote | grep -qx "origin"; then
-  if PRIVATE="$(gh repo view --json isPrivate -q .isPrivate 2>/dev/null)" && [ "$PRIVATE" = "true" ]; then
+  if PRIVATE="$(gh repo view "$(git remote get-url origin)" --json isPrivate -q .isPrivate 2>/dev/null)" && [ "$PRIVATE" = "true" ]; then
     ORIGIN_IS_PRIVATE=true
   fi
 fi
@@ -78,7 +80,6 @@ if [ "$ORIGIN_IS_PRIVATE" = true ]; then
   echo "    'origin' already points to a private repo; pushing instead of creating."
   git push -u origin HEAD
 else
-  GH_LOGIN="$(gh api user -q .login)"
   if gh repo view "$GH_LOGIN/$REPO_NAME" >/dev/null 2>&1; then
     echo "error: you already have a repo named $GH_LOGIN/$REPO_NAME." >&2
     echo "       pick another name: bash bootstrap.sh my-agentic-engineering" >&2
@@ -87,9 +88,12 @@ else
   gh repo create "$REPO_NAME" --private --source=. --remote=origin --push
 fi
 
-echo "==> Inviting teammates as collaborators..."
+echo "==> Inviting the instructor and TAs to your repo..."
+# Name the student's repo explicitly: with both 'origin' and 'upstream' remotes
+# present, gh's {owner}/{repo} placeholder can resolve to the course repo instead.
+STUDENT_REPO="$(git remote get-url origin | sed -E 's#^(https://github.com/|git@github.com:)##; s#\.git$##')"
 for id in NickGuAI arielbenavi thevoid12; do
-  if gh api -X PUT "repos/{owner}/{repo}/collaborators/$id" -f permission=push >/dev/null 2>&1; then
+  if gh api -X PUT "repos/$STUDENT_REPO/collaborators/$id" -f permission=push >/dev/null 2>&1; then
     echo "    ok: $id"
   else
     echo "    skipped: $id (invite failed; note the owner cannot invite themself)"
