@@ -6,4 +6,6 @@ For the changed-condition run, I asked the agent to simulate one required source
 
 Human decision was made just before the AI started working. I wrote the requirements in the delegation card. I also had to check if the results align with the plan, and had to tell the model to modify the agent code when it was not satisfactory.
 
+Verification: The model wrote "test_openai_news_agent.py" to test if the agent properly ran and created output.
+
 Uncertainties: The first agent that the model built would ignore the "--unavailable-url" requirement in "python openai_news_agent.py --unavailable-url "https://openai.com/index/cooley-gopublic/"", which asks it to pretend that the following url could not be accessed and write an "unavailable report" telling the user that it cannot access the url. I had to ask the model to change it a few times for it to work.
