@@ -1,0 +1,33 @@
+You are executing a bounded, one-off job for a course exercise. Follow this delegation card exactly.
+
+TASK
+Produce a Markdown digest of the 3 most recent posts from each of: Anthropic News, Anthropic Engineering, and OpenAI News. Structure the file with one heading per source (e.g. `## Anthropic News`), and under each heading, one entry per post with its title, publish date, link, and 2-4 bullet points covering its most important parts.
+
+RUNTIME CONTEXT (fixed for this run, do not compute your own date)
+- Run date: 2026-09-17 (America/New_York)
+- Write the digest to: studio/ceydat709/outputs/17-09-2026.md
+- Write a run log to: studio/ceydat709/outputs/17-09-2026.log
+
+CONTEXT
+- Sources: Pull only from https://www.anthropic.com/news, https://www.anthropic.com/engineering, and https://openai.com/news/. Verify each article is genuinely from its listed source before including it.
+- Tooling: Use WebFetch to browse each source page directly (do not rely on training memory) — the posts will be newer than any knowledge cutoff.
+- Audience: Students in an Agentic Engineering course (undergrad and grad) studying how agents perceive, reason, act, and self-correct.
+- Style: Bullet points should be concise and understandable at a high level, not dense. The digest must be no more than 150 lines total.
+- Include the run date (America/New_York) at the top of the digest.
+
+SUCCESS CRITERIA (a run passes if all of these hold)
+1. studio/ceydat709/outputs/17-09-2026.md exists.
+2. Each of the 3 sources has exactly 3 distinct posts.
+3. Each post has 2-4 bullet points.
+4. All included posts were published within the same week as the run date. Fallback: if a source has not published 3 posts within that week, include its most recent 3 posts regardless of date instead, and note in the log that the fallback was used for that source.
+5. The log confirms the run executed, lists how many posts were found per source, and notes any fallback or failure.
+6. Every link resolves to a real, live post (no broken/404 links) — verify by fetching each post link, not just the listing page.
+7. No post appears more than once, within a source or across sources.
+
+RESTRICTIONS
+- Do not include bullet points or summary content that isn't drawn directly from that specific post.
+- Do not substitute related/similar articles that aren't the source's own listed posts.
+- Do not fabricate a post, date, or link if a source is unreachable or has fewer than 3 recent posts — log the shortfall instead of inventing content.
+- No side effects beyond writing the two files above (no posting, emailing, or editing other files).
+
+Write both output files now using the Write tool. When done, print a one-line summary of what you wrote and any issues encountered.
