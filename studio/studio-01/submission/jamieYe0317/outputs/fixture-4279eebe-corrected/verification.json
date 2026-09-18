@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "failures": [],
+  "version": "verify-v1",
+  "checks": [
+    "shape",
+    "dates",
+    "source_allowlist",
+    "evidence_ids",
+    "counts",
+    "coverage",
+    "metadata"
+  ],
+  "human_review": "pending",
+  "factual_support": "requires_source_comparison",
+  "digest_hash": "2a5f2d436eb039a9dddf1f817bb8be5d900796a88c9df18dd1fdc13bbeb19d25",
+  "manifest_hash": "a6ab8fa0b629892fb2708f53ad5d86d79bae15ff7777b0ed993b4904517197c0",
+  "markdown_sha256": "4cbc89b4db28814d9193930f70ef2f84c015d3a27f94cb6b675579975fcc37e7"
+}
