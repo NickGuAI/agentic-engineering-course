@@ -92,7 +92,7 @@ echo "==> Inviting the instructor and TAs to your repo..."
 # Name the student's repo explicitly: with both 'origin' and 'upstream' remotes
 # present, gh's {owner}/{repo} placeholder can resolve to the course repo instead.
 STUDENT_REPO="$(git remote get-url origin | sed -E 's#^(https://github.com/|git@github.com:)##; s#\.git$##')"
-for id in NickGuAI arielbenavi thevoid12; do
+for id in NickGuAI arielbenavi thevoid12 vineet-channe; do
   if gh api -X PUT "repos/$STUDENT_REPO/collaborators/$id" -f permission=push >/dev/null 2>&1; then
     echo "    ok: $id"
   else
