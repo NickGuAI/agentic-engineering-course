@@ -28,9 +28,18 @@ jobs:
           git config user.email "course-sync@users.noreply.github.com"
           git remote add upstream https://github.com/NickGuAI/agentic-engineering-course.git
           git fetch upstream main
-          if git merge --no-edit upstream/main; then
-            git push origin HEAD
-          else
+          BEFORE="$(git rev-parse HEAD)"
+          if ! git merge --no-edit upstream/main; then
             echo "::error::Merge conflict with course materials. Run 'git pull upstream main' locally, resolve, commit, push."
             exit 1
           fi
+          if [ "$(git rev-parse HEAD)" = "$BEFORE" ]; then echo "Already up to date."; exit 0; fi
+          # The Actions token may not modify workflow files. Keep the previous copies and ask the student to pull once by hand.
+          # Note: if the merge was a fast-forward, this --amend rewrites what was
+          # an upstream commit into a new one; that is acceptable and intended.
+          if ! git diff --quiet "$BEFORE" HEAD -- .github/workflows; then
+            git checkout "$BEFORE" -- .github/workflows
+            git commit -q --amend --no-edit
+            echo "::warning::Course workflow files changed upstream. Run 'git pull upstream main' locally and push once to update them."
+          fi
+          git push origin HEAD
