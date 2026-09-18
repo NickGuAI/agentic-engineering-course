@@ -1,0 +1,31 @@
+name: Sync course materials
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.repository != 'NickGuAI/agentic-engineering-course'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge latest course materials from upstream
+        run: |
+          git config user.name "course-sync"
+          git config user.email "course-sync@users.noreply.github.com"
+          git remote add upstream https://github.com/NickGuAI/agentic-engineering-course.git
+          git fetch upstream main
+          if git merge --no-edit upstream/main; then
+            git push origin HEAD
+          else
+            echo "::error::Merge conflict with course materials. Run 'git pull upstream main' locally, resolve, commit, push."
+            exit 1
+          fi
