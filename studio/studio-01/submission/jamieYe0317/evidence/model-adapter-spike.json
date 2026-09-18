@@ -1,0 +1,13 @@
+{
+  "test": "synthetic adapter smoke test, not news",
+  "elapsed_seconds": 9.36,
+  "error": "unexpected_tool_event",
+  "usage": {
+    "input_tokens": 6194,
+    "cached_input_tokens": 0,
+    "output_tokens": 136,
+    "reasoning_output_tokens": 0,
+    "total_tokens": 6330
+  },
+  "usage_known": true
+}

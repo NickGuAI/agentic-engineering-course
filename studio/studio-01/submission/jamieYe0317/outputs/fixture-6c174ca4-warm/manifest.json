@@ -1,0 +1,216 @@
+{
+  "run_id": "fixture-6c174ca4-warm",
+  "mode": "synthetic_fixture",
+  "team": "jamieYe0317",
+  "as_of": "2026-09-18T16:00:00+00:00",
+  "policy": {
+    "version": "research-policy-v1",
+    "team": "jamieYe0317",
+    "timezone": "America/New_York",
+    "days": 7,
+    "max_items": 5,
+    "max_candidates": 30,
+    "max_article_fetches": 10,
+    "max_http_attempts": 16,
+    "max_http_requests": 16,
+    "http_timeout_seconds": 10,
+    "max_response_bytes": 2097152,
+    "max_http_retries": 3,
+    "max_actions": 50,
+    "max_model_calls": 2,
+    "max_run_seconds": 300,
+    "model_timeout_seconds": 120,
+    "summary_reasoning": "low",
+    "initial_input_tokens": 8000,
+    "initial_input_bytes": 49152,
+    "repair_input_tokens": 4000,
+    "repair_input_bytes": 24576,
+    "max_application_input_tokens": 12000,
+    "observed_total_token_alert": 40000,
+    "article_evidence_tokens": 1200,
+    "total_evidence_tokens": 6000,
+    "summary_min_words": 40,
+    "summary_max_words": 70,
+    "relevance_max_words": 35,
+    "source_failure_policy": "partial"
+  },
+  "policy_hash": "0e2cee779c9d4718caa0ddf56998947edea807da644ccf65e76e165512e1c9f1",
+  "model": {
+    "backend": "scripted_fixture",
+    "model": "fixture-v1",
+    "reasoning": "none"
+  },
+  "implementation": {
+    "git_commit": "42f6e1248de225f053916636b13d14ecb0ab4045",
+    "files": {
+      "code/evidence.py": "e2f5f842d83b00af5802adcdfbc05dbc7f17267836268517a9e0a4aeef70f183",
+      "code/experiments.py": "db5df68325ec7040bb6392c1f7108d0581ee5b26575f3612554abd58db2f895d",
+      "code/harness.py": "a400c7ad1f4eff8b814c9c4647ab0ad8b6b17bf43c1aed4c75017158ba7e620e",
+      "code/model.py": "16f8b2fa19f2d42b117e2aeb5f67825aefe806c9a451ac413d18e9a3abd978a5",
+      "code/run.py": "83eeb4963fd81afed65b0505a5f6808c7006faeed60bdcfd7071f069a26ced69",
+      "code/sources.py": "dd32f0279c62fb204c48d2f6a616a2f71a77745f0fb2d67461313e76067d4c34",
+      "code/verify.py": "2e758ad8390c41d7502143076579ffdf69026eac1021e3384411e62620722b1a",
+      "prompts/summarize.md": "552ca7ffbb4573891009121df62281d6ec2a860e6fcc53fb2e6ae521bbcac52e",
+      "prompts/summary.schema.json": "da7afd40dd72c52656679a63d8bdb232047ed9943e09eb1b62289329e6cdb868"
+    },
+    "hash": "0114c85e5ff6b7d751503334702d934e3a4ef8b0b507f1ae47690ce2625d59e7"
+  },
+  "sources": [
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/news/",
+      "status": "ok"
+    },
+    {
+      "source_id": "anthropic_news",
+      "url": "https://www.anthropic.com/news",
+      "status": "ok"
+    },
+    {
+      "source_id": "anthropic_engineering",
+      "url": "https://www.anthropic.com/engineering",
+      "status": "ok"
+    }
+  ],
+  "selected_articles": [
+    {
+      "article_id": "fixture-4",
+      "source_id": "anthropic_news",
+      "url": "https://www.anthropic.com/news/synthetic-fixture-4",
+      "title": "Synthetic fixture 4: research assistant preview",
+      "published_at": "2026-09-15",
+      "date_precision": "date",
+      "date_provenance": "synthetic_fixture",
+      "content_hash": "af39f9a608a99e081380c990b10720dacf5ab4387df2a44fcee6be8edde64bd6",
+      "parser_version": "synthetic-v1",
+      "packet": {
+        "article_id": "fixture-4",
+        "evidence": [
+          {
+            "id": "p001",
+            "text_hash": "bf7527bd2156aaddabbbca65905787ba8a9ee92bf598ec319d45d2dd908b1d03"
+          },
+          {
+            "id": "p002",
+            "text_hash": "545beb667be423464687f683d2be791da904946a6cf97d903892d18d1f871ceb"
+          }
+        ]
+      },
+      "packet_hash": "1d349cdf46931f9aedf4f86945117d61ad43b44223a7532efd8a02756fd69fa0"
+    },
+    {
+      "article_id": "fixture-1",
+      "source_id": "anthropic_news",
+      "url": "https://www.anthropic.com/news/synthetic-fixture-1",
+      "title": "Synthetic fixture 1: research assistant preview",
+      "published_at": "2026-09-15",
+      "date_precision": "date",
+      "date_provenance": "synthetic_fixture",
+      "content_hash": "c5e8cc0e3533743d0b0d2c349a958f939f8b52ec04c749e079b2489d4d32cf71",
+      "parser_version": "synthetic-v1",
+      "packet": {
+        "article_id": "fixture-1",
+        "evidence": [
+          {
+            "id": "p001",
+            "text_hash": "f20b22a33e2b8fc9474dc4bd9911cfffadd1f605633b2b8583efd241db913a3b"
+          },
+          {
+            "id": "p002",
+            "text_hash": "545beb667be423464687f683d2be791da904946a6cf97d903892d18d1f871ceb"
+          }
+        ]
+      },
+      "packet_hash": "d33f0a6757fe60f13753993e20fa6a0522135647847070f5958191fcdeb097f4"
+    },
+    {
+      "article_id": "fixture-2",
+      "source_id": "anthropic_engineering",
+      "url": "https://www.anthropic.com/engineering/synthetic-fixture-2",
+      "title": "Synthetic fixture 2: research assistant preview",
+      "published_at": "2026-09-15",
+      "date_precision": "date",
+      "date_provenance": "synthetic_fixture",
+      "content_hash": "2b186871a930f65c71267ce187427165844eb63fb776ee6c052acc2f62165796",
+      "parser_version": "synthetic-v1",
+      "packet": {
+        "article_id": "fixture-2",
+        "evidence": [
+          {
+            "id": "p001",
+            "text_hash": "c6b38465576fa66e2bba3574dc8c0b61f9c9ea6c495cfa029dffff509a80880b"
+          },
+          {
+            "id": "p002",
+            "text_hash": "545beb667be423464687f683d2be791da904946a6cf97d903892d18d1f871ceb"
+          }
+        ]
+      },
+      "packet_hash": "2490bc36df50fc5a16d24eceb3adbfc2c580174ae2adb9f6907e3d0aff215c85"
+    },
+    {
+      "article_id": "fixture-3",
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/synthetic-fixture-3",
+      "title": "Synthetic fixture 3: research assistant preview",
+      "published_at": "2026-09-15",
+      "date_precision": "date",
+      "date_provenance": "synthetic_fixture",
+      "content_hash": "d5ae5d0bc7baf28eca5fb0ec3d25727374bf87cdc3d2bcb5dd677025da53a367",
+      "parser_version": "synthetic-v1",
+      "packet": {
+        "article_id": "fixture-3",
+        "evidence": [
+          {
+            "id": "p001",
+            "text_hash": "e1a232b4b678086b354adb19dfa2b5da9521a1f1b41530ecb519c87be45764dc"
+          },
+          {
+            "id": "p002",
+            "text_hash": "545beb667be423464687f683d2be791da904946a6cf97d903892d18d1f871ceb"
+          }
+        ]
+      },
+      "packet_hash": "8ba0368ce97ea6b351973eef7aaccd47bbb958dbcc2d29b690eb32f4200b693a"
+    },
+    {
+      "article_id": "fixture-0",
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/synthetic-fixture-0",
+      "title": "Synthetic fixture 0: research assistant preview",
+      "published_at": "2026-09-15",
+      "date_precision": "date",
+      "date_provenance": "synthetic_fixture",
+      "content_hash": "6b389f6aa284e7bb589177c231c04cd774f1870d753f508f61d833cd9b5cc8b0",
+      "parser_version": "synthetic-v1",
+      "packet": {
+        "article_id": "fixture-0",
+        "evidence": [
+          {
+            "id": "p001",
+            "text_hash": "f7a158f100746c210e5674fccd1f1e6c546966aad743cd2ce9a1d273a208f204"
+          },
+          {
+            "id": "p002",
+            "text_hash": "545beb667be423464687f683d2be791da904946a6cf97d903892d18d1f871ceb"
+          }
+        ]
+      },
+      "packet_hash": "81fb42295e1a91937f0d8d19feff5ea7008246c2224d082ec8b1ab4c93a2f5a8"
+    }
+  ],
+  "coverage_limited": false,
+  "snapshot_id": null,
+  "fault_injection": null,
+  "source_failure_policy": "partial",
+  "evidence_mode": "compact",
+  "human_acceptance": "pending",
+  "input_snapshot_hash": "aa8ea6e43ead659f4e47b2c0d1bfeacc68f3d5a34a5af539b3c5ef55139eea42",
+  "local_snapshot_id": "fixture-6c174ca4-warm",
+  "source_exclusions": [],
+  "coverage_reasons": [],
+  "article_evidence_allowance": 1200,
+  "exclusions": [],
+  "summary_failures": {},
+  "cache_hits": 5
+}
