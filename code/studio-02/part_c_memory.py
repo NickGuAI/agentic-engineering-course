@@ -14,9 +14,9 @@ The identical Session 3 prompt also runs in work/part_c/no-memory/ (a fresh
 directory with no AGENTS.md and no decisions.md) as the memoryless baseline.
 
 Every call in every condition passes --no-context-files, so pi never walks
-parent directories looking for AGENTS.md/CLAUDE.md (this machine has unrelated
-personal ones above the repo root that once leaked into an answer -- see
-README.md). The with-memory condition still gets its AGENTS.md instructions:
+parent directories looking for AGENTS.md/CLAUDE.md -- any unrelated AGENTS.md/
+CLAUDE.md files elsewhere on the machine running this script cannot affect
+the run. The with-memory condition still gets its AGENTS.md instructions:
 the same text is also passed via --append-system-prompt (with_memory_extra_args
 below), so the comparison is reproducible and the only real difference between
 the two directories is the presence of AGENTS.md and decisions.md. Today's real
@@ -24,7 +24,7 @@ date is injected into that same system-prompt text so decisions.md gets a real
 date instead of whatever the model would otherwise guess.
 
 Usage:
-  python3 part_c_memory.py --model google/gemini-3.1-flash-lite --out evidence
+  python3 part_c_memory.py --model openai/gpt-5.6-luna --out evidence
 
 Run from code/studio-02/. Re-runnable: pass --fresh to wipe work/part_c/ and
 start the three sessions over (evidence/ is still never deleted).
@@ -61,7 +61,7 @@ Reason: <why>
 Never delete or rewrite earlier entries in `decisions.md`; only append.
 """
 
-# Where subagent B's student-facing copy lives, per the shared contract (section 4).
+# The student-facing AGENTS.md template shipped alongside this studio.
 # Preferred if present at run time; the fallback above carries the same instructions
 # so this script works whether or not that file has been written yet.
 STARTER_AGENTS_MD = Path(__file__).resolve().parent.parent.parent / "studio" / "studio-02" / "starter" / "AGENTS.md"
@@ -209,7 +209,7 @@ def main():
         except ValueError:
             agents_md_source = str(STARTER_AGENTS_MD)
     else:
-        agents_md_source = "(built-in fallback, matching contract section 5.4)"
+        agents_md_source = "(built-in fallback: studio/studio-02/starter/AGENTS.md was not found)"
     (with_memory_dir / "AGENTS.md").write_text(agents_md_text, encoding="utf-8")
     print(f"AGENTS.md source: {agents_md_source}")
 
@@ -217,20 +217,17 @@ def main():
     raw_dir = part_c_dir / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
 
-    # All Part C calls pass no_context_files=True. This machine has unrelated
-    # personal AGENTS.md files above the repo root (~/AGENTS.md, ~/PKMS/AGENTS.md)
-    # that pi's normal parent-directory walk would otherwise load into every
-    # call's system prompt. A first run without this confirmed real damage: the
-    # no-memory baseline, lacking any real memory to ground on, picked up on
-    # unrelated content from those ambient files and answered with a hallucinated
-    # story about a different, unrelated personal system -- and that content is
-    # not safe to ship in a public course repo's evidence. AGENTS.md is still
-    # written to with_memory_dir as a real file (so it is there to inspect and
-    # so the with-memory agent's own read tool can find it if it goes looking),
-    # and its instructions are also passed via --append-system-prompt so the
-    # with-memory condition still reliably gets them without depending on pi's
-    # directory walk. decisions.md remains 100% real, file-based memory, read
-    # and written by the agent's own tool calls across separate sessions.
+    # All Part C calls pass no_context_files=True, so pi's normal parent-
+    # directory walk for AGENTS.md/CLAUDE.md never runs: whatever unrelated
+    # AGENTS.md/CLAUDE.md files might exist above the repo root on this
+    # machine must not affect the run or leak into an answer. AGENTS.md is
+    # still written to with_memory_dir as a real file (so it is there to
+    # inspect and so the with-memory agent's own read tool can find it if it
+    # goes looking), and its instructions are also passed via
+    # --append-system-prompt so the with-memory condition still reliably
+    # gets them without depending on pi's directory walk. decisions.md
+    # remains 100% real, file-based memory, read and written by the agent's
+    # own tool calls across separate sessions.
     #
     # The model otherwise has no clock and will guess a plausible-looking but
     # wrong date for every decisions.md entry (observed directly: entries dated

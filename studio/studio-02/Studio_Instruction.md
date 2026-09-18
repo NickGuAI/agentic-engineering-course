@@ -1,163 +1,230 @@
-# Studio 02: Context Window Stress Test & Memory Architecture
+# COMS W4995-009 Agentic Engineering
+## Columbia University, Fall 2026
+### Studio 02: Context Window Stress Test & Memory Architecture
 
-## Course Information
-* **Course:** COMS W4995-009 Agentic Engineering, Columbia University, Fall 2026.
-* **Instructor:** Nick Gu.
-* **Session 2 (This Studio):** Friday, September 18, 2026.
-* **Session 3 (Deadline):** Friday, September 25, 2026.
-* **Studio Weight:** Studios represent 30% of the overall course grade.
-* **Duration:** 75 minutes.
-* **Format:** Teams of up to three students. One submission per team.
-
-Our syllabus outlines a foundational principle:
-> "your judgement is what matters. You can and will be encouraged to delegate your work to AI, but you must be able to explain what you built and delivered."
+**Instructor:** Nick Gu  
+**Session 2 (This Studio):** Friday, September 18, 2026 (Duration: 75 minutes)  
+**Session 3 (Deadline):** Friday, September 25, 2026  
 
 ---
 
-## Objective
-The objective of this studio is to push a terminal-based AI coding agent past its useful context length to observe how performance degrades. You will mitigate this failure using **isolation** (delegating tasks to specialized sub-agents) and **compression** (using summary artifacts and the agent's built-in compaction). You will then build a persistent, plain-text memory mechanism that logs decisions across three distinct sessions, and compare its performance to a memoryless baseline.
-
-By analyzing your empirical evidence, you will explain how memory and compaction counteract "context rot"—the phenomenon documented by Chroma Research in 2025 where model performance degrades as input length increases, even on simple, low-complexity tasks. Ultimately, you will demonstrate the key system design principle: "Store everything ≠ show everything."
-
-The harness for this studio is `pi`, the open-source terminal coding agent. All other aspects of the studio, including the five timeboxes, the four lecture operations, and the corpus, remain identical to the original handout.
+### Objective
+In this studio, you will explore the physical limits of LLM context windows and investigate how agent architectures can overcome these constraints. You will stress-test a state-of-the-art model using extremely long contexts, evaluate two mitigation strategies (context isolation and targeted summarization) that cap peak single-call context, and analyze the performance of a file-based, persistent memory architecture across separate agent sessions.
 
 ---
 
-## Prerequisites
-Please complete these configuration steps before the studio begins.
+### Prerequisites
+Before running the studio scripts, ensure your local environment meets the following specifications:
+- **Node.js:** version >= 22.19.0 (the minimum required version).
+- **Python:** version >= 3.9.
 
-### 1. Verify Node.js
-Ensure you have Node.js version 22.19.0 or newer. Check your installed version:
+#### Installation Commands
+1. Install the coding agent globally:
+   ```bash
+   npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+   ```
+2. Verify the installation and check the agent version:
+   ```bash
+   pi --version
+   ```
+3. Install the required Python packages (run this from `code/studio-02/`):
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+### Connect a Model Provider
+You can configure a model provider using one of the following two paths. Do not attempt to use any other paths.
+
+1. **Primary Path (OpenAI API Key):**
+   Set your OpenAI API key as an environment variable in your terminal session:
+   ```bash
+   export OPENAI_API_KEY=your_actual_api_key_here
+   ```
+   The scripts use the default model `openai/gpt-5.6-luna`.
+
+2. **Alternative Path (ChatGPT Plus/Pro Login):**
+   If you have a ChatGPT Plus or Pro subscription, run the following command to log in:
+   ```bash
+   pi
+   ```
+   Then execute the `/login` command inside the agent shell, select `ChatGPT/Codex` as the provider, and run your scripts with the model flag set to:
+   ```bash
+   --model openai-codex/gpt-5.6-luna
+   ```
+
+*Security Warning:* Never print, log, or commit an API key to any repository. Never manually edit the global authentication file located at `~/.pi/agent/auth.json`.
+
+---
+
+### The Setup Step: `setup.sh`
+Before beginning the tasks, run the setup script from the `code/studio-02/` directory:
 ```bash
-node --version
+bash setup.sh [--buckets BUCKETS] [--n N] [--dry-run]
 ```
-*Expected Result:* The terminal displays a version of `v22.19.0` or higher. Older versions will fail to install the agent.
 
-### 2. Install the Coding Agent
-Install the `pi` terminal coding agent globally using the npm:
+#### Flags
+- `--buckets`: A comma-separated list of context window buckets to download (default: `256k,512k,1M`).
+- `--n`: The number of items sampled per bucket for the subset benchmark file (default: 5).
+- `--dry-run`: Performs all environment checks, prints the planned file downloads with their approximate sizes, and shows the model catalog overrides that would be applied, without modifying any system configuration or downloading files.
+
+#### Order of Operations in `setup.sh`
+1. **Tool Verification:** Checks that Node.js and the agent are installed, printing their active versions. If either is missing, it halts with installation instructions.
+2. **Python Environment Verification:** Confirms Python >= 3.9 is present and verifies if the required libraries (`tiktoken`, `huggingface_hub`, and `matplotlib`) are importable. If they are not found, it prints the command `pip install -r requirements.txt` as the next steps.
+3. **Data Download:** Downloads the BABILong qa1 data from the Hugging Face dataset `RMT-team/babilong` for the requested buckets. It prints each file's approximate size BEFORE downloading it and skips any file already present. Approximate download sizes:
+   - 256k: ~103 MB
+   - 512k: ~205 MB
+   - 1M: ~401 MB
+4. **Benchmark Construction:** Builds the 768K bucket from the 1M data without making any model calls (it truncates each 1M item to 768,000 real tokens and retains only items where the supporting fact survives truncation). It then samples `--n` items per bucket (256k, 512k, 768k) and writes them to `benchmarks/subset_qa1_topend.json`. (This step requires the 512K and 1M downloads to have completed).
+5. **Model-Catalog Override:** Applies a one-time override to your global model-catalog file at `~/.pi/agent/models.json` (there is no per-project override file). The default model-catalog in the agent caps `gpt-5.6-luna` at 272,000 input tokens. Since our 512K and 768K runs exceed this, `setup.sh` raises the context window limit to 1,050,000 tokens for `gpt-5.6-luna` under BOTH the `openai` and `openai-codex` providers. It safely merges this override with any existing settings in `~/.pi/agent/models.json` without removing other models or providers, backing up the existing file first. This step is fully idempotent (subsequent runs will report that no change is needed).
+6. **Model Provider Status:** Prints which model providers the agent can currently use, by presence only (it never prints the value of any key).
+
+---
+
+### Studio Timeboxes
+Organize your 75-minute studio session using the following schedule:
+- **00 to 10 minutes:** Prerequisites & Setup
+- **10 to 30 minutes:** Part A - Stress-Testing the Context Window
+- **30 to 50 minutes:** Part B - Context Isolation and Targeted Summarization
+- **50 to 70 minutes:** Part C - Evaluating File-Based Persistent Memory
+- **70 to 75 minutes:** Review and Repository Submission
+
+---
+
+### Part A: Context Window Stress Test
+Evaluate the performance of the model under extremely large context lengths using the BABILong qa1 benchmark. In this benchmark, each item consists of a very long, otherwise irrelevant story containing one sentence stating where a specific person is, followed by the question "Where is PERSON?".
+
+#### Execution Command
+Run this command from `code/studio-02/` after completing `setup.sh`:
 ```bash
-npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+python3 part_a_stress.py --model <provider/id> [--buckets 256k,512k,768k] [--n 5]
 ```
-Verify the installation by printing the version number:
+
+#### Details
+- Uses one agent call per item (the whole story and the question are delivered in a single message, with tools disabled and the agent's built-in message-management and reduction features turned off for this run).
+- Performance is scored by exact match against the gold room name (insensitive to articles and punctuation).
+- Tests context window buckets of 256K, 512K, and 768K real input tokens (the 768K bucket is constructed by `setup.sh` from the 1M data).
+
+#### Outputs Written
+- `evidence/part_a/results.json`
+- `evidence/part_a/results.csv`
+- `evidence/part_a/summary.md` (a per-bucket accuracy summary table)
+
+#### Plotting Results
+After completing Part A, you can run the following script to generate a visualization:
 ```bash
-pi --version
+python3 plot_qa1_curve.py
 ```
-*Expected Result:* The terminal displays the installed version number with no errors.
+This regenerates `evidence/part_a/summary.md` and outputs `qa1_curve.png` (a chart showing accuracy vs. real input tokens with 95% Wald binomial confidence interval error bars and the sample size annotated per point) using the data in `evidence/part_a/results.json`.
 
-### 3. Connect a Model Provider
-Connect `pi` to your chosen model provider. Choose **exactly one** of the following four paths:
+---
 
-*   **Claude Pro/Max Subscription:** Run `pi`, type `/login`, and select "Claude Pro/Max." Third-party tool usage draws from Anthropic's separate "extra usage" allowance billed per token.
-*   **ChatGPT Plus/Pro (Codex):** Run `pi`, type `/login`, and choose "ChatGPT Plus/Pro (Codex)." OpenAI officially endorses this as "Codex for OSS". Eligible US students have four free months of ChatGPT Plus through the offer in the course prep guide (claim by October 31, 2026), and that subscription covers this login.
-*   **GitHub Copilot:** Run `pi`, type `/login`, and select "GitHub Copilot." Verified students can get this free through the "GitHub Copilot Student" benefit in the GitHub Student Developer Pack. If a model is not available, enable it first in VS Code's Copilot Chat model picker.
-*   **An API Key:** Set one provider environment variable, then launch `pi`:
-    *   Anthropic: `export ANTHROPIC_API_KEY=your_key_here`
-    *   OpenAI: `export OPENAI_API_KEY=your_key_here`
-    *   Google Gemini: `export GEMINI_API_KEY=your_key_here`
-    *   DeepSeek: `export DEEPSEEK_API_KEY=your_key_here`
+### Part B: Context Isolation and Targeted Summarization
+Evaluate architectural strategies to mitigate long-context degradation on the same items evaluated in Part A.
 
-*Note for headless machines:* Paste the terminal-provided URL back into the prompt if the browser cannot open.
-
-### 4. Prepare the Corpus
-Our evaluation text is Mei et al. 2025, "A Survey of Context Engineering for Large Language Models" (arXiv 2507.13334), which contains about 70,800 words (roughly 95,000 tokens). Download and split it under `code/studio-02/`:
+#### Execution Command
+Run this command from `code/studio-02/` after completing Part A:
 ```bash
-cd code/studio-02/
-bash setup.sh
+python3 part_b_isolate_compress.py --model <provider/id> [--buckets BUCKETS] [--n 5] [--concurrency 4] [--max-usd N]
 ```
-*Expected Result:* The setup script downloads the paper, converts it to plain text, segments it into per-section files, and prints total counts. Do not commit these text files to your repository.
+
+#### Details
+- This script uses `evidence/part_a/results.json` for performance comparison and operates on the same items scored in Part A.
+- To handle stories where characters are mentioned multiple times, the implementations are instructed to resolve the question using the last reported location.
+- The script evaluates two architectural mitigations run for every item:
+  1. **Isolate:** The story is split into fixed chunks of approximately 96,000 tokens. A sub-agent is called for each chunk to report whether it found the person's location (returning either the direct quoted sentence or `NOT FOUND`). Finally, a lead agent call reviews only these brief reports in order and answers, taking the last chunk that reported a location.
+  2. **Targeted Summary:** The same chunks are processed, but each sub-agent call is directed to write a summary of its chunk (around 200 tokens) that is explicitly instructed to preserve any location statements. The lead agent then answers the question using only the concatenated summaries.
+- **Key Metric:** Focuses on **PEAK single-call context** (the maximum tokens held in a single model call) rather than total tokens. Chunking reduces the peak context size by splitting the story up, though total tokens processed remain similar.
+- **Concurrency:** Up to `--concurrency` parallel agent calls run at once (default is 4) using a safe two-stage thread pool to prevent deadlocks.
+- **Budget Limit:** The optional `--max-usd N` (default: no limit) stops submitting new calls if the running cost would exceed the specified value in USD.
+- **Dry Run:** Running with `--dry-run` prints the execution plan and cost estimates without making actual model calls.
+
+#### Outputs Written
+- `evidence/part_b/results.json`
+- `evidence/part_b/results.csv`
+- `evidence/part_b/summary.md` (a table comparing bucket and condition combinations with 95% confidence intervals)
+- `evidence/part_b/comparison.png`
 
 ---
 
-## The Five Timeboxes
-*   **0 to 10 min:** Complete setup checklist.
-*   **10 to 30 min:** Part A: Stress Test.
-*   **30 to 50 min:** Part B: Isolate and Compress.
-*   **50 to 70 min:** Part C: Remember.
-*   **70 to 75 min:** Submit.
+### Part C: File-Based Memory Architecture
+Evaluate how persistent, file-based memory allows an agent to maintain architectural context across separate, independent tasks.
 
----
-
-## Part A: Stress Test (10–30 Minutes)
-From the `code/studio-02/` directory, run:
+#### Execution Command
+Run this command from `code/studio-02/`:
 ```bash
-python3 part_a_stress.py --model <provider/id> [--sizes 8k,16k,32k,64k,full]
+python3 part_c_memory.py --model <provider/id> [--fresh]
 ```
-Replace `<provider/id>` with your chosen model identifier (e.g., `anthropic/claude-...` or `openai/gpt-...`). The default model is specified in `code/studio-02/README.md`.
 
-This script feeds the coding agent increasingly larger segments of the corpus alongside five fixed questions, all within a single turn, with compaction disabled. You will observe the point where accuracy degrades or the API call fails.
+#### Details
+- Tests file-based memory across three distinct sequential agent sessions inside the directory `work/part_c/with-memory/`.
+- In the `with-memory` directory, an `AGENTS.md` file instructs the agent to read `decisions.md` before starting any task and to append a dated log entry whenever it makes an architectural decision.
+- The three sessions are executed as follows:
+  - **Session 1:** Plan a small command-line note-taking tool. The agent must record three specific decisions (the storage format, the command name, and the date format) along with the reasoning for each.
+  - **Session 2:** Perform an unrelated coding task (writing `fib.py` to output the first 20 Fibonacci numbers) and record at least one more decision.
+  - **Session 3:** Ask the agent: "What did we decide in session 1 about the note-taking tool, and why?"
+- **Baseline:** The exact same Session 3 question is asked in a fresh, separate directory `work/part_c/no-memory/` that lacks `AGENTS.md` and `decisions.md` to serve as a memoryless baseline.
+- **Technical reproduction details:** Every call in both conditions passes `--no-context-files` to ensure the agent never searches parent directories for unrelated agent rules, maintaining a clean comparison. The `with-memory` condition injects the same instructions via system prompt arguments, along with today's date for accurate logs.
+- **Wipe & restart:** Passing the `--fresh` flag wipes `work/part_c/` and re-runs the entire three-session process. (The output folder `evidence/` is never deleted).
 
-*Expected Result:* The script saves results per size and writes a summary table to `part_a/summary.md` displaying input tokens, scores out of five, incorrect or missing questions, and the context length where degradation first occurred.
-
----
-
-## Part B: Isolate and Compress (30–50 Minutes)
-Run the mitigation script from the `code/studio-02/` directory:
-```bash
-python3 part_b_isolate_compress.py --model <provider/id>
-```
-This script demonstrates two solutions to the Part A failure, keeping the exact same five questions:
-*   **Isolate:** A specialized sub-agent process of `pi` inspects a single section of the corpus and extracts key findings, returning no transcript. A lead process then answers the questions using only those findings.
-*   **Compress:** Done in two distinct ways:
-    *   (a) Re-asks the questions using only a short generated summary of what Part A found.
-    *   (b) Re-runs the full corpus with `pi`'s automatic compaction enabled, which summarizes older content mid-run as the window fills up.
-
-*Expected Result:* The script writes comparison scores and token counts to `part_b/summary.md`.
-
----
-
-## Part C: Remember (50–70 Minutes)
-Run the memory script from the `code/studio-02/` directory:
-```bash
-python3 part_c_memory.py --model <provider/id>
-```
-This script tests persistent memory by running three separate, sequential `pi` sessions in a directory with an `AGENTS.md` file that directs the agent to read and append to `decisions.md`:
-*   **Session 1:** Agent makes and records three design decisions for a small note-taking utility.
-*   **Session 2:** Agent completes unrelated work and appends at least one more decision.
-*   **Session 3:** A new session with no active memory of the previous two is asked what Session 1 decided and why.
-
-This is also run in a fresh directory with no memory file to serve as a baseline. The script scores each decision (recalled, missing, or invented) and writes `part_c/summary.md`. All run files are saved under `<out>/sessions/` (defaulting to `evidence/sessions/`).
-
-*Expected Result:* The script writes a recall comparison in JSON format and a summary table to `part_c/summary.md`, then saves the session logs under `evidence/sessions/`.
+#### Outputs Written
+- `evidence/part_c/decisions.md`
+- `evidence/part_c/fib.py`
+- `evidence/part_c/session3-with-memory-answer.md`
+- `evidence/part_c/session3-no-memory-answer.md`
+- `evidence/part_c/part_c.json` (auto-scored accuracy checks mapping correct, missing, or invented decisions)
+- `evidence/part_c/summary.md`
 
 ---
 
-## Data Collection
-Track the following empirical data as you progress:
-*   Date, model ID, and harness version (`pi --version`).
-*   Corpus name and total token size.
-*   The five evaluation questions and gold answers.
-*   Input tokens and cached tokens used per run.
-*   Input length where Part A performance degraded.
-*   Sub-agent partitions and returned conclusions.
-*   Summary artifact text and word count.
-*   Dated memory file entries.
-*   Session 3 answers with and without the memory file.
-*   Unresolved unknowns and individual team member contributions.
+### Data Collection
+You must observe and record the following information during your runs:
+- Today's date, the specific model ID used, and your harness version (obtained by running `pi --version`).
+- The BABILong item IDs and buckets used (found in `benchmarks/subset_qa1_topend.json` and the results files).
+- Total input tokens and, for Part B, the peak single-call context tokens for each run.
+- The context window bucket where Part A's accuracy first drops.
+- The exact reports returned by the Isolate sub-agents for each chunk, and the lead agent's final decision.
+- The targeted-summary text generated for each chunk.
+- The dated `decisions.md` entries generated in Part C.
+- The Session 3 answers with and without the persistent memory architecture.
+- Any unresolved unknowns and each team member's individual contribution.
 
 ---
 
-## Deliverables
-At the root of your `evidence/` folder, write `EXPLANATION.md` (start from the template at `studio/studio-02/starter/EXPLANATION_TEMPLATE.md` in the course repository) containing:
-1.  **What we ran:** Harness, model, corpus, and exact commands.
-2.  **Part A analysis:** Detailed degradation points, exact input lengths, and scores.
-3.  **Part B mitigation:** Score and token comparisons of Isolate and Compress.
-4.  **Part C comparison:** Decision recall with the memory file versus the memoryless baseline.
-5.  **Open questions:** Unresolved behaviors or next tests.
-6.  **Team contributions:** A personal statement (one paragraph) by each team member describing their specific role.
+### Deliverables
+Your primary deliverable is `EXPLANATION.md`. A pre-existing template is included in your cloned repository; do not alter its structural layout. It must contain the following six sections:
+1. **What we ran:** Specify the exact commands, flags, and model provider ID used.
+2. **What degraded in Part A:** Describe your performance observations at longer context lengths.
+3. **What fixed it in Part B:** Document how context isolation and targeted summarization addressed the failures.
+4. **What memory got right/wrong in Part C:** Document the performance of the persistent memory architecture compared to the baseline.
+5. **What remains unknown:** List any unresolved questions or unexplained behaviors.
+6. **Who did what:** Provide exactly one paragraph for each team member detailing their specific individual contribution.
 
 ---
 
-## Grading Criteria
-The studio is worth 10 points per team:
-*   **6 Points (Completion):** 2 points each for Part A, B, and C evidence, judged on whether it is present, consistent with your explanation, and reproducible from the commands you recorded.
-*   **4 Points (Explanation), 1 point each:** a correct causal account of the Part A degradation; correct attribution of the Part B fix to the right operation; honest unknowns and a real baseline comparison in Part C; and a specific contribution paragraph from every member.
+### Grading Criteria
+Each student team receives up to 10 points. The grade is divided into completion and explanation:
 
-*Oral spot-checks:* Teaching Assistants (TAs) will randomly select one team member to explain a specific run, adhering to the syllabus principle that you must be able to explain what you built.
+#### Completion (6 points total - 2 points per part for Parts A, B, and C)
+- **Presence:** All expected output files are generated and present in the submitted repository.
+- **Internal Consistency:** The results recorded in `evidence/` match the explanations and data presented in `EXPLANATION.md`.
+- **Reproducibility:** The exact same commands and model settings can reproduce the results.
+
+#### Explanation (4 points total - 1 point per section)
+- **Part A Degradation (1 point):** A correct causal explanation of what caused the performance degradation at longer context windows.
+- **Part B Operations (1 point):** A correct attribution of the fix to the specific underlying operation (chunk-level isolation vs targeted summarization).
+- **Part C Analysis (1 point):** A clear discussion of honest unknowns paired with a real baseline comparison.
+- **Individual Contributions (1 point):** A specific, individual contribution paragraph from every team member.
+
+#### Verification Spot-Checks
+TAs will spot-check repositories. One team member chosen at random must be able to explain the details and results of any specific run.
 
 ---
 
-## Submission
-1.  Push your complete `evidence/` folder (including `EXPLANATION.md`) to your GitHub repository.
-2.  Submit the repository link on CourseWorks (https://courseworks2.columbia.edu/courses/251648) before Session 3 on September 25, 2026.
-3.  Submit only one repository link per team. 
-4.  **Security:** Never commit API keys, credentials, or personal information to any public repository.
+### Submission Instructions
+- Teams can consist of up to three students.
+- One submission is required from each team.
+- Submit the link to your team's cloned repository on CourseWorks before Session 3 on Friday, September 25, 2026.
+- CourseWorks Link: [https://courseworks2.columbia.edu/courses/251648](https://courseworks2.columbia.edu/courses/251648)
+- **Security Check:** Ensure no API keys or local authentication configurations are committed to your repository.

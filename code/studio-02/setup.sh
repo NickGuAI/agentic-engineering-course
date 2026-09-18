@@ -1,24 +1,32 @@
 #!/usr/bin/env bash
-# Studio 02 setup: checks pi is installed, downloads and prepares the corpus
-# (both the single-survey corpus used by Part A/B/C, and the 13-document
-# combined corpus used by context_sweep.py), and reports which model
-# providers are ready to use.
+# Studio 02 setup: checks Node.js and pi, checks Python and its packages,
+# downloads the BABILong qa1 data this studio needs, builds the 768K bucket,
+# applies the pi context-window override gpt-5.6-luna needs above 272,000
+# input tokens, and reports which model providers are ready to use.
 #
 # Usage:
-#   bash setup.sh              # check only; stop with instructions if pi is missing
-#   bash setup.sh --install    # also install pi globally if it is missing
+#   bash setup.sh                              # buckets 256k,512k,1M; n=5 per bucket
+#   bash setup.sh --buckets 256k,512k          # narrow which buckets to download
+#   bash setup.sh --n 8                        # items per bucket for the subset file
+#   bash setup.sh --dry-run                    # print every check and download; change nothing
 #
-# Re-runnable: running this twice does not re-download or re-convert any PDF
-# already present, and it never touches evidence/.
+# Re-runnable: skips any file already downloaded, and the model-catalog
+# override is idempotent (a second run reports no change needed). Never
+# touches evidence/.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-INSTALL=0
+DRY_RUN=0
+BUCKETS="256k,512k,1M"
+N=5
 for arg in "$@"; do
   case "$arg" in
-    --install) INSTALL=1 ;;
+    --dry-run) DRY_RUN=1 ;;
+    --buckets=*) BUCKETS="${arg#--buckets=}" ;;
+    --n=*) N="${arg#--n=}" ;;
+    -h|--help) echo "Usage: bash setup.sh [--buckets 256k,512k,1M] [--n 5] [--dry-run]"; echo "Checks Node, pi and Python; downloads BABILong qa1 for the buckets; builds the 768K bucket; samples n items per bucket; applies the pi context-window override; reports usable providers."; exit 0 ;;
     *) echo "Unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
@@ -26,7 +34,7 @@ done
 echo "== Studio 02 setup =="
 echo
 
-# --- 1. Node and pi -----------------------------------------------------
+# --- 1. Node.js and pi ---------------------------------------------------
 
 if command -v node >/dev/null 2>&1; then
   echo "Node.js: $(node --version)"
@@ -40,121 +48,168 @@ fi
 if command -v pi >/dev/null 2>&1; then
   echo "pi: $(pi --version)"
 else
-  if [ "$INSTALL" = "1" ]; then
-    echo "pi not found. Installing @earendil-works/pi-coding-agent globally..."
-    npm install -g --ignore-scripts @earendil-works/pi-coding-agent
-    echo "pi: $(pi --version)"
-  else
-    echo "pi is not installed."
-    echo "Install it with:"
-    echo "  npm install -g --ignore-scripts @earendil-works/pi-coding-agent"
-    echo "Or re-run this script as: bash setup.sh --install"
-    exit 1
-  fi
-fi
-echo
-
-# --- 2. Corpus: download PDF, convert to text --------------------------
-
-ARXIV_ID="2507.13334"
-PDF="corpus/${ARXIV_ID}v2.pdf"
-TXT="corpus/survey.txt"
-
-if [ ! -f "$TXT" ]; then
-  if [ ! -f "$PDF" ]; then
-    echo "Downloading arXiv ${ARXIV_ID} (A Survey of Context Engineering for Large Language Models)..."
-    DOWNLOADED=0
-    if command -v curl >/dev/null 2>&1; then
-      if curl -fsSL "https://arxiv.org/pdf/${ARXIV_ID}v2" -o "$PDF"; then DOWNLOADED=1; fi
-    elif command -v wget >/dev/null 2>&1; then
-      if wget -q "https://arxiv.org/pdf/${ARXIV_ID}v2" -O "$PDF"; then DOWNLOADED=1; fi
-    fi
-    if [ "$DOWNLOADED" != "1" ]; then
-      rm -f "$PDF"
-      echo "Download failed (no network, or arXiv unreachable)."
-      echo "Place any long plain-text corpus at corpus/survey.txt yourself and re-run this script."
-      exit 1
-    fi
-  fi
-
-  if ! command -v pdftotext >/dev/null 2>&1; then
-    echo "pdftotext (poppler-utils) is not installed and is needed to convert the PDF."
-    echo "Install it (e.g. 'sudo apt-get install poppler-utils' or 'brew install poppler'),"
-    echo "or place any long plain-text corpus at corpus/survey.txt yourself and re-run."
-    exit 1
-  fi
-
-  echo "Converting PDF to text with pdftotext..."
-  pdftotext "$PDF" "$TXT"
-fi
-
-if [ ! -f "$TXT" ]; then
-  echo "corpus/survey.txt is still missing. Place any long plain-text corpus there and re-run."
+  echo "pi is not installed. Install it with:"
+  echo "  npm install -g --ignore-scripts @earendil-works/pi-coding-agent"
   exit 1
 fi
-
-# --- 3. Word / token counts (survey only) -------------------------------
-
-echo "Corpus size (survey only, corpus/survey.txt):"
-python3 "$SCRIPT_DIR/lib/pi_runner.py" corpus-stats "$TXT"
 echo
 
-# --- 4. Provider availability (no secrets printed) ----------------------
+# --- 2. Python and packages ------------------------------------------------
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "python3 not found. This studio needs Python 3.9 or newer."
+  exit 1
+fi
+if ! python3 -c "import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)"; then
+  echo "python3 is older than 3.9 ($(python3 --version)). This studio needs Python 3.9 or newer."
+  exit 1
+fi
+echo "Python: $(python3 --version)"
+
+if python3 -c "import tiktoken, huggingface_hub, matplotlib" >/dev/null 2>&1; then
+  echo "Required Python packages are already installed."
+else
+  echo "Some required Python packages are missing. Install them with:"
+  echo "  pip install -r requirements.txt"
+fi
+echo
+
+# --- 3. BABILong qa1 data ---------------------------------------------------
+# Bucket = length bucket (config) in the RMT-team/babilong dataset on Hugging
+# Face; qa1 = the split for this studio's task. Sizes are approximate and
+# printed before any download starts.
+
+echo "BABILong qa1 data (buckets: ${BUCKETS}):"
+python3 - "$DRY_RUN" "$BUCKETS" <<'PYEOF'
+import sys
+from pathlib import Path
+
+dry_run = sys.argv[1] == "1"
+buckets = [b.strip() for b in sys.argv[2].split(",") if b.strip()]
+
+SIZES_MB = {"256k": 103, "512k": 205, "1M": 401}
+
+out_dir = Path("benchmarks/babilong/data/qa1")
+out_dir.mkdir(parents=True, exist_ok=True)
+local_dir = Path("benchmarks/babilong")
+
+for bucket in buckets:
+    dest = out_dir / f"{bucket}.json"
+    size_mb = SIZES_MB.get(bucket)
+    size_str = f"~{size_mb} MB" if size_mb else "size unknown ahead of time"
+    if dest.exists():
+        print(f"  {dest}: already present ({size_str}), skipping.")
+        continue
+    if dry_run:
+        print(f"  [dry-run] would download data/qa1/{bucket}.json from RMT-team/babilong ({size_str})")
+        continue
+    print(f"  downloading data/qa1/{bucket}.json from RMT-team/babilong ({size_str})...")
+    from huggingface_hub import hf_hub_download
+    path = hf_hub_download(
+        repo_id="RMT-team/babilong", repo_type="dataset",
+        filename=f"data/qa1/{bucket}.json", local_dir=str(local_dir),
+    )
+    print(f"    saved to {path}")
+PYEOF
+echo
+
+# --- 4. Build the 768K bucket and select the subset -------------------------
+# No model calls: prepare_qa1_topend.py truncates 1M items to 768,000 real
+# tokens and keeps only those whose qa1 supporting fact survives truncation;
+# select_qa1_topend.py samples --n items per bucket into
+# benchmarks/subset_qa1_topend.json, the file part_a_stress.py and
+# part_b_isolate_compress.py both read.
+
+if [ "$DRY_RUN" = "1" ]; then
+  echo "[dry-run] would run: python3 benchmarks/prepare_qa1_topend.py"
+  echo "[dry-run] would run: python3 benchmarks/select_qa1_topend.py --n ${N} --buckets ${BUCKETS//1M/768k}"
+else
+  if [ -f benchmarks/babilong/data/qa1/512k.json ] && [ -f benchmarks/babilong/data/qa1/1M.json ]; then
+    echo "Building the 768K bucket from the 1M data (no model calls)..."
+    python3 benchmarks/prepare_qa1_topend.py
+    echo
+    SELECT_BUCKETS="${BUCKETS//1M/768k}"
+    echo "Selecting a subset (n=${N} per bucket: ${SELECT_BUCKETS})..."
+    python3 benchmarks/select_qa1_topend.py --n "$N" --buckets "$SELECT_BUCKETS"
+  else
+    echo "Skipping the 768K build and subset selection: this needs both the 512K and 1M"
+    echo "buckets downloaded first (pass --buckets 256k,512k,1M, or run again after downloading them)."
+  fi
+fi
+echo
+
+# --- 5. pi context-window override ------------------------------------------
+# pi's model catalog caps gpt-5.6-luna at 272,000 input tokens. Calls above
+# that need a per-model contextWindow override in the user's global
+# ~/.pi/agent/models.json (pi has no project-local equivalent), for both the
+# "openai" and "openai-codex" providers. This merges that override into
+# whatever ~/.pi/agent/models.json already has -- never clobbering other
+# providers or models -- and is idempotent: a second run with the override
+# already in place reports no change needed. An existing file is backed up
+# to models.json.bak-<timestamp> before being overwritten. This step never
+# reads or touches ~/.pi/agent/auth.json.
+
+echo "pi context-window override (~/.pi/agent/models.json):"
+python3 - "$DRY_RUN" <<'PYEOF'
+import datetime
+import json
+import sys
+from pathlib import Path
+
+dry_run = sys.argv[1] == "1"
+MODEL_ID = "gpt-5.6-luna"
+TARGET_CONTEXT_WINDOW = 1050000
+PROVIDERS = ["openai", "openai-codex"]
+
+models_path = Path.home() / ".pi" / "agent" / "models.json"
+existing_text = None
+if models_path.exists():
+    existing_text = models_path.read_text(encoding="utf-8")
+    try:
+        data = json.loads(existing_text)
+        if not isinstance(data, dict):
+            data = {}
+    except Exception:
+        data = {}
+else:
+    data = {}
+
+providers = data.setdefault("providers", {})
+changes = []
+for provider in PROVIDERS:
+    prov = providers.setdefault(provider, {})
+    overrides = prov.setdefault("modelOverrides", {})
+    entry = overrides.setdefault(MODEL_ID, {})
+    current = entry.get("contextWindow")
+    if current != TARGET_CONTEXT_WINDOW:
+        changes.append(f"  {provider}/{MODEL_ID}: contextWindow {current!r} -> {TARGET_CONTEXT_WINDOW}")
+        entry["contextWindow"] = TARGET_CONTEXT_WINDOW
+
+if not changes:
+    print(f"  {models_path}: gpt-5.6-luna contextWindow already {TARGET_CONTEXT_WINDOW} "
+          f"for openai and openai-codex; no changes needed.")
+elif dry_run:
+    print(f"  [dry-run] would update {models_path}:")
+    for c in changes:
+        print(c)
+else:
+    if existing_text is not None:
+        ts = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
+        backup = models_path.with_name(f"models.json.bak-{ts}")
+        backup.write_text(existing_text, encoding="utf-8")
+        print(f"  backed up existing {models_path} to {backup}")
+    models_path.parent.mkdir(parents=True, exist_ok=True)
+    models_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    print(f"  updated {models_path}:")
+    for c in changes:
+        print(c)
+PYEOF
+echo
+
+# --- 6. Provider availability (no secrets printed) --------------------------
 
 echo "Provider check:"
 python3 "$SCRIPT_DIR/lib/pi_runner.py" probe-providers
-echo
-
-# --- 5. Combined 13-document corpus (contract addendum v2) -------------
-# Document 1 is the survey handled above (corpus/survey.txt). Documents 2-13
-# are additional arXiv papers used only as bulk length and distractor text
-# for the accuracy-vs-context-length sweep (context_sweep.py); none of the
-# five original quiz questions depend on them. Same idempotent pattern as
-# above: skip downloading/converting whatever is already present.
-
-NOISE_IDS=(2307.03172 2310.08560 2510.04618 2404.06654 2410.10813 2210.03629 2005.11401 2304.03442 2502.05167 2504.19413 2005.14165 2403.05530)
-
-echo "Combined corpus (13 documents for context_sweep.py):"
-for id in "${NOISE_IDS[@]}"; do
-  DOC_TXT="corpus/${id}.txt"
-  DOC_PDF="corpus/${id}.pdf"
-  if [ ! -f "$DOC_TXT" ]; then
-    if [ ! -f "$DOC_PDF" ]; then
-      echo "  downloading arXiv ${id}..."
-      DOWNLOADED=0
-      if command -v curl >/dev/null 2>&1; then
-        if curl -fsSL "https://arxiv.org/pdf/${id}" -o "$DOC_PDF"; then DOWNLOADED=1; fi
-      elif command -v wget >/dev/null 2>&1; then
-        if wget -q "https://arxiv.org/pdf/${id}" -O "$DOC_PDF"; then DOWNLOADED=1; fi
-      fi
-      if [ "$DOWNLOADED" != "1" ]; then
-        rm -f "$DOC_PDF"
-        echo "  download of ${id} failed (no network, or arXiv unreachable)."
-        echo "  Place the PDF yourself at corpus/${id}.pdf and re-run this script, or skip the"
-        echo "  combined corpus and context_sweep.py for now -- setup.sh still succeeds otherwise."
-        exit 1
-      fi
-    fi
-    if ! command -v pdftotext >/dev/null 2>&1; then
-      echo "  pdftotext (poppler-utils) is not installed; cannot convert ${id}.pdf."
-      exit 1
-    fi
-    pdftotext "$DOC_PDF" "$DOC_TXT"
-  fi
-done
-
-python3 "$SCRIPT_DIR/lib/pi_runner.py" build-combined-corpus corpus corpus/combined.txt corpus/manifest.json
-echo
-
-# --- 6. Part B sections: ~30K-real-token chunks of combined.txt --------
-# (contract addendum v2 section 7). Part B's isolate step and compaction
-# demo both just glob corpus/sections/section-*.txt, so this directory is
-# fully repurposed from the original ~12,000-word survey-only chunks to
-# ~30,000-real-token chunks of the 13-document combined corpus; nothing
-# else depends on the old chunking.
-
-echo "Part B sections (corpus/sections/section-NN.txt, ~30,000 real tokens each):"
-python3 "$SCRIPT_DIR/lib/pi_runner.py" split-sections-real-tokens corpus/combined.txt corpus/sections 30000
 echo
 
 echo "== Setup complete. Next: python3 part_a_stress.py --model <provider/id> =="

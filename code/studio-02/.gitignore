@@ -1,33 +1,32 @@
-# Downloaded/derived corpus (setup.sh regenerates this from arXiv or a local PDF).
-corpus/
+# Downloaded BABILong data (setup.sh downloads this from Hugging Face). Not
+# ours to redistribute; re-downloadable.
+benchmarks/babilong/
 
-# Raw public benchmark data (Graphwalks/BABILong/MRCR), downloaded from Hugging
-# Face by benchmark_pilot.py. Not ours to redistribute; re-downloadable.
-benchmarks/
+# Derived from the downloaded data (setup.sh regenerates these); large and
+# specific to each run's sampling, so not committed.
+benchmarks/qa1_768k_survivors.json
+benchmarks/subset_qa1_topend.json
 
-# Scratch working directories for pi processes (project trust settings, decisions.md
-# drafts, etc.). Not evidence; the scripts recreate what they need under evidence/.
+# Scratch working directories for pi processes (project trust settings,
+# decisions.md drafts, etc.). Not evidence; the scripts recreate what they
+# need under evidence/.
 work/
 
 # Never commit environment/secret files.
 *.env
 .env*
 
-# Raw --mode json event streams (evidence/part_*/raw/*.raw.jsonl, about 9.5 MB
-# total). These are the scripts' own verbose capture of every event pi printed;
-# pi's own session files under evidence/sessions/ (about 6.9 MB, all under 2 MB
-# each) plus the scripts' extracted *.json summaries already carry the same run
-# record in far less space. The raw files are still written locally by every
-# script (nothing about how the scripts run changes), just not committed. See
-# README.md "Evidence size note".
+# Raw --mode json event streams (evidence/part_*/raw/*.raw.jsonl). These are
+# the scripts' own verbose capture of every event pi printed; pi's own
+# session files under evidence/sessions/, plus the scripts' extracted
+# *.json/*.csv/*.md summaries, already carry the same run record in far less
+# space.
 evidence/**/*.raw.jsonl
+
+# pi session logs from runs: kept locally, never committed (redundant with
+# each part's own results.json/summary.md).
+evidence/sessions/
 
 # Python cache
 __pycache__/
 *.pyc
-evidence/context_sweep/sessions/2026-09-17T14-07-19-004Z_01a0afb1-79dc-72fa-9b05-9e9c20c7872a.jsonl
-evidence/comprehension/sessions/2026-09-17T17-17-30-091Z_01a0b05f-986b-7067-bc15-4ba02766b792.jsonl
-evidence/comprehension/sessions/2026-09-17T17-19-13-120Z_01a0b061-2ae0-71f7-ab98-f43311111154.jsonl
-
-# pi session logs from runs: kept locally, never committed (multi-MB, redundant with results.json)
-evidence/sessions/

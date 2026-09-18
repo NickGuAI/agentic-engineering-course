@@ -1,111 +1,80 @@
 #!/usr/bin/env python3
-"""Part B: fix Part A's BABILong qa1 failure with Isolate and Compress.
+"""Part B: fix Part A's BABILong qa1 failure with Isolate and Targeted
+summary.
 
-Rewritten per contract addendum v9: the old Part B chunked corpus/sections/*.txt,
-an arXiv survey corpus deleted when the studio was narrowed to BABILong only.
-This version operates on the same BABILong qa1 haystacks Part A used, so the
-comparison against Part A is honest.
+Operates on the SAME items Part A scored (benchmarks/subset_qa1_topend.json,
+lowest --n ids per bucket -- run part_a_stress.py first so there is a
+baseline to compare against).
 
-Data-check finding this design is built on (see run_data_check() and
-evidence/part_b/summary.md for the numbers): a BABILong qa1 item's target
-person is not always mentioned once. Across the 68-item pool the 768K bucket
-was sampled from, the person moves more than once in a majority of items
-(regex hits for "PERSON moved/went/... (back) to the ROOM"), and in EVERY
-checked case the LAST such mention is the one that matches the gold answer.
-Every demonstration below is therefore told explicitly to take the last
-reported location, never the first.
+A BABILong qa1 item's target person is not always mentioned only once: the
+data check below counts, for every loaded item, how many times a sentence
+like "PERSON moved/went/... (back) to the ROOM" appears, and whether the
+LAST such mention matches the gold answer. When it does (the common case),
+every demonstration below is told explicitly to take the last reported
+location, never the first.
 
-Three demonstrations, on the SAME ids Part A scored (chosen by lowest id in
-the bucket, never by whether Part A got them right):
+Two demonstrations, run for every item:
 
-  1. Isolate: one pi sub-agent per haystack chunk reports only whether it
-     saw the person's location (quote the sentence, or NOT FOUND); a lead
-     pi call sees only those short reports (in document order) and answers,
-     taking the last chunk that reported a location.
-  2. Compress (targeted summary): the same chunks, but each call summarizes
-     its chunk in ~200 tokens, explicitly told to preserve any location
+  1. Isolate: the haystack is split into fixed ~96,000-token chunks; one pi
+     sub-agent call per chunk reports only whether it saw the person's
+     location (quote the sentence, or NOT FOUND); a lead pi call sees only
+     those short reports, in document order, and answers, taking the LAST
+     one that reported a location.
+  2. Targeted summary: the same chunks, but each call summarizes its chunk
+     in about 200 tokens, explicitly told to preserve any location
      statement; the question is then answered from the concatenated
      summaries alone.
-  3. Compress (pi's own auto-compaction): a 256K item (not 768K, to keep
-     cost sane), read chunk-by-chunk through pi's own `read` tool in one
-     session whose .pi/settings.json lowers the compaction threshold so
-     compaction fires mid-run.
 
 The key measurement is PEAK single-call context, not just total tokens.
 Chunking barely reduces total tokens (the same haystack still gets read,
 just split up) -- it reduces how much any ONE call has to attend to at
-once. Every per-item record below carries both total_tokens and
+once. Every per-item record carries both total_tokens and
 peak_context_tokens so that distinction is explicit, not just asserted.
 
-Budget: checked BEFORE every pi call (Budget.check_before), using each
-call's real prompt token count (or, for the one multi-turn compaction
-session per item, a conservative worst-case multiplier -- see
-run_compaction_item), never after -- so a call already in flight can't
-land after the hard stop has tripped.
+Up to --concurrency pi calls run at once (a two-stage thread pool: every
+chunk call first, then every lead/reask call once its item's chunks are
+all in -- this avoids a pool deadlock where a worker would block waiting on
+a sibling task competing for the same fixed slots). --max-usd, if given,
+stops submitting new calls once the running total would exceed it (checked
+before every call, not after); by default there is no limit.
 
 Usage:
-  python3 part_b_isolate_compress.py --model openai/gpt-5.6-luna --out evidence
-  python3 part_b_isolate_compress.py --dry-run   # plan + cost estimate, no pi calls, no cost
-
-Run from code/studio-02/. Requires evidence/part_a/results.json (Part A's
-real run) for the comparison table, and benchmarks/subset_qa1_topend.json,
-benchmarks/qa1_768k_survivors.json, benchmarks/babilong/data/qa1/256k.json
-(see setup.sh / README for how those are produced).
+  python3 part_b_isolate_compress.py --dry-run
+  python3 part_b_isolate_compress.py --model openai/gpt-5.6-luna --concurrency 4
 """
 import argparse
+import csv
 import json
-import random
+import math
 import re
-import shutil
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+# matplotlib is imported lazily inside write_report() (not here at module
+# level), so --help and every non-charting code path work even before
+# `pip install -r requirements.txt` has been run.
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.pi_runner import (  # noqa: E402
-    md_table,
-    model_context_window,
-    real_slice_by_tokens,
-    real_token_count,
-    run_pi,
-    write_json,
-    write_text,
-)
+from lib.pi_runner import DEFAULT_MODEL, md_table, real_slice_by_tokens, real_token_count, run_pi, write_json, write_text  # noqa: E402
+from part_a_stress import BASE, load_items, score_babilong  # noqa: E402
 
-# Contract hard rule: the course API-key provider, NOT lib.pi_runner's own
-# DEFAULT_MODEL (which points at the openai-codex OAuth subscription
-# provider). evidence/part_a/summary.md confirms Part A itself used this
-# exact provider/model string.
-MODEL = "openai/gpt-5.6-luna"
 THINKING = "low"
-N_CHUNKS_DEFAULT = 8
-BUDGET_TARGET_USD = 1.70
-HARD_STOP_USD = 2.00
+CHUNK_TARGET_TOKENS = 96_000
 
-BASE = Path(__file__).resolve().parent
-BENCHMARKS = BASE / "benchmarks"
-
-# bAbI qa1 movement-fact pattern, same as benchmarks/prepare_qa1_topend.py's
-# FACT_VERBS (kept identical on purpose so the data-check below is directly
-# comparable to how that script located each item's supporting fact).
 FACT_VERBS = r"(?:moved|went|travell?ed|journeyed|walked|ran|goes|go)"
 
-# --- 256K-bucket id/row reconstruction ---------------------------------
-# Part A's evidence (evidence/part_a/results.json, results.csv) is real, but
-# the script that built its native 32k/128k/256k buckets is not on disk --
-# plot_qa1_curve.py's own docstring says those points came from
-# "evidence/benchmark_sweep/ ... since deleted". Every OTHER seeded sample in
-# this codebase (benchmarks/select_qa1_topend.py) uses seed=7, so this was
-# checked directly: for bucket in (32k, 128k, 256k), loading
-# benchmarks/babilong/data/qa1/<bucket>.json (n=100) and taking
-# sorted(random.Random(7).sample(range(100), 20)) as the row indices, with
-# ids assigned sequentially per bucket (32k: 1-20, 128k: 21-40, 256k: 41-60),
-# reproduces the recorded target for EVERY row where results.json marked the
-# model "correct" -- 17/17 (32k), 15/15 (128k), 13/13 (256k), 45/45 overall,
-# with zero disagreements. That is taken here as sufficient confirmation to
-# reuse the same reconstruction for the 256K item(s) the compaction
-# demonstration needs.
-SEED_256K = 7
-BUCKET_256K_BASE_ID = 41
+# dataviz-skill categorical palette, assigned by series identity (never
+# re-ordered by rank).
+COLOR_PART_A = "#2a78d6"
+COLOR_ISOLATE = "#eb6834"
+COLOR_SUMMARY = "#1baf7a"
+SURFACE = "#fcfcfb"
+INK_PRIMARY = "#0b0b0b"
+INK_SECONDARY = "#52514e"
+INK_MUTED = "#898781"
+GRIDLINE = "#e1e0d9"
 
 
 class BudgetExceeded(RuntimeError):
@@ -113,132 +82,76 @@ class BudgetExceeded(RuntimeError):
 
 
 class Budget:
-    """Tracks real spend across every pi call this script makes and refuses
-    to submit a call whose estimated cost would push the projected total
-    past hard_stop -- checked BEFORE the call, using the empirical pricing
-    observed directly in evidence/part_a/results.json for this exact model
-    (~$0.25/M input tokens for a call under 272,000 input tokens, ~$0.50/M
-    at or above it -- gpt-5.6-luna's own context-window pricing tier), never
-    after. This is what "checked before submitting each call, not after"
-    means in practice: the check happens strictly before subprocess launch,
-    calls are made one at a time (never concurrently), so there is never an
-    in-flight call that can land after the stop has already tripped."""
+    """Thread-safe running-cost tracker. If --max-usd is set, refuses to
+    admit a call whose estimated cost would push the projected total
+    (completed spend + reservations already in flight) past it -- checked
+    BEFORE every call, not after, so a call already admitted can never land
+    past the limit. Cost estimation uses approximate gpt-5.6-luna pricing,
+    for --dry-run and the --max-usd guard only; the real spend recorded in
+    record() always comes from pi's own reported usage."""
 
-    def __init__(self, hard_stop=HARD_STOP_USD, target=BUDGET_TARGET_USD):
-        self.hard_stop = hard_stop
-        self.target = target
+    INPUT_RATE_LOW = 0.25    # $ / 1M input tokens, under 272,000 input tokens
+    INPUT_RATE_HIGH = 0.50   # $ / 1M input tokens, at or above 272,000
+    INPUT_RATE_THRESHOLD = 272_000
+    OUTPUT_RATE = 1.8        # $ / 1M output tokens
+
+    def __init__(self, max_usd=None):
+        self.max_usd = max_usd
         self.spent = 0.0
         self.log = []
+        self._lock = threading.Lock()
+        self._in_flight = 0.0
 
-    @staticmethod
-    def estimate_call_cost_usd(input_tokens: int, output_tokens_guess: int = 600) -> float:
-        rate = 0.50 if input_tokens > 272_000 else 0.25
-        return input_tokens / 1e6 * rate + output_tokens_guess / 1e6 * 1.8
+    @classmethod
+    def estimate_call_cost_usd(cls, input_tokens: int, output_tokens_guess: int = 200) -> float:
+        rate = cls.INPUT_RATE_HIGH if input_tokens > cls.INPUT_RATE_THRESHOLD else cls.INPUT_RATE_LOW
+        return input_tokens / 1e6 * rate + output_tokens_guess / 1e6 * cls.OUTPUT_RATE
 
-    def check_before(self, label: str, input_tokens: int) -> float:
-        est = self.estimate_call_cost_usd(input_tokens)
-        projected = self.spent + est
-        if projected > self.hard_stop:
-            raise BudgetExceeded(
-                f"refusing to submit '{label}' (~{input_tokens:,} est. input tokens, "
-                f"est ${est:.4f}): spent so far ${self.spent:.4f}; this call would project "
-                f"to ${projected:.4f}, over the ${self.hard_stop:.2f} hard stop."
-            )
+    def check_before(self, label: str, input_tokens: int, output_tokens_guess: int = 200) -> float:
+        est = self.estimate_call_cost_usd(input_tokens, output_tokens_guess)
+        with self._lock:
+            if self.max_usd is not None:
+                projected = self.spent + self._in_flight + est
+                if projected > self.max_usd:
+                    raise BudgetExceeded(
+                        f"refusing to submit '{label}' (~{input_tokens:,} est. input tokens, est ${est:.4f}): "
+                        f"completed=${self.spent:.4f} + in_flight=${self._in_flight:.4f} + this=${est:.4f} "
+                        f"= ${projected:.4f} > --max-usd ${self.max_usd:.2f}."
+                    )
+            self._in_flight += est
         return est
 
-    def record(self, label: str, actual_cost_usd: float) -> None:
-        self.spent += actual_cost_usd or 0.0
-        self.log.append({"label": label, "cost_usd": round(actual_cost_usd or 0.0, 6),
-                          "running_total_usd": round(self.spent, 6)})
-        flag = "  *** OVER TARGET ***" if self.spent > self.target else ""
-        print(f"    [budget] {label}: cost=${actual_cost_usd or 0.0:.4f} running_total=${self.spent:.4f}{flag}",
-              flush=True)
+    def record(self, label: str, reserved_est: float, actual_cost_usd: float) -> None:
+        with self._lock:
+            self._in_flight = max(0.0, self._in_flight - reserved_est)
+            self.spent += actual_cost_usd or 0.0
+            self.log.append({"label": label, "cost_usd": round(actual_cost_usd or 0.0, 6),
+                              "running_total_usd": round(self.spent, 6)})
+        print(f"    [spend] {label}: cost=${actual_cost_usd or 0.0:.4f} running_total=${self.spent:.4f}", flush=True)
+
+    def release(self, reserved_est: float) -> None:
+        with self._lock:
+            self._in_flight = max(0.0, self._in_flight - reserved_est)
+
+    def snapshot(self) -> dict:
+        with self._lock:
+            return {"max_usd": self.max_usd, "completed_spend_usd": round(self.spent, 6), "n_calls": len(self.log)}
 
 
-def call_pi(budget: Budget, label: str, prompt: str, model: str, thinking: str,
-            cost_estimate_tokens=None, **kwargs):
-    """check_before -> run_pi -> record, uniformly, for every pi call this
-    script makes. cost_estimate_tokens overrides the pre-flight token
-    estimate for the one case (the compaction session) where the launch
-    prompt is much smaller than what the session will actually process."""
-    input_tok_estimate = cost_estimate_tokens if cost_estimate_tokens is not None else real_token_count(prompt)
-    budget.check_before(label, input_tok_estimate)
-    result = run_pi(prompt=prompt, model=model, thinking=thinking, **kwargs)
-    budget.record(label, result.total_cost_usd)
+def call_pi(budget: Budget, label: str, prompt: str, model: str, output_tokens_guess: int, **kwargs):
+    est = budget.check_before(label, real_token_count(prompt), output_tokens_guess)
+    try:
+        result = run_pi(prompt=prompt, model=model, thinking=THINKING, **kwargs)
+    except Exception:
+        budget.release(est)
+        raise
+    budget.record(label, est, result.total_cost_usd)
     return result
 
 
-# ---------------------------------------------------------------------------
-# Scoring (exact-match room name, same convention Part A's summary.md
-# describes: "exact-match scoring", answer given with no article/punctuation)
-# ---------------------------------------------------------------------------
-
-_ARTICLE_RE = re.compile(r"^(the|a|an)\s+", re.IGNORECASE)
-
-
-def normalize_room(s: str) -> str:
-    s = (s or "").strip()
-    s = _ARTICLE_RE.sub("", s)
-    s = re.sub(r"[^\w\s]", "", s)
-    return s.strip().lower()
-
-
-def extract_final_answer(answer_text: str) -> str:
-    """Last non-empty line of the reply -- robust to a stray leading line of
-    reasoning despite --thinking low."""
-    lines = [l.strip() for l in (answer_text or "").splitlines() if l.strip()]
-    return lines[-1] if lines else ""
-
-
-def score_babilong(answer_text: str, target: str) -> dict:
-    raw = extract_final_answer(answer_text)
-    correct = bool(raw) and normalize_room(raw) == normalize_room(target)
-    return {"raw_answer": raw, "correct": correct, "score": 1.0 if correct else 0.0}
-
-
-# ---------------------------------------------------------------------------
-# Peak-context / total-token accounting
-# ---------------------------------------------------------------------------
-
-def _assistant_usages(result):
-    for e in result.events:
-        if e.get("type") == "message_end" and e.get("message", {}).get("role") == "assistant":
-            yield (e.get("message", {}).get("usage") or {})
-
-
-def prompt_tokens_from_usage(usage: dict) -> int:
-    """The real prompt-side size of ONE turn: input + cacheRead + cacheWrite.
-
-    Verified directly (see summary.md deviation note): a single fresh,
-    one-shot --no-tools call carrying a ~95,829-real-token chunk came back
-    with usage.input == 3 and usage.cacheWrite == 96,305 -- pi/the
-    openai-responses API caches almost the entire prompt on write even
-    when there is no follow-up turn to read it back. usage['input'] ALONE
-    is therefore not the prompt size for any call in this script, single
-    -turn or multi-turn; input+cacheRead+cacheWrite is."""
-    return (usage.get("input") or 0) + (usage.get("cacheRead") or 0) + (usage.get("cacheWrite") or 0)
-
-
-def peak_input_tokens(result) -> int:
-    """Max real prompt size across every assistant TURN in this call -- for
-    a single-turn call this is that call's whole prompt; for the multi-turn
-    compaction session it is the largest any one turn saw, which is exactly
-    what compaction is meant to cap."""
-    peaks = [prompt_tokens_from_usage(u) for u in _assistant_usages(result)]
-    return max(peaks) if peaks else prompt_tokens_from_usage(result.usage)
-
-
-def total_tokens_used(result) -> int:
-    """Sum of (real prompt size + output) across every assistant turn (not
-    just the last)."""
-    total = sum(prompt_tokens_from_usage(u) + (u.get("output") or 0) for u in _assistant_usages(result))
-    return total or (prompt_tokens_from_usage(result.usage) + (result.usage.get("output") or 0))
-
-
 def split_into_n_chunks(text: str, n: int) -> list:
-    """N chunks in document order, by real token count, reusing
-    real_slice_by_tokens's line-safe cuts (never splits a line -- and every
-    bAbI fact sentence in this corpus sits on one line -- see summary.md)."""
+    """n chunks in document order, by real token count (never splits a
+    line)."""
     total = real_token_count(text)
     target = max(1, total // n)
     remaining = text
@@ -256,10 +169,13 @@ def split_into_n_chunks(text: str, n: int) -> list:
     return chunks
 
 
+def chunk_count_for(haystack: str) -> int:
+    return max(1, round(real_token_count(haystack) / CHUNK_TARGET_TOKENS))
+
+
 # ---------------------------------------------------------------------------
 # Data check: how many times is the target person mentioned, and does the
-# LAST mention match the gold answer? (contract: verify this before
-# designing isolate)
+# LAST mention match the gold answer?
 # ---------------------------------------------------------------------------
 
 def _movement_matches(person: str, text: str):
@@ -267,12 +183,14 @@ def _movement_matches(person: str, text: str):
     return [(m.start(), m.group(1)) for m in pat.finditer(text)]
 
 
-def run_data_check() -> dict:
-    survivors = json.loads((BENCHMARKS / "qa1_768k_survivors.json").read_text(encoding="utf-8"))
+def run_data_check(items: list) -> dict:
     zero = single = multi = mismatches = 0
     dist = {}
-    for s in survivors:
-        matches = _movement_matches(s["person"], s["input_truncated"])
+    for it in items:
+        person = it.get("person")
+        if not person:
+            continue
+        matches = _movement_matches(person, it["haystack"])
         k = len(matches)
         dist[k] = dist.get(k, 0) + 1
         if k == 0:
@@ -280,14 +198,13 @@ def run_data_check() -> dict:
             continue
         single += 1 if k == 1 else 0
         multi += 1 if k > 1 else 0
-        if matches[-1][1].lower() != s["target"].lower():
+        if matches[-1][1].lower() != it["target"].lower():
             mismatches += 1
 
-    n = len(survivors)
-    headline = {
+    n = len(items)
+    checked = n - zero
+    return {
         "n_items_checked": n,
-        "source": "benchmarks/qa1_768k_survivors.json (the 68-item pool the 768K bucket's "
-                  "evaluated items were sampled from)",
         "n_single_mention": single,
         "n_multi_mention": multi,
         "n_zero_regex_hits": zero,
@@ -295,75 +212,18 @@ def run_data_check() -> dict:
         "n_cases_where_last_mention_disagrees_with_target": mismatches,
         "finding": (
             f"{multi}/{n} items have the target person moving MORE THAN ONCE (regex hits for "
-            f"'PERSON moved/went/travelled/... (back) to the ROOM'); the remaining {single} have "
-            f"exactly one mention, {zero} had no literal regex hit. Across all {n - zero} items "
-            f"with at least one hit, the LAST mention's room matches the gold target in EVERY "
-            f"case ({n - zero - mismatches}/{n - zero}, {mismatches} disagreements) -- when a "
-            f"person moves more than once, only their most recent move is ever the right answer. "
-            f"Every demonstration below is therefore told explicitly to take the LAST reported "
-            f"location, never the first."
+            f"'PERSON moved/went/travelled/... (back) to the ROOM'); {single} have exactly one "
+            f"mention, {zero} had no literal regex hit. Across the {checked} items with at least "
+            f"one hit, the LAST mention's room matches the gold target in {checked - mismatches}/{checked} "
+            f"cases -- when a person moves more than once, the most recent move is usually the right "
+            f"answer. Every demonstration below is therefore told explicitly to take the LAST "
+            f"reported location, never the first."
         ),
     }
-    return headline
 
 
 # ---------------------------------------------------------------------------
-# Data loading -- deterministic id selection, never by correctness
-# ---------------------------------------------------------------------------
-
-def _load_json(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def lowest_ids_768k(n: int) -> list:
-    topend = _load_json(BENCHMARKS / "subset_qa1_topend.json")
-    ids = sorted(it["id"] for it in topend if it["bucket"] == "768k")
-    return ids[:n]
-
-
-def load_768k_items(ids: list) -> list:
-    topend = _load_json(BENCHMARKS / "subset_qa1_topend.json")
-    by_id = {it["id"]: it for it in topend if it["bucket"] == "768k"}
-    survivors = _load_json(BENCHMARKS / "qa1_768k_survivors.json")
-    surv_by_rowidx = {s["row_index"]: s for s in survivors}
-    items = []
-    for idn in ids:
-        it = by_id[idn]
-        s = surv_by_rowidx[it["source"]["row_index"]]
-        items.append({
-            "id": idn, "bucket": "768k", "person": s["person"], "target": s["target"],
-            "question": s["question"].strip(), "haystack": s["input_truncated"],
-            "needle_depth_tokens": s["needle_depth_tokens"],
-        })
-    return items
-
-
-def lowest_256k_items(n: int) -> list:
-    """Reconstructed native-256K-bucket items (see SEED_256K note above),
-    lowest n ids in that bucket. Deterministic; never looks at correctness."""
-    data = _load_json(BENCHMARKS / "babilong" / "data" / "qa1" / "256k.json")
-    idxs = sorted(random.Random(SEED_256K).sample(range(len(data)), 20))
-    items = []
-    for k in range(n):
-        row = data[idxs[k]]
-        m = re.search(r"Where is (\w+)", row["question"])
-        person = m.group(1) if m else None
-        items.append({
-            "id": BUCKET_256K_BASE_ID + k, "bucket": "256k", "person": person,
-            "target": row["target"], "question": row["question"].strip(),
-            "haystack": row["input"], "source_row_index": idxs[k],
-        })
-    return items
-
-
-def load_part_a_records(bucket: str, ids: list) -> dict:
-    results = _load_json(BASE / "evidence" / "part_a" / "results.json")
-    by_id = {r["id"]: r for r in results if r["bucket"] == bucket}
-    return {str(idn): by_id[idn] for idn in ids if idn in by_id}
-
-
-# ---------------------------------------------------------------------------
-# Demonstration 1: Isolate
+# Prompts
 # ---------------------------------------------------------------------------
 
 ISOLATE_CHUNK_INSTRUCTIONS = (
@@ -384,68 +244,6 @@ ISOLATE_LEAD_TEMPLATE = (
     "reports a location for {person}, answer NOT FOUND."
 )
 
-
-def run_isolate_item(budget, item, n_chunks, model, thinking, work_root, timeout, session_dir, raw_dir):
-    person = item["person"]
-    chunks = split_into_n_chunks(item["haystack"], n_chunks)
-    item_dir = work_root / f"item-{item['id']}"
-
-    chunk_records, reports = [], []
-    for i, chunk_text in enumerate(chunks, start=1):
-        prompt = f"{chunk_text}\n\n{ISOLATE_CHUNK_INSTRUCTIONS.format(person=person)}\n"
-        label = f"isolate/item-{item['id']}/chunk-{i:02d}"
-        result = call_pi(
-            budget, label, prompt, model, thinking,
-            cwd=str(item_dir), no_tools=True, session_dir=str(session_dir),
-            raw_events_path=str(raw_dir / f"{label.replace('/', '-')}.raw.jsonl"),
-            timeout=timeout, approve=True, no_context_files=True,
-        )
-        report_text = result.answer_text.strip() if result.ok else f"[ERROR: {result.error}]"
-        chunk_records.append({
-            "chunk": i, "ok": result.ok, "error": result.error, "report": report_text,
-            # "input_tokens" = the real prompt size (input+cacheRead+cacheWrite -- see
-            # prompt_tokens_from_usage), NOT the raw usage.input field, which is
-            # ~0 for these large prompts once caching kicks in.
-            "input_tokens": prompt_tokens_from_usage(result.usage), "output_tokens": result.usage.get("output"),
-            "cost_usd": round(result.total_cost_usd, 6),
-        })
-        reports.append(f"Chunk {i}: {report_text}")
-
-    lead_prompt = ISOLATE_LEAD_TEMPLATE.format(n=len(chunks), reports="\n\n".join(reports), person=person)
-    lead_label = f"isolate/item-{item['id']}/lead"
-    lead_result = call_pi(
-        budget, lead_label, lead_prompt, model, thinking,
-        cwd=str(item_dir), no_tools=True, session_dir=str(session_dir),
-        raw_events_path=str(raw_dir / f"{lead_label.replace('/', '-')}.raw.jsonl"),
-        timeout=timeout, approve=True, no_context_files=True,
-    )
-    scoring = score_babilong(lead_result.answer_text, item["target"]) if lead_result.ok else {
-        "raw_answer": None, "correct": False, "score": 0.0}
-
-    chunk_in = [c["input_tokens"] or 0 for c in chunk_records]
-    chunk_out = [c["output_tokens"] or 0 for c in chunk_records]
-    lead_in = prompt_tokens_from_usage(lead_result.usage)
-    lead_out = lead_result.usage.get("output") or 0
-    total_tokens = sum(chunk_in) + sum(chunk_out) + lead_in + lead_out
-    peak_context = max(chunk_in + [lead_in])
-    cost = sum(c["cost_usd"] for c in chunk_records) + lead_result.total_cost_usd
-
-    return {
-        "id": item["id"], "person": person, "target": item["target"], "n_chunks": len(chunks),
-        "chunks": chunk_records,
-        "lead": {
-            "ok": lead_result.ok, "error": lead_result.error, "answer_text": lead_result.answer_text,
-            **scoring, "input_tokens": lead_in, "output_tokens": lead_out,
-            "cost_usd": round(lead_result.total_cost_usd, 6),
-        },
-        "total_tokens": total_tokens, "peak_context_tokens": peak_context, "cost_usd": round(cost, 6),
-    }
-
-
-# ---------------------------------------------------------------------------
-# Demonstration 2: Compress -- targeted summary
-# ---------------------------------------------------------------------------
-
 SUMMARY_CHUNK_INSTRUCTIONS = (
     "Summarize the text above in about 200 tokens. If any sentence states that a person is in, "
     "or moved, went, or travelled to, a specific room or place, you MUST preserve that statement "
@@ -465,179 +263,95 @@ SUMMARY_REASK_TEMPLATE = (
 )
 
 
-def run_summary_item(budget, item, n_chunks, model, thinking, work_root, timeout, session_dir, raw_dir):
-    person = item["person"]
-    chunks = split_into_n_chunks(item["haystack"], n_chunks)
-    item_dir = work_root / f"item-{item['id']}"
+def prompt_tokens_from_usage(usage: dict) -> int:
+    """The real prompt-side size of one turn: input + cacheRead + cacheWrite
+    (a fresh, single-turn call can come back with usage['input'] near zero
+    once caching kicks in, so input alone understates the real prompt
+    size)."""
+    return (usage.get("input") or 0) + (usage.get("cacheRead") or 0) + (usage.get("cacheWrite") or 0)
 
-    chunk_records, summaries = [], []
-    for i, chunk_text in enumerate(chunks, start=1):
+
+# ---------------------------------------------------------------------------
+# Stage A: chunk-level calls (isolate reports / summary chunk-summaries)
+# ---------------------------------------------------------------------------
+
+def make_chunk_task(budget, model, condition, item, chunk_idx, chunk_text, work_root, session_dir, raw_dir, timeout):
+    person = item["person"]
+    if condition == "isolate":
+        prompt = f"{chunk_text}\n\n{ISOLATE_CHUNK_INSTRUCTIONS.format(person=person)}\n"
+        out_guess = 60
+    else:
         prompt = f"{chunk_text}\n\n{SUMMARY_CHUNK_INSTRUCTIONS}\n"
-        label = f"summary/item-{item['id']}/chunk-{i:02d}"
+        out_guess = 250
+    label = f"{condition}/{item['bucket']}-item-{item['id']}/chunk-{chunk_idx:02d}"
+    cwd = work_root / f"{item['bucket']}-item-{item['id']}" / f"chunk-{chunk_idx:02d}"
+    raw_path = raw_dir / f"{condition}-{item['bucket']}-item-{item['id']}-chunk-{chunk_idx:02d}.raw.jsonl"
+
+    def task():
         result = call_pi(
-            budget, label, prompt, model, thinking,
-            cwd=str(item_dir), no_tools=True, session_dir=str(session_dir),
-            raw_events_path=str(raw_dir / f"{label.replace('/', '-')}.raw.jsonl"),
-            timeout=timeout, approve=True, no_context_files=True,
+            budget, label, prompt, model, out_guess,
+            cwd=str(cwd), no_tools=True, session_dir=str(session_dir),
+            raw_events_path=str(raw_path), timeout=timeout, approve=True, no_context_files=True,
         )
-        summary_text = result.answer_text.strip() if result.ok else f"[ERROR: {result.error}]"
-        chunk_records.append({
-            "chunk": i, "ok": result.ok, "error": result.error, "summary": summary_text,
+        text = result.answer_text.strip() if result.ok else f"[ERROR: {result.error}]"
+        return {
+            "chunk": chunk_idx, "ok": result.ok, "error": result.error,
+            "report" if condition == "isolate" else "summary": text,
             "input_tokens": prompt_tokens_from_usage(result.usage), "output_tokens": result.usage.get("output"),
             "cost_usd": round(result.total_cost_usd, 6),
-        })
-        summaries.append(f"Chunk {i} summary: {summary_text}")
+        }
+    return task
 
-    reask_prompt = SUMMARY_REASK_TEMPLATE.format(n=len(chunks), summaries="\n\n".join(summaries), person=person)
-    reask_label = f"summary/item-{item['id']}/reask"
-    reask_result = call_pi(
-        budget, reask_label, reask_prompt, model, thinking,
-        cwd=str(item_dir), no_tools=True, session_dir=str(session_dir),
-        raw_events_path=str(raw_dir / f"{reask_label.replace('/', '-')}.raw.jsonl"),
-        timeout=timeout, approve=True, no_context_files=True,
-    )
-    scoring = score_babilong(reask_result.answer_text, item["target"]) if reask_result.ok else {
-        "raw_answer": None, "correct": False, "score": 0.0}
 
+# ---------------------------------------------------------------------------
+# Stage B: lead (isolate) / reask (summary) call
+# ---------------------------------------------------------------------------
+
+def make_lead_task(budget, model, condition, item, chunk_records, work_root, session_dir, raw_dir, timeout):
+    person = item["person"]
+    n = len(chunk_records)
+    if condition == "isolate":
+        reports = "\n\n".join(f"Chunk {c['chunk']}: {c['report']}" for c in chunk_records)
+        prompt = ISOLATE_LEAD_TEMPLATE.format(n=n, reports=reports, person=person)
+        out_guess, suffix = 30, "lead"
+    else:
+        summaries = "\n\n".join(f"Chunk {c['chunk']} summary: {c['summary']}" for c in chunk_records)
+        prompt = SUMMARY_REASK_TEMPLATE.format(n=n, summaries=summaries, person=person)
+        out_guess, suffix = 30, "reask"
+    label = f"{condition}/{item['bucket']}-item-{item['id']}/{suffix}"
+    cwd = work_root / f"{item['bucket']}-item-{item['id']}" / suffix
+    raw_path = raw_dir / f"{condition}-{item['bucket']}-item-{item['id']}-{suffix}.raw.jsonl"
+
+    def task():
+        result = call_pi(
+            budget, label, prompt, model, out_guess,
+            cwd=str(cwd), no_tools=True, session_dir=str(session_dir),
+            raw_events_path=str(raw_path), timeout=timeout, approve=True, no_context_files=True,
+        )
+        scoring = score_babilong(result.answer_text, item["target"]) if result.ok else {
+            "raw_answer": None, "correct": False}
+        return {
+            "ok": result.ok, "error": result.error, "answer_text": result.answer_text, **scoring,
+            "input_tokens": prompt_tokens_from_usage(result.usage), "output_tokens": result.usage.get("output"),
+            "cost_usd": round(result.total_cost_usd, 6),
+        }
+    return task
+
+
+def finalize_item(item, condition, chunk_records, lead_rec):
     chunk_in = [c["input_tokens"] or 0 for c in chunk_records]
     chunk_out = [c["output_tokens"] or 0 for c in chunk_records]
-    reask_in = prompt_tokens_from_usage(reask_result.usage)
-    reask_out = reask_result.usage.get("output") or 0
-    total_tokens = sum(chunk_in) + sum(chunk_out) + reask_in + reask_out
-    peak_context = max(chunk_in + [reask_in])
-    cost = sum(c["cost_usd"] for c in chunk_records) + reask_result.total_cost_usd
-
+    lead_in = lead_rec["input_tokens"] or 0
+    lead_out = lead_rec["output_tokens"] or 0
+    total_tokens = sum(chunk_in) + sum(chunk_out) + lead_in + lead_out
+    peak_context = max(chunk_in + [lead_in]) if chunk_in else lead_in
+    cost = sum(c["cost_usd"] for c in chunk_records) + lead_rec["cost_usd"]
+    key = "lead" if condition == "isolate" else "reask"
     return {
-        "id": item["id"], "person": person, "target": item["target"], "n_chunks": len(chunks),
-        "chunks": chunk_records,
-        "reask": {
-            "ok": reask_result.ok, "error": reask_result.error, "answer_text": reask_result.answer_text,
-            **scoring, "input_tokens": reask_in, "output_tokens": reask_out,
-            "cost_usd": round(reask_result.total_cost_usd, 6),
-        },
+        "bucket": item["bucket"], "id": item["id"], "condition": condition, "person": item["person"],
+        "target": item["target"], "n_chunks": len(chunk_records), "chunks": chunk_records,
+        key: lead_rec, "correct": lead_rec["correct"], "raw_answer": lead_rec.get("raw_answer"),
         "total_tokens": total_tokens, "peak_context_tokens": peak_context, "cost_usd": round(cost, 6),
-    }
-
-
-# ---------------------------------------------------------------------------
-# Demonstration 3: Compress -- pi's own auto-compaction
-# ---------------------------------------------------------------------------
-
-COMPACTION_PROMPT_TEMPLATE = (
-    "Using the read tool, read these files IN ORDER, one at a time: {file_list}. After you have "
-    "read all of them, answer the question below using only what you read.\n\n"
-    "Question: Where is {person}?\n\n"
-    "People in this story move between rooms over time. If {person} is mentioned in more than "
-    "one chunk, the correct answer is their LAST stated location (from the highest-numbered "
-    "chunk you read that mentions them) -- ignore earlier ones. Answer with ONLY the room name: "
-    "no article (a/an/the), no punctuation, no explanation, nothing else. If you did not find "
-    "the answer, say NOT FOUND."
-)
-
-
-def effective_context_window(provider: str, model_id: str) -> int:
-    """The context window pi will ACTUALLY use for this provider/model on
-    this machine -- which is not always lib.pi_runner.model_context_window()
-    (that reads only ~/.pi/agent/models-store.json, the static catalog).
-    This machine's ~/.pi/agent/models.json applies a provider-level
-    contextWindow override for openai/gpt-5.6-luna specifically: `pi
-    --list-models` shows 1.1M for provider "openai" vs. 272K for
-    "openai-codex" (same model id). Verified directly the override is what
-    pi's auto-compaction threshold is actually computed against: with
-    reserveTokens picked against the catalog's 272K figure, a tiny 3-file,
-    ~9,900-real-prompt-token test session never compacted at all; recomputed
-    against 1.05M, the identical settings.json shape fired exactly as
-    configured (compaction_start/compaction_end, tokensBefore matching the
-    session's real prompt size). See summary.md deviation note. Never
-    touches auth.json -- this file (~/.pi/agent/models.json) carries only
-    model-catalog numbers, no credentials."""
-    override_path = Path.home() / ".pi" / "agent" / "models.json"
-    if override_path.exists():
-        try:
-            overrides = json.loads(override_path.read_text(encoding="utf-8"))
-            cw = (
-                overrides.get("providers", {})
-                .get(provider, {})
-                .get("modelOverrides", {})
-                .get(model_id, {})
-                .get("contextWindow")
-            )
-            if isinstance(cw, int):
-                return cw
-        except Exception:
-            pass
-    return model_context_window(provider, model_id) or 128000
-
-
-def run_compaction_item(budget, item, n_chunks, model, thinking, work_root, timeout, session_dir, raw_dir,
-                         target_threshold):
-    person = item["person"]
-    chunks = split_into_n_chunks(item["haystack"], n_chunks)
-    item_dir = work_root / f"item-{item['id']}"
-    corpus_dir = item_dir / "chunks"
-    corpus_dir.mkdir(parents=True, exist_ok=True)
-
-    file_names = []
-    for i, chunk_text in enumerate(chunks, start=1):
-        name = f"chunk-{i:02d}.txt"
-        (corpus_dir / name).write_text(chunk_text, encoding="utf-8")
-        file_names.append(f"chunks/{name}")
-
-    provider, model_id = (model.split("/", 1) + [""])[:2] if "/" in model else ("", model)
-    context_window = effective_context_window(provider, model_id)
-    reserve_tokens = max(1024, context_window - target_threshold)
-    keep_recent_tokens = 10000
-    pi_settings_dir = item_dir / ".pi"
-    pi_settings_dir.mkdir(parents=True, exist_ok=True)
-    (pi_settings_dir / "settings.json").write_text(json.dumps({
-        "compaction": {"enabled": True, "reserveTokens": reserve_tokens, "keepRecentTokens": keep_recent_tokens}
-    }, indent=2), encoding="utf-8")
-
-    prompt = COMPACTION_PROMPT_TEMPLATE.format(file_list=", ".join(file_names), person=person)
-    label = f"compaction/item-{item['id']}"
-
-    # This is ONE subprocess call from this script's point of view, but
-    # internally it is a multi-turn session that reads all n_chunks files
-    # and may compact several times -- the launch prompt itself is only a
-    # few hundred tokens, which would badly understate this call's real
-    # cost if used as the pre-flight estimate. Use a conservative worst
-    # case instead: the item's own real token count read twice over (a
-    # generous allowance for context that gets re-transmitted turn over
-    # turn before each compaction), so the hard-stop check is a genuine
-    # gate here too, not a rubber stamp.
-    item_real_tokens = real_token_count(item["haystack"])
-    worst_case_tokens = item_real_tokens * 2
-
-    result = call_pi(
-        budget, label, prompt, model, thinking, cost_estimate_tokens=worst_case_tokens,
-        cwd=str(item_dir), tools="read,ls", session_dir=str(session_dir),
-        raw_events_path=str(raw_dir / f"{label.replace('/', '-')}.raw.jsonl"),
-        timeout=timeout, approve=True, no_context_files=True,
-    )
-    scoring = score_babilong(result.answer_text, item["target"]) if result.ok else {
-        "raw_answer": None, "correct": False, "score": 0.0}
-
-    compactions = []
-    for ev in result.compactions:
-        inner = ev.get("result") or {}
-        compactions.append({
-            "type": ev.get("type"), "reason": ev.get("reason"),
-            "tokensBefore": inner.get("tokensBefore"),
-            "estimatedTokensAfter": inner.get("estimatedTokensAfter"),
-        })
-
-    return {
-        "id": item["id"], "person": person, "target": item["target"], "n_chunks": len(chunks),
-        "item_real_tokens": item_real_tokens,
-        "context_window": context_window, "reserve_tokens": reserve_tokens,
-        "keep_recent_tokens": keep_recent_tokens, "threshold_tokens": context_window - reserve_tokens,
-        "ok": result.ok, "error": result.error, "answer_text": result.answer_text, **scoring,
-        "compactions": compactions,
-        "num_compactions": len([c for c in compactions if c["type"] == "compaction_start"]),
-        "total_tokens": total_tokens_used(result),
-        "peak_context_tokens": peak_input_tokens(result),
-        "cost_usd": round(result.total_cost_usd, 6),
-        "wall_time_s": round(result.wall_time_s, 2),
     }
 
 
@@ -645,264 +359,283 @@ def run_compaction_item(budget, item, n_chunks, model, thinking, work_root, time
 # Reporting
 # ---------------------------------------------------------------------------
 
-def _part_a_cell(rec):
-    if not rec:
-        return "n/a", "n/a", "n/a"
-    correct = "correct" if rec.get("correct") else "WRONG"
-    return correct, rec.get("real_input_tokens", "n/a"), f"${rec.get('cost_usd', 0):.4f}"
+def wald_ci(p: float, n: int):
+    if n == 0:
+        return 0.0, 0.0
+    se = math.sqrt(p * (1 - p) / n)
+    return max(0.0, p - 1.96 * se), min(1.0, p + 1.96 * se)
 
 
-def write_summary_md(part_b_dir, results, items_768k, items_256k):
-    ids_768k = results["ids_768k"]
-    ids_256k = results["ids_256k"]
-    part_a_768k = results["part_a_on_same_ids"]["768k"]
-    part_a_256k = results["part_a_on_same_ids"]["256k"]
+def stats_for(rows, correct_key="correct"):
+    n = len(rows)
+    n_correct = sum(1 for r in rows if r.get(correct_key))
+    p = n_correct / n if n else 0.0
+    lo, hi = wald_ci(p, n)
+    return {"n": n, "n_correct": n_correct, "mean_pct": p * 100, "ci_lo_pct": lo * 100, "ci_hi_pct": hi * 100}
 
-    lines = ["# Part B: Isolate and Compress -- summary", "",
-             f"Model: `{results['model']}`, thinking `{results['thinking']}`, {results['n_chunks']} chunks per item.",
-             ""]
 
-    if results.get("aborted"):
-        lines += ["**RUN ABORTED BY THE BUDGET GUARD -- results below are partial.**",
-                   f"Reason: {results['abort_reason']}", ""]
+def write_report(part_b_dir, buckets, model, thinking, data_check, part_a_by_key, final_items):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
 
-    dc = results["data_check"]
-    lines += ["## Data check: how many times is the target person mentioned?", "",
-              dc["finding"], "",
-              f"Mention-count distribution across the {dc['n_items_checked']} items checked: "
-              f"{dc['mention_count_distribution']} (key = number of movement-sentence matches for "
-              f"that item's person). {dc['n_multi_mention']} items have more than one; "
-              f"{dc['n_cases_where_last_mention_disagrees_with_target']} of those disagree with "
-              f"taking the LAST one.", ""]
+    conditions = [("Part A (single call)", None), ("Isolate", "isolate"), ("Targeted summary", "summary")]
+    cells = {}
+    for b in buckets:
+        pa_rows = [r for (bkt, idn), r in part_a_by_key.items() if bkt == b]
+        s = stats_for(pa_rows, "correct")
+        s["mean_total_tokens"] = round(sum(r["real_input_tokens"] for r in pa_rows) / len(pa_rows)) if pa_rows else 0
+        s["mean_peak_context"] = s["mean_total_tokens"]
+        s["cost_usd"] = sum(r["cost_usd"] for r in pa_rows)
+        cells[(b, "Part A (single call)")] = s
 
-    # Per-item table across all three conditions + Part A on the same ids
-    lines += ["## Per-item results (same ids Part A scored, chosen by lowest id, not by correctness)", ""]
+        for label, cond in (("Isolate", "isolate"), ("Targeted summary", "summary")):
+            rows = [r for r in final_items if r["bucket"] == b and r["condition"] == cond]
+            s = stats_for(rows, "correct")
+            s["mean_total_tokens"] = round(sum(r["total_tokens"] for r in rows) / len(rows)) if rows else 0
+            s["mean_peak_context"] = round(sum(r["peak_context_tokens"] for r in rows) / len(rows)) if rows else 0
+            s["cost_usd"] = sum(r["cost_usd"] for r in rows)
+            cells[(b, label)] = s
+
+    lines = [
+        "# Part B: Isolate and Targeted summary -- summary", "",
+        f"Model `{model}`, thinking `{thinking}`. Chunking targets ~{CHUNK_TARGET_TOKENS:,} tokens per chunk; "
+        "the actual chunk count per item follows from its real token size.", "",
+        "## Data check: how many times is the target person mentioned?", "",
+        data_check["finding"], "",
+        "## Bucket x condition table", "",
+    ]
     rows = []
-    for item in items_768k:
-        idn = item["id"]
-        pa_verdict, pa_tokens, pa_cost = _part_a_cell(part_a_768k.get(str(idn)))
-        rows.append([f"{idn} (768k)", "Part A (single call)", pa_verdict, pa_tokens, pa_tokens, pa_cost])
-    for rec in results["isolate"]["items"]:
-        verdict = "correct" if rec["lead"]["correct"] else "WRONG"
-        rows.append([f"{rec['id']} (768k)", "Isolate", verdict, rec["total_tokens"], rec["peak_context_tokens"],
-                     f"${rec['cost_usd']:.4f}"])
-    for rec in results["summary_compress"]["items"]:
-        verdict = "correct" if rec["reask"]["correct"] else "WRONG"
-        rows.append([f"{rec['id']} (768k)", "Compress: targeted summary", verdict, rec["total_tokens"],
-                     rec["peak_context_tokens"], f"${rec['cost_usd']:.4f}"])
-    for item in items_256k:
-        idn = item["id"]
-        pa_verdict, pa_tokens, pa_cost = _part_a_cell(part_a_256k.get(str(idn)))
-        rows.append([f"{idn} (256k)", "Part A (single call)", pa_verdict, pa_tokens, pa_tokens, pa_cost])
-    for rec in results["compaction"]["items"]:
-        verdict = "correct" if rec["correct"] else ("ERROR" if not rec["ok"] else "WRONG")
-        rows.append([f"{rec['id']} (256k)", "Compress: pi auto-compaction", verdict, rec["total_tokens"],
-                     rec["peak_context_tokens"],
-                     f"${rec['cost_usd']:.4f} ({rec['num_compactions']} compaction(s))"])
-    lines.append(md_table(["id (bucket)", "condition", "verdict", "total tokens", "PEAK single-call context",
-                            "cost"], rows))
+    for b in buckets:
+        for label, _ in conditions:
+            s = cells.get((b, label))
+            if not s:
+                continue
+            rows.append([
+                b, label, f"{s['n_correct']}/{s['n']}", f"{s['mean_pct']:.1f}%",
+                f"[{s['ci_lo_pct']:.1f}%, {s['ci_hi_pct']:.1f}%]",
+                f"{s['mean_total_tokens']:,}", f"{s['mean_peak_context']:,}", f"${s['cost_usd']:.4f}",
+            ])
+    lines.append(md_table(
+        ["bucket", "condition", "correct/n", "mean", "95% CI", "mean total tokens",
+         "mean peak single-call context", "total cost"], rows))
     lines.append("")
 
-    # Condition-level aggregate + recovery statement
-    def acc(items, key_path):
-        if not items:
-            return 0, 0
-        correct = sum(1 for r in items if _dig(r, key_path))
-        return correct, len(items)
-
-    def _dig(r, path):
-        for p in path:
-            r = r[p]
-        return r
-
-    pa_768_correct = sum(1 for idn in ids_768k if part_a_768k.get(str(idn), {}).get("correct"))
-    iso_correct, iso_n = acc(results["isolate"]["items"], ["lead", "correct"])
-    summ_correct, summ_n = acc(results["summary_compress"]["items"], ["reask", "correct"])
-    pa_256_correct = sum(1 for idn in ids_256k if part_a_256k.get(str(idn), {}).get("correct"))
-    comp_correct, comp_n = acc(results["compaction"]["items"], ["correct"])
-
-    lines += ["## Condition summary", "",
-              f"Part A on these same 3 (768K) ids: {pa_768_correct}/3 correct.",
-              f"Isolate on the same 3 ids: {iso_correct}/{iso_n} correct.",
-              f"Compress (targeted summary) on the same 3 ids: {summ_correct}/{summ_n} correct.",
-              "",
-              f"Part A on these same 2 (256K) ids: {pa_256_correct}/2 correct.",
-              f"Compress (pi auto-compaction) on the same 2 ids: {comp_correct}/{comp_n} correct.",
-              ""]
-
-    def recovery_line(name, before, after, n):
-        if after > before:
-            verdict = f"RECOVERED accuracy Part A lost on these ids ({before}/{n} -> {after}/{n})."
-        elif after == before:
-            verdict = f"did NOT change accuracy on these ids ({before}/{n} -> {after}/{n})."
-        else:
-            verdict = f"did WORSE than Part A on these ids ({before}/{n} -> {after}/{n})."
-        return f"**{name}** {verdict}"
-
-    lines += [recovery_line("Isolate", pa_768_correct, iso_correct, iso_n),
-              recovery_line("Compress (targeted summary)", pa_768_correct, summ_correct, summ_n),
-              recovery_line("Compress (pi auto-compaction)", pa_256_correct, comp_correct, comp_n),
-              ""]
-
-    max_peak_iso = max((r["peak_context_tokens"] for r in results["isolate"]["items"]), default=0)
-    max_peak_summ = max((r["peak_context_tokens"] for r in results["summary_compress"]["items"]), default=0)
-    max_peak_comp = max((r["peak_context_tokens"] for r in results["compaction"]["items"]), default=0)
-    total_tok_iso = sum(r["total_tokens"] for r in results["isolate"]["items"])
-    total_tok_pa768 = sum(part_a_768k.get(str(i), {}).get("real_input_tokens", 0) for i in ids_768k)
-
-    lines += ["## The actual lesson: peak context, not total tokens", "",
-              f"Part A's single call for a 768K item had to hold the ENTIRE haystack in context at "
-              f"once: peak context = total input tokens = ~767,000. Isolate's peak single-call "
-              f"context across these 3 items maxes out at {max_peak_iso:,} tokens (one "
-              f"~1/{results['n_chunks']}-sized chunk) -- roughly a "
-              f"{(767000 / max_peak_iso) if max_peak_iso else 0:.1f}x reduction in what any ONE call "
-              f"had to attend to. Compress (targeted summary)'s peak is {max_peak_summ:,} for the "
-              f"same reason: its per-chunk calls still each read one full chunk to summarize it. "
-              f"Compress (auto-compaction)'s peak across the 256K items is {max_peak_comp:,} tokens, "
-              f"bounded near its configured threshold regardless of the 256K item size.", "",
-              f"Meanwhile TOTAL tokens barely move: isolate's 3 items sum to {total_tok_iso:,} tokens "
-              f"across all 3x{results['n_chunks']}+3 calls, against {total_tok_pa768:,} for Part A's "
-              f"3 single calls on the same ids -- the same haystack still gets read in full, just "
-              f"split across calls instead of handed to one. Isolation and targeted summarization do "
-              f"not save tokens; they cap what any single call has to hold in context at once.", ""]
-
-    budget = results["budget"]
-    lines += ["## Budget", "",
-              f"Target ${budget['target_usd']:.2f}, hard stop ${budget['hard_stop_usd']:.2f}. "
-              f"Actual total spend: ${budget['total_spent_usd']:.4f} across {len(budget['calls'])} pi calls.",
-              ""]
+    lines += ["## The lesson: peak context, not total tokens", "", (
+        "Part A's single call for an item has to hold the ENTIRE haystack in context at once: peak "
+        "context = total input tokens. Isolate's and Targeted summary's peak single-call context is "
+        "bounded near one chunk's size instead, while their TOTAL tokens barely move relative to Part "
+        "A -- the same haystack still gets read in full, just split across more, smaller calls. "
+        "Isolation and targeted summarization do not save tokens; they cap what any single call has to "
+        "hold in context at once."
+    ), ""]
 
     write_text(str(part_b_dir / "summary.md"), "\n".join(lines))
+    print(f"wrote {part_b_dir / 'summary.md'}")
+
+    # --- comparison.png ---
+    fig, ax = plt.subplots(figsize=(9.5, 6.2), dpi=150)
+    fig.patch.set_facecolor(SURFACE)
+    ax.set_facecolor(SURFACE)
+    x_positions = {b: i for i, b in enumerate(buckets)}
+    series = [("Part A (single call)", COLOR_PART_A, -0.12), ("Isolate", COLOR_ISOLATE, 0.0),
+              ("Targeted summary", COLOR_SUMMARY, 0.12)]
+    for label, color, offset in series:
+        xs, ys, lo, hi, ns = [], [], [], [], []
+        for b in buckets:
+            s = cells.get((b, label))
+            if not s:
+                continue
+            xs.append(x_positions[b] + offset)
+            ys.append(s["mean_pct"])
+            lo.append(s["mean_pct"] - s["ci_lo_pct"])
+            hi.append(s["ci_hi_pct"] - s["mean_pct"])
+            ns.append(s["n"])
+        if not xs:
+            continue
+        ax.errorbar(xs, ys, yerr=[lo, hi], color=color, linestyle="-", marker="o", markersize=8,
+                    linewidth=2.2, zorder=3, markeredgecolor=SURFACE, markeredgewidth=1.0, capsize=5,
+                    elinewidth=1.5, ecolor=color, label=f"{label} (95% CI, n={ns[0]})")
+
+    ax.set_xticks(list(x_positions.values()))
+    ax.set_xticklabels([b.upper() for b in buckets])
+    ax.set_xlim(-0.5, len(buckets) - 0.5)
+    ax.set_ylim(-5, 118)
+    ax.grid(True, which="major", axis="y", color=GRIDLINE, linewidth=1, zorder=0)
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+    for spine in ("left", "bottom"):
+        ax.spines[spine].set_color(GRIDLINE)
+    ax.set_xlabel("Bucket", color=INK_SECONDARY, fontsize=10)
+    ax.set_ylabel("Exact-match accuracy (0-100%)", color=INK_SECONDARY, fontsize=10)
+    ax.tick_params(colors=INK_SECONDARY, labelsize=9)
+    ax.set_title("BABILong qa1: Part A baseline vs. Isolate vs. Targeted summary, 95% CI",
+                 color=INK_PRIMARY, fontsize=12.5, loc="left", pad=14)
+    ax.legend(loc="upper right", frameon=False, fontsize=9, labelcolor=INK_SECONDARY)
+    caption = "Error bars are 95% Wald binomial CIs -- wide at small n; see summary.md for the full table."
+    fig.text(0.02, 0.005, caption, fontsize=7.5, color=INK_MUTED, wrap=True, va="bottom")
+    fig.subplots_adjust(bottom=0.16)
+    fig.savefig(part_b_dir / "comparison.png", facecolor=SURFACE, bbox_inches="tight")
+    print(f"wrote {part_b_dir / 'comparison.png'}")
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--model", default=MODEL)
-    ap.add_argument("--thinking", default=THINKING)
-    ap.add_argument("--out", default="evidence")
+    ap.add_argument("--model", default=DEFAULT_MODEL, help=f"provider/model-id (default: {DEFAULT_MODEL})")
+    ap.add_argument("--buckets", default="256k,512k,768k", help="comma-separated buckets to run")
+    ap.add_argument("--n", type=int, default=5, help="items per bucket (default: 5; same ids Part A used)")
+    ap.add_argument("--out", default="evidence", help="output directory (default: evidence)")
+    ap.add_argument("--concurrency", type=int, default=4, help="max concurrent pi calls (default: 4)")
     ap.add_argument("--timeout", type=int, default=900)
-    ap.add_argument("--n-chunks", type=int, default=N_CHUNKS_DEFAULT)
-    ap.add_argument("--compaction-threshold", type=int, default=50000,
-                     help="target token count at which compaction should fire")
-    ap.add_argument("--budget-target", type=float, default=BUDGET_TARGET_USD)
-    ap.add_argument("--hard-stop", type=float, default=HARD_STOP_USD)
+    ap.add_argument("--max-usd", type=float, default=None,
+                     help="stop submitting new calls once the running total would exceed this (default: no limit)")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and cost estimate; make no pi calls")
     args = ap.parse_args()
 
-    for path in (BENCHMARKS / "subset_qa1_topend.json", BENCHMARKS / "qa1_768k_survivors.json",
-                 BENCHMARKS / "babilong" / "data" / "qa1" / "256k.json",
-                 BASE / "evidence" / "part_a" / "results.json"):
-        if not path.exists():
-            print(f"ERROR: required file not found: {path}", file=sys.stderr)
-            sys.exit(1)
+    buckets = [b.strip() for b in args.buckets.split(",") if b.strip()]
+    items_by_bucket = load_items(buckets, args.n)
+    all_items = [it for b in buckets for it in items_by_bucket.get(b, [])]
+    if not all_items:
+        print("No items loaded -- check benchmarks/subset_qa1_topend.json and --buckets/--n.", file=sys.stderr)
+        sys.exit(1)
+
+    print("=== data check (mention counts) ===")
+    data_check = run_data_check(all_items)
+    print(data_check["finding"])
+    print(f"\nLoaded {len(all_items)} items across {len(buckets)} bucket(s).")
 
     out_dir = Path(args.out)
     part_b_dir = out_dir / "part_b"
-    part_b_dir.mkdir(parents=True, exist_ok=True)
     raw_dir = part_b_dir / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
-    sessions_dir = (out_dir / "sessions").resolve()
-
-    print("=== Part B step 0: data check (mention counts in the real BABILong qa1 data) ===", flush=True)
-    data_check = run_data_check()
-    print(data_check["finding"], flush=True)
-
-    ids_768k = lowest_ids_768k(3)
-    items_768k = load_768k_items(ids_768k)
-    items_256k = lowest_256k_items(2)
-    ids_256k = [it["id"] for it in items_256k]
-
-    part_a_768k = load_part_a_records("768k", ids_768k)
-    part_a_256k = load_part_a_records("256k", ids_256k)
-
-    print(f"\n768K items (isolate + targeted summary), lowest 3 ids in the bucket: {ids_768k}", flush=True)
-    for it in items_768k:
-        pa = part_a_768k.get(str(it["id"]), {})
-        print(f"  id={it['id']} person={it['person']} target={it['target']} "
-              f"part_a_correct={pa.get('correct')} part_a_answer={pa.get('raw_answer')!r}", flush=True)
-
-    print(f"\n256K items (auto-compaction), lowest 2 ids in the reconstructed bucket: {ids_256k}", flush=True)
-    for it in items_256k:
-        pa = part_a_256k.get(str(it["id"]), {})
-        print(f"  id={it['id']} person={it['person']} target={it['target']} "
-              f"part_a_correct={pa.get('correct')} part_a_answer={pa.get('raw_answer')!r}", flush=True)
+    work_root = BASE / "work" / "part_b"
+    session_dir = (out_dir / "sessions").resolve()
 
     if args.dry_run:
-        print("\n--dry-run: estimating cost, no pi calls will be made.", flush=True)
-        budget = Budget(hard_stop=args.hard_stop, target=args.budget_target)
-        est_total = 0.0
-        for it in items_768k:
-            n_tok = real_token_count(it["haystack"])
-            per_chunk = n_tok // args.n_chunks
-            iso = args.n_chunks * Budget.estimate_call_cost_usd(per_chunk, 60) + Budget.estimate_call_cost_usd(1500, 30)
-            summ = args.n_chunks * Budget.estimate_call_cost_usd(per_chunk, 250) + Budget.estimate_call_cost_usd(2200, 30)
-            est_total += iso + summ
-            print(f"  item {it['id']}: ~{n_tok:,} tok -> isolate ~${iso:.4f}, summary ~${summ:.4f}")
-        for it in items_256k:
-            n_tok = real_token_count(it["haystack"])
-            comp = Budget.estimate_call_cost_usd(n_tok * 2, 60)
-            est_total += comp
-            print(f"  item {it['id']}: ~{n_tok:,} tok -> compaction (worst case) ~${comp:.4f}")
-        print(f"\nEstimated total: ~${est_total:.4f} (target ${args.budget_target:.2f}, hard stop ${args.hard_stop:.2f})")
+        total_est = 0.0
+        for item in all_items:
+            n_chunks = chunk_count_for(item["haystack"])
+            per_chunk_tok = real_token_count(item["haystack"]) // n_chunks
+            for condition, out_g in (("isolate", 60), ("summary", 250)):
+                est = n_chunks * Budget.estimate_call_cost_usd(per_chunk_tok, out_g) + Budget.estimate_call_cost_usd(1500, 30)
+                total_est += est
+        print(f"\n--dry-run: {len(all_items)} items x 2 conditions, estimated total ~${total_est:.4f} "
+              f"(--max-usd default: no limit)")
         return
 
-    for root in ("work/part_b/isolate", "work/part_b/summary", "work/part_b/compaction"):
-        shutil.rmtree(root, ignore_errors=True)
+    budget = Budget(max_usd=args.max_usd)
 
-    budget = Budget(hard_stop=args.hard_stop, target=args.budget_target)
+    work = [(it["bucket"], it["id"], condition, it) for it in all_items for condition in ("isolate", "summary")]
+    print(f"{len(work)} (item, condition) pairs to run.")
+
+    errors = []
+    chunk_tasks = {}
+    for bucket, idn, condition, item in work:
+        n_chunks = chunk_count_for(item["haystack"])
+        chunks = split_into_n_chunks(item["haystack"], n_chunks)
+        tasks = [
+            make_chunk_task(budget, args.model, condition, item, i, chunk_text, work_root, session_dir, raw_dir, args.timeout)
+            for i, chunk_text in enumerate(chunks, start=1)
+        ]
+        chunk_tasks[(bucket, idn, condition)] = tasks
+
+    print(f"\n=== Stage A: {sum(len(v) for v in chunk_tasks.values())} chunk calls, "
+          f"max {args.concurrency} concurrent ===")
+    chunk_results = {k: [None] * len(v) for k, v in chunk_tasks.items()}
+    with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
+        futures = {ex.submit(t): (key, i) for key, tasks in chunk_tasks.items() for i, t in enumerate(tasks)}
+        done = 0
+        for fut in as_completed(futures):
+            key, i = futures[fut]
+            try:
+                chunk_results[key][i] = fut.result()
+            except (BudgetExceeded, Exception) as e:
+                errors.append((key, str(e)))
+                print(f"  *** ERROR for {key} chunk {i + 1}: {e} ***", file=sys.stderr, flush=True)
+            done += 1
+            if done % 20 == 0 or done == len(futures):
+                print(f"  ...{done}/{len(futures)} chunk calls done "
+                      f"(spend so far ${budget.snapshot()['completed_spend_usd']:.4f})", flush=True)
+
+    lead_tasks = {}
+    skipped = []
+    for key, results_list in chunk_results.items():
+        bucket, idn, condition = key
+        if any(r is None for r in results_list):
+            skipped.append(key)
+            continue
+        item = next(it for it in all_items if it["bucket"] == bucket and it["id"] == idn)
+        lead_tasks[key] = make_lead_task(budget, args.model, condition, item, results_list, work_root, session_dir,
+                                          raw_dir, args.timeout)
+    if skipped:
+        print(f"\nSkipping lead/reask for {len(skipped)} items with a failed chunk: {skipped}", file=sys.stderr)
+
+    print(f"\n=== Stage B: {len(lead_tasks)} lead/reask calls, max {args.concurrency} concurrent ===")
+    lead_results = {}
+    with ThreadPoolExecutor(max_workers=args.concurrency) as ex:
+        futures = {ex.submit(t): key for key, t in lead_tasks.items()}
+        for fut in as_completed(futures):
+            key = futures[fut]
+            try:
+                lead_results[key] = fut.result()
+                bucket, idn, condition = key
+                v = "correct" if lead_results[key]["correct"] else "WRONG"
+                print(f"  {condition} {bucket} id={idn}: {v} answer={lead_results[key].get('raw_answer')!r}", flush=True)
+            except (BudgetExceeded, Exception) as e:
+                errors.append((key, str(e)))
+                print(f"  *** ERROR for {key}: {e} ***", file=sys.stderr, flush=True)
+
+    final_items = []
+    for key, lead_rec in lead_results.items():
+        bucket, idn, condition = key
+        item = next(it for it in all_items if it["bucket"] == bucket and it["id"] == idn)
+        final_items.append(finalize_item(item, condition, chunk_results[key], lead_rec))
+
+    part_a_path = BASE / "evidence" / "part_a" / "results.json"
+    part_a_by_key = {}
+    if part_a_path.exists():
+        part_a_results = json.loads(part_a_path.read_text(encoding="utf-8"))
+        part_a_by_key = {(r["bucket"], r["id"]): r for r in part_a_results}
+        for rec in final_items:
+            pa = part_a_by_key.get((rec["bucket"], rec["id"]))
+            rec["part_a_correct"] = pa.get("correct") if pa else None
+            rec["part_a_real_input_tokens"] = pa.get("real_input_tokens") if pa else None
+            rec["part_a_cost_usd"] = pa.get("cost_usd") if pa else None
+    else:
+        print(f"NOTE: {part_a_path} not found -- results.json will not carry a Part A comparison; "
+              "run part_a_stress.py first for a full summary.md.", file=sys.stderr)
+
+    if errors:
+        print(f"\n{len(errors)} (item,condition) pairs failed: {errors}", file=sys.stderr)
+
     results = {
-        "model": args.model, "thinking": args.thinking, "n_chunks": args.n_chunks,
-        "ids_768k": ids_768k, "ids_256k": ids_256k,
+        "model": args.model, "thinking": THINKING, "buckets": buckets,
+        "chunk_target_tokens": CHUNK_TARGET_TOKENS,
         "data_check": data_check,
-        "part_a_on_same_ids": {"768k": part_a_768k, "256k": part_a_256k},
-        "isolate": {"items": []}, "summary_compress": {"items": []}, "compaction": {"items": []},
-        "aborted": False, "abort_reason": None,
+        "items": sorted(final_items, key=lambda r: (r["bucket"], r["id"], r["condition"])),
+        "n_errors": len(errors), "errors": [{"key": list(k), "error": e} for k, e in errors],
+        "budget": budget.snapshot(),
     }
-
-    try:
-        print("\n=== Part B (1/3): Isolate ===", flush=True)
-        for item in items_768k:
-            rec = run_isolate_item(budget, item, args.n_chunks, args.model, args.thinking,
-                                    Path("work/part_b/isolate"), args.timeout, sessions_dir, raw_dir)
-            results["isolate"]["items"].append(rec)
-            print(f"  isolate item {item['id']}: verdict={'correct' if rec['lead']['correct'] else 'WRONG'} "
-                  f"(answer={rec['lead']['raw_answer']!r}) total_tokens={rec['total_tokens']} "
-                  f"peak_context={rec['peak_context_tokens']} cost=${rec['cost_usd']:.4f}", flush=True)
-
-        print("\n=== Part B (2/3): Compress -- targeted summary ===", flush=True)
-        for item in items_768k:
-            rec = run_summary_item(budget, item, args.n_chunks, args.model, args.thinking,
-                                    Path("work/part_b/summary"), args.timeout, sessions_dir, raw_dir)
-            results["summary_compress"]["items"].append(rec)
-            print(f"  summary item {item['id']}: verdict={'correct' if rec['reask']['correct'] else 'WRONG'} "
-                  f"(answer={rec['reask']['raw_answer']!r}) total_tokens={rec['total_tokens']} "
-                  f"peak_context={rec['peak_context_tokens']} cost=${rec['cost_usd']:.4f}", flush=True)
-
-        print("\n=== Part B (3/3): Compress -- pi's own auto-compaction (256K items) ===", flush=True)
-        for item in items_256k:
-            rec = run_compaction_item(budget, item, args.n_chunks, args.model, args.thinking,
-                                       Path("work/part_b/compaction"), args.timeout, sessions_dir, raw_dir,
-                                       args.compaction_threshold)
-            results["compaction"]["items"].append(rec)
-            print(f"  compaction item {item['id']}: verdict={'correct' if rec['correct'] else 'WRONG'} "
-                  f"(answer={rec['raw_answer']!r}) total_tokens={rec['total_tokens']} "
-                  f"peak_context={rec['peak_context_tokens']} compactions={rec['num_compactions']} "
-                  f"cost=${rec['cost_usd']:.4f}", flush=True)
-    except BudgetExceeded as e:
-        results["aborted"] = True
-        results["abort_reason"] = str(e)
-        print(f"\n*** BUDGET GUARD TRIPPED: {e} ***\n", file=sys.stderr)
-
-    results["budget"] = {
-        "target_usd": args.budget_target, "hard_stop_usd": args.hard_stop,
-        "total_spent_usd": round(budget.spent, 6), "calls": budget.log,
-    }
-
     write_json(str(part_b_dir / "results.json"), results)
-    write_summary_md(part_b_dir, results, items_768k, items_256k)
-    print(f"\nWrote {part_b_dir / 'results.json'} and {part_b_dir / 'summary.md'}")
-    print(f"Total spend: ${budget.spent:.4f} (target ${args.budget_target:.2f}, hard stop ${args.hard_stop:.2f})")
-    if results["aborted"]:
+    print(f"\nWrote {part_b_dir / 'results.json'} with {len(results['items'])} item-condition rows.")
+
+    csv_path = part_b_dir / "results.csv"
+    fieldnames = ["bucket", "id", "condition", "n_chunks", "correct", "raw_answer", "target", "total_tokens",
+                  "peak_context_tokens", "cost_usd", "part_a_correct", "part_a_real_input_tokens", "part_a_cost_usd"]
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for r in results["items"]:
+            writer.writerow({k: (r.get(k) if r.get(k) is not None else "") for k in fieldnames})
+    print(f"Wrote {csv_path}")
+
+    if part_a_by_key:
+        write_report(part_b_dir, buckets, args.model, THINKING, data_check, part_a_by_key, final_items)
+
+    snap = budget.snapshot()
+    print(f"\nTotal spend: ${snap['completed_spend_usd']:.4f} across {snap['n_calls']} calls "
+          f"(--max-usd: {snap['max_usd'] if snap['max_usd'] is not None else 'no limit'})")
+    if errors:
         sys.exit(1)
 
 

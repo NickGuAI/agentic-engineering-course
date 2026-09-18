@@ -2,16 +2,15 @@
 
 Please fill in the following checklist as you complete your work.
 
-Date of the runs:
-Model name used:
-Harness name and version (pi --version):
-Corpus name and token size:
-The five questions and gold answers:
-Input tokens and cached tokens per run:
-Input length where Part A went wrong:
-Sub-agent split and returned conclusions:
-Summary artifact content and size:
-Memory file with dated entries:
-Session-three answers with and without memory:
-What remains unknown:
+Date of the runs: 
+Model name used: 
+Harness name and version (pi --version): 
+The BABILong item ids and buckets used: 
+Input tokens (and, for Part B, peak single-call context tokens) per run: 
+The bucket where Part A's accuracy first dropped: 
+What the Isolate sub-agents reported per chunk: 
+The targeted-summary text per chunk: 
+The memory file's dated entries: 
+Session-three answers with and without memory: 
+What remains unknown: 
 Each member's contribution:

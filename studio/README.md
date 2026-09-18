@@ -24,9 +24,9 @@ Here are the files for this studio:
 * [studio-02/studio_setup_for_agent.md](studio-02/studio_setup_for_agent.md) (for your coding agent to follow during setup)
 * [studio-02/HANDOFF.md](studio-02/HANDOFF.md) (for Nick and the TAs)
 * [studio-02/GRADING_RUBRIC.md](studio-02/GRADING_RUBRIC.md) (for the TAs)
-* [studio-02/starter/](studio-02/starter/) (starter files: `AGENTS.md`, `questions.json`, `EXPLANATION_TEMPLATE.md`, and `evidence/README.md`)
+* [studio-02/starter/](studio-02/starter/) (starter files: `AGENTS.md`, `EXPLANATION_TEMPLATE.md`, and `evidence/README.md`)
 
-In this studio, your team will push a coding agent past its useful context length using the open-source terminal coding agent pi. You will watch its answers degrade under stress, then resolve the issue using isolation with sub-agents and compression with summaries and compaction. After resolving the context limit issue, you will give your agent a persistent, file-based memory that spans three distinct sessions, and then compare its performance against a memoryless baseline.
+In this studio, your team will push a coding agent past its useful context length using the open-source terminal coding agent pi. You will watch its answers degrade under stress, then resolve the issue using isolation with sub-agents and targeted summarization. After resolving the context limit issue, you will give your agent a persistent, file-based memory that spans three distinct sessions, and then compare its performance against a memoryless baseline.
 
 The scripts used to generate the graded evidence are located in `code/studio-02/` (see its own README for the exact commands to run).
 
