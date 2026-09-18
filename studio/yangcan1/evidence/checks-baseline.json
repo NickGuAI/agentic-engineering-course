@@ -1,0 +1,72 @@
+{
+  "verified_at_utc": "2026-09-18T16:55:48.512190+00:00",
+  "team": "yangcan1",
+  "phase": "baseline",
+  "passed": true,
+  "scope": "Mechanical artifact checks only. Factual meaning requires source-based editorial review; this script does not generate model outputs or verify model tool history.",
+  "checks": [
+    {
+      "name": "one_changed_condition",
+      "passed": true,
+      "detail": "['source_url']"
+    },
+    {
+      "name": "missing_source_condition",
+      "passed": true,
+      "detail": "Changed input must have a null URL"
+    },
+    {
+      "name": "known_baseline_source",
+      "passed": true,
+      "detail": "Human-selected source"
+    },
+    {
+      "name": "four_card_fields",
+      "passed": true,
+      "detail": "['Task', 'Context', 'Success criteria', 'Restrictions']"
+    },
+    {
+      "name": "baseline.exists",
+      "passed": true,
+      "detail": "outputs/baseline.md"
+    },
+    {
+      "name": "baseline.complete",
+      "passed": true,
+      "detail": "['COMPLETE']"
+    },
+    {
+      "name": "baseline.source_link",
+      "passed": true,
+      "detail": "Exact selected URL in metadata"
+    },
+    {
+      "name": "baseline.publication_date",
+      "passed": true,
+      "detail": "Date checked against the retrieved source"
+    },
+    {
+      "name": "baseline.checked_on",
+      "passed": true,
+      "detail": "Date agrees with run input"
+    },
+    {
+      "name": "baseline.sections",
+      "passed": true,
+      "detail": "['Brief', 'Interpretation', 'Limits']"
+    },
+    {
+      "name": "baseline.word_limit",
+      "passed": true,
+      "detail": "160 prose words"
+    }
+  ],
+  "sha256": {
+    "outputs/baseline.md": "18621896e66c99139f4306a9332e125d12dd7570e4baa362d80d141a8d0df6d4",
+    "delegation-card.md": "7fe414d6e8a9e56db6159b94697bb658ce7e94515d63a8ec1af98b92aa0f0959",
+    "prompts/research-update.md": "f7938312951f15752740f4ce14e873df41409ae05eff14a7e064211f6530d06c",
+    "runs/baseline-input.json": "6ef312428ba5dcc0436fd02adcf855a2773b9f9afc83c3ffa0680342bde66f37",
+    "runs/changed-input.json": "17879be64dad5822435a5d0425ffedebd06b385318dfaf243f3be6707c93ebbf",
+    "code/verify.py": "08bd5a5be86a7665761bf53c124b17787ada182a8231df966ee618d2bbc7d327"
+  }
+}
