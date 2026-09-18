@@ -1,23 +1,13 @@
 # Delegation Card
 
-Task name:
+## Task
+What specific artifact or result are you delegating to the AI?
 
-Desired outcome:
+## Context
+What relevant inputs, files, tools, target audience, or learning preferences should the AI consider?
 
-Who will use the result, and why they need it:
+## Success criteria
+What is the observable check or metric that defines a successful run?
 
-Permitted directories and sources:
-
-Allowed operations:
-
-Explicitly prohibited operations:
-
-Decisions reserved for a person:
-
-Inspectable evidence required for completion:
-
-Time or compute budget:
-
-How to respond to missing information, conflicts, or changed permissions:
-
-Task owner / builder / verifier:
+## Restrictions
+Are there any prohibited actions, resource limits, or human approval boundaries to enforce?

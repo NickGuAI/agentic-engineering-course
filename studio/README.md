@@ -3,10 +3,10 @@
 ## Studio 01: Agent Execution & Delegation
 
 Welcome to your first studio repository. Our workspace structure includes:
-* `studio/README.md` & [studio-01/instruction/delegation-card.md](studio-01/instruction/delegation-card.md) (for your delegation card)
-* [studio-01/instruction/first-run.md](studio-01/instruction/first-run.md) (for recording results)
-* [studio-01/instruction/code/harness_demo.py](studio-01/instruction/code/harness_demo.py) & [studio-01/instruction/code/test_harness.py](studio-01/instruction/code/test_harness.py) (our demo and test suites)
-* `studio-01/instruction/code/studio_fixture/*` & [studio-01/instruction/code/README.md](studio-01/instruction/code/README.md) (offline mock files)
+* [studio-01/instruction/Studio01.md](studio-01/instruction/Studio01.md) (exercise)
+* [studio-01/instruction/README.md](studio-01/instruction/README.md) (workspace and PR workflow used for Studio 01)
+* [studio-01/instruction/delegation-card.md](studio-01/instruction/delegation-card.md) (template)
+* [studio-01/instruction/code/](studio-01/instruction/code/) (offline demo and tests)
 
 During this project, you will draft a bounded delegation card, execute a baseline run to record a complete trace, adjust a single parameter or condition to evaluate the impact, and note whether the human user chooses to accept or defer.
 
