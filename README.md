@@ -1,6 +1,8 @@
 # COMS W4995-009: Agentic Engineering (Fall 2026)
 
-Public course materials; not a roster or gradebook. Meets Fridays 1:10 to 3:40 p.m., 303 Uris Hall.
+Welcome to Agentic Engineering. We meet Fridays from 1:10 to 3:40 p.m. in 303 Uris Hall.
+
+This repository hosts class materials. Note that this public repository is for resources only, not an official roster or gradebook.
 
 ### Start here
 1. Install GitHub CLI and run `gh auth login`.
