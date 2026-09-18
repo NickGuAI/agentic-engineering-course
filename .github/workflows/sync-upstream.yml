@@ -28,9 +28,20 @@ jobs:
           git config user.email "course-sync@users.noreply.github.com"
           git remote add upstream https://github.com/NickGuAI/agentic-engineering-course.git
           git fetch upstream main
-          if git merge --no-edit upstream/main; then
-            git push origin HEAD
-          else
+          UP="upstream/main"
+          if git merge-base --is-ancestor "$UP" HEAD; then
+            echo "Already up to date."
+            exit 0
+          fi
+          BASE="$(git merge-base HEAD "$UP")"
+          # The Actions token is not allowed to write .github/workflows. When the course
+          # changed a workflow file, stop here and ask the student to pull once by hand.
+          if ! git diff --quiet "$BASE" "$UP" -- .github/workflows; then
+            echo "::error::Course workflow files changed upstream and this job cannot update them. Run 'git pull upstream main' locally, then push. Syncs resume automatically afterwards."
+            exit 1
+          fi
+          if ! git merge --no-edit "$UP"; then
             echo "::error::Merge conflict with course materials. Run 'git pull upstream main' locally, resolve, commit, push."
             exit 1
           fi
+          git push origin HEAD
