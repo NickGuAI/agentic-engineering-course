@@ -16,12 +16,12 @@
 
 7. Opened [OpenAI News](https://openai.com/news/) on September 17, 2026. The first four displayed entries were:
 
-   | Display order | Post | Publication date |
-   | --- | --- | --- |
-   | 1 | Introducing Astra for Law | September 17, 2026 |
-   | 2 | Reimagining advertising with AI | September 16, 2026 |
-   | 3 | How to connect AI usage to business value | September 16, 2026 |
-   | 4 | Our framework for reporting model misalignment | September 16, 2026 |
+   | Display order | Post                                           | Publication date   |
+   | ------------- | ---------------------------------------------- | ------------------ |
+   | 1             | Introducing Astra for Law                      | September 17, 2026 |
+   | 2             | Reimagining advertising with AI                | September 16, 2026 |
+   | 3             | How to connect AI usage to business value      | September 16, 2026 |
+   | 4             | Our framework for reporting model misalignment | September 16, 2026 |
 
 8. Selected the first three. Because several posts share a date and the extracted listing did not expose publication times, used the site’s displayed order as the tie-breaker. The digest therefore identifies the newest listed posts, without claiming verified intraday timestamps.
 9. Opened all three linked article pages and checked titles, dates, and author sections. All list OpenAI as author. Reopened the business-value article to read its body after the initial combined output showed only its opening lines. Sources:
