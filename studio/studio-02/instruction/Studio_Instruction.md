@@ -14,7 +14,7 @@ Ensure your machine meets the following environment prerequisites:
 - **GitHub CLI `gh`**: logged in via `gh auth login`
 
 ## Get your private repo
-One team member runs `bash bootstrap.sh` from any directory. This script automatically clones the public course repository, creates a private copy under your own GitHub account, pushes it, and grants access to the instructor and TAs. Once done, that team member must add the other teammates as collaborators on GitHub under the repository's **Settings > Collaborators**.
+One team member runs `bash bootstrap.sh` from any directory. This script automatically clones the public course repository, creates a private copy named `agentic-engineering-private` under your own GitHub account (your public fork from Studio 01 is untouched), pushes it, and grants access to the instructor and TAs. Once done, that team member must add the other teammates as collaborators on GitHub under the repository's **Settings > Collaborators**.
 
 ## Connect a model
 Configure your model access using one of these two supported paths:

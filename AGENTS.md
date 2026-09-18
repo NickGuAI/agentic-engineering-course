@@ -1,6 +1,6 @@
 # COMS W4995-009: Agentic Engineering
 
-This repository contains course materials for Columbia University, Fall 2026. Do not work directly in this public repository. Create a private repository for your team by cloning this repo and running `bash bootstrap.sh`. The GitHub Action "Sync course materials" merges daily upstream updates automatically. Sync on demand by running `git pull upstream main`.
+This repository contains course materials for Columbia University, Fall 2026. Do not work directly in this public repository. Create a private repository for your team by cloning this repo and running `bash bootstrap.sh`; it creates `agentic-engineering-private` under your account. The GitHub Action "Sync course materials" merges daily upstream updates automatically. Sync on demand by running `git pull upstream main`.
 
 ## Repository Layout
 

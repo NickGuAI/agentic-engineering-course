@@ -9,14 +9,14 @@ Creates your own private copy of the course repo on GitHub, invites your
 teammates as collaborators, and prints the URL plus next steps.
 
 Arguments:
-  repo-name   Name for your private repo (default: agentic-engineering-course)
+  repo-name   Name for your private repo (default: agentic-engineering-private)
 
 Options:
   -h, --help  Show this help message and exit
 EOF
 }
 
-REPO_NAME="agentic-engineering-course"
+REPO_NAME="agentic-engineering-private"
 
 for arg in "$@"; do
   case "$arg" in
@@ -78,6 +78,12 @@ if [ "$ORIGIN_IS_PRIVATE" = true ]; then
   echo "    'origin' already points to a private repo; pushing instead of creating."
   git push -u origin HEAD
 else
+  GH_LOGIN="$(gh api user -q .login)"
+  if gh repo view "$GH_LOGIN/$REPO_NAME" >/dev/null 2>&1; then
+    echo "error: you already have a repo named $GH_LOGIN/$REPO_NAME." >&2
+    echo "       pick another name: bash bootstrap.sh my-agentic-engineering" >&2
+    exit 1
+  fi
   gh repo create "$REPO_NAME" --private --source=. --remote=origin --push
 fi
 
