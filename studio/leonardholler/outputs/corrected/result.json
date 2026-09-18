@@ -1,0 +1,16 @@
+{
+  "status": "COMPLETE WITHIN INSPECTED COVERAGE",
+  "article_count": 5,
+  "missing_sources": [],
+  "checks": {
+    "at_most_five": true,
+    "unique_urls": true,
+    "dates_in_window": true,
+    "required_fields": true,
+    "all_sources_available": true
+  },
+  "input_sha256": "60bb69ca259c5e563f9ed28fd3920f935f509e5e0b788f5c69bdb0d53d3f46ea",
+  "run_date": "2026-09-18",
+  "executed_at_utc": "2026-09-18T17:14:32.753914+00:00",
+  "mode": "Replay of agent-collected source readings; no fresh network requests"
+}

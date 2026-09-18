@@ -1,0 +1,69 @@
+[
+  {
+    "step": "baseline",
+    "command": [
+      "python3",
+      "-B",
+      "code/digest.py",
+      "--input",
+      "outputs/source-readings.json",
+      "--date",
+      "2026-09-18",
+      "--run-id",
+      "baseline"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"run\": \"baseline\",\n  \"status\": \"COMPLETE WITHIN INSPECTED COVERAGE\",\n  \"article_count\": 5,\n  \"missing_sources\": [],\n  \"checks\": {\n    \"at_most_five\": true,\n    \"unique_urls\": true,\n    \"dates_in_window\": true,\n    \"required_fields\": true,\n    \"all_sources_available\": true\n  },\n  \"input_sha256\": \"60bb69ca259c5e563f9ed28fd3920f935f509e5e0b788f5c69bdb0d53d3f46ea\",\n  \"run_date\": \"2026-09-18\",\n  \"executed_at_utc\": \"2026-09-18T17:14:32.678179+00:00\",\n  \"mode\": \"Replay of agent-collected source readings; no fresh network requests\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "step": "missing-input",
+    "command": [
+      "python3",
+      "-B",
+      "code/digest.py",
+      "--input",
+      "outputs/source-readings-missing-openai.json",
+      "--date",
+      "2026-09-18",
+      "--run-id",
+      "missing-input"
+    ],
+    "exit_code": 2,
+    "stdout": "{\n  \"run\": \"missing-input\",\n  \"status\": \"PARTIAL\",\n  \"article_count\": 2,\n  \"missing_sources\": [\n    \"openai-news\"\n  ],\n  \"checks\": {\n    \"at_most_five\": true,\n    \"unique_urls\": true,\n    \"dates_in_window\": true,\n    \"required_fields\": true,\n    \"all_sources_available\": false\n  },\n  \"input_sha256\": \"f6614ef03424242e3476b652ef28897a834e7bae1a8682434c7e56f31271dba6\",\n  \"run_date\": \"2026-09-18\",\n  \"executed_at_utc\": \"2026-09-18T17:14:32.714401+00:00\",\n  \"mode\": \"Replay of agent-collected source readings; no fresh network requests\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "step": "corrected",
+    "command": [
+      "python3",
+      "-B",
+      "code/digest.py",
+      "--input",
+      "outputs/source-readings.json",
+      "--date",
+      "2026-09-18",
+      "--run-id",
+      "corrected"
+    ],
+    "exit_code": 0,
+    "stdout": "{\n  \"run\": \"corrected\",\n  \"status\": \"COMPLETE WITHIN INSPECTED COVERAGE\",\n  \"article_count\": 5,\n  \"missing_sources\": [],\n  \"checks\": {\n    \"at_most_five\": true,\n    \"unique_urls\": true,\n    \"dates_in_window\": true,\n    \"required_fields\": true,\n    \"all_sources_available\": true\n  },\n  \"input_sha256\": \"60bb69ca259c5e563f9ed28fd3920f935f509e5e0b788f5c69bdb0d53d3f46ea\",\n  \"run_date\": \"2026-09-18\",\n  \"executed_at_utc\": \"2026-09-18T17:14:32.753914+00:00\",\n  \"mode\": \"Replay of agent-collected source readings; no fresh network requests\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "step": "unit-tests",
+    "command": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "code",
+      "-v"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "test_baseline (test_digest.DigestTests.test_baseline) ... ok\ntest_duplicate_and_missing_date_rejected (test_digest.DigestTests.test_duplicate_and_missing_date_rejected) ... ok\ntest_empty_window (test_digest.DigestTests.test_empty_window) ... ok\ntest_missing_source_is_visible_and_restoration_recovers (test_digest.DigestTests.test_missing_source_is_visible_and_restoration_recovers) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n"
+  }
+]
