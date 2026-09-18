@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
-"""plot_qa1_curve.py -- regenerate evidence/part_a/summary.md and
-evidence/part_a/qa1_curve.png from evidence/part_a/results.json (BABILong
-qa1 accuracy vs. real input tokens, with 95% Wald binomial CI error bars and
-n annotated per point).
+"""plot_qa1_curve.py -- regenerate part_a/summary.md and part_a/qa1_curve.png
+from part_a/results.json (BABILong qa1 accuracy vs. real input tokens, with
+95% Wald binomial CI error bars and n annotated per point).
 
-Run from code/studio-02/, after part_a_stress.py.
+Run from studio/studio-02/instruction/code/, after part_a_stress.py.
 
 Usage:
-  python3 plot_qa1_curve.py
+  python3 plot_qa1_curve.py --team <name>
 """
 import argparse
 import json
 import math
+import re
+import sys
 from pathlib import Path
 
 # matplotlib is imported lazily inside main(), not here at module level, so
 # --help works even before `pip install -r requirements.txt` has been run.
 
-BASE = Path(__file__).resolve().parent
-PART_A_DIR = BASE / "evidence" / "part_a"
+CODE_DIR = Path(__file__).resolve().parent
+SUBMISSION_ROOT = CODE_DIR.parent.parent / "submission"
+TEAM_NAME_RE = re.compile(r"^[A-Za-z0-9._-]{1,40}$")
 BUCKET_ORDER = ["256k", "512k", "768k"]
 
 SURFACE = "#fcfcfb"
@@ -42,9 +44,35 @@ def wald_ci(p: float, n: int):
     return max(0.0, p - 1.96 * se), min(1.0, p + 1.96 * se)
 
 
+def resolve_team_and_out(team, out):
+    """Shared --team/--out resolution (kept identical in part_a_stress.py,
+    part_b_isolate_compress.py, part_c_memory.py, plot_qa1_curve.py).
+
+    Returns (out_dir, sessions_dir). Exits 2 with a one-line stderr message if
+    neither --team nor --out is given, or if --team fails validation."""
+    if team is not None and (team == "_template" or not TEAM_NAME_RE.match(team)):
+        print(f"error: --team must match {TEAM_NAME_RE.pattern!r} and must not be '_template'", file=sys.stderr)
+        sys.exit(2)
+    if out:
+        out_dir = Path(out)
+    elif team:
+        out_dir = SUBMISSION_ROOT / team / "evidence"
+    else:
+        print("error: pass --team <name> (writes to studio/studio-02/submission/<name>/evidence/) "
+              "or --out <dir>", file=sys.stderr)
+        sys.exit(2)
+    sessions_dir = (CODE_DIR / "work" / "sessions" / (team or "default")).resolve()
+    return out_dir, sessions_dir
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.parse_args()
+    ap.add_argument("--team", default=None, help="team name; reads from studio/studio-02/submission/<name>/evidence/")
+    ap.add_argument("--out", default=None, help="output directory (overrides --team; default: derived from --team)")
+    args = ap.parse_args()
+
+    out_dir, _sessions_dir = resolve_team_and_out(args.team, args.out)
+    PART_A_DIR = out_dir / "part_a"
 
     import matplotlib
     matplotlib.use("Agg")

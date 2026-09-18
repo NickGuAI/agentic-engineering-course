@@ -1,33 +1,31 @@
-# Studio 01: Agent Execution & Delegation
+# Studio README
+
+## Studio 01: Agent Execution & Delegation
 
 Welcome to your first studio repository. Our workspace structure includes:
-* `studio/README.md` & `studio/delegation-card.md` (for your delegation card)
-* `studio/first-run.md` (for recording results)
-* `code/harness_demo.py` & `code/test_harness.py` (our demo and test suites)
-* `code/studio_fixture/*` & `code/README.md` (offline mock files)
+* `studio/README.md` & [studio-01/instruction/delegation-card.md](studio-01/instruction/delegation-card.md) (for your delegation card)
+* [studio-01/instruction/first-run.md](studio-01/instruction/first-run.md) (for recording results)
+* [studio-01/instruction/code/harness_demo.py](studio-01/instruction/code/harness_demo.py) & [studio-01/instruction/code/test_harness.py](studio-01/instruction/code/test_harness.py) (our demo and test suites)
+* `studio-01/instruction/code/studio_fixture/*` & [studio-01/instruction/code/README.md](studio-01/instruction/code/README.md) (offline mock files)
 
-In this studio, you will write one bounded [delegation card](delegation-card.md), run a baseline execution keeping the complete trace, change one condition and check the system again, and record what the human accepted or deferred.
+During this project, you will draft a bounded delegation card, execute a baseline run to record a complete trace, adjust a single parameter or condition to evaluate the impact, and note whether the human user chooses to accept or defer.
 
-To run the offline fallback fixture from the repository root:
+To run the offline fallback fixture:
 ```bash
-python3 code/harness_demo.py --output /tmp/agentic-first-run.jsonl
-(cd code && python3 -m unittest -v test_harness)
+python3 studio/studio-01/instruction/code/harness_demo.py --output /tmp/agentic-first-run.jsonl
+(cd studio/studio-01/instruction/code && python3 -m unittest -v test_harness)
 ```
-This code executes local fixtures only. It requires no network calls, LLM access, or package installations. Note that any incorrect installation line in the fixture README is test data, not a command to run. The offline example demonstrates controlled execution and evidence freshness, not model capability. Instructors will select and explain live harness options in class; no paid API setups are needed beforehand.
 
-# Studio 02: Context Window Stress Test & Memory Architecture
+These scripts run purely within a local offline context, requiring no external network requests, active model connections, or package installations. Any erroneous configuration or installation command in the fixture's internal README is intended purely as mock test data, not as a step to execute. This self-contained setup is designed to show how traces are preserved and how validation state is verified, rather than to demonstrate the raw capability of any particular language model. Class sessions will cover options for running the live integration, meaning no paid API configurations are required before you begin.
 
-Welcome to Studio 02. In this unit, we will look at how agent performance degrades when context windows grow too large, and how to build file-based persistent memory systems to solve this problem.
+## Studio 02: Context Window Stress Test & Memory Architecture
 
-Here are the files for this studio:
-* [studio-02/Studio_Instruction.md](studio-02/Studio_Instruction.md) (what to do)
-* [studio-02/studio_setup_for_agent.md](studio-02/studio_setup_for_agent.md) (for your coding agent to follow during setup)
-* [studio-02/HANDOFF.md](studio-02/HANDOFF.md) (for Nick and the TAs)
-* [studio-02/GRADING_RUBRIC.md](studio-02/GRADING_RUBRIC.md) (for the TAs)
-* [studio-02/starter/](studio-02/starter/) (starter files: `AGENTS.md`, `EXPLANATION_TEMPLATE.md`, and `evidence/README.md`)
+In this studio, the team will push a coding agent past its useful context length and watch it degrade. You will fix it with context isolation and targeted summarization. Finally, you will give the agent persistent file-based memory across three sessions and compare it against a memoryless baseline.
 
-In this studio, your team will push a coding agent past its useful context length using the open-source terminal coding agent pi. You will watch its answers degrade under stress, then resolve the issue using isolation with sub-agents and targeted summarization. After resolving the context limit issue, you will give your agent a persistent, file-based memory that spans three distinct sessions, and then compare its performance against a memoryless baseline.
+* [studio-02/instruction/Studio_Instruction.md](studio-02/instruction/Studio_Instruction.md) (what to do)
+* [studio-02/instruction/GRADING_RUBRIC.md](studio-02/instruction/GRADING_RUBRIC.md) (how it's graded)
+* [studio-02/instruction/code/](studio-02/instruction/code/) (the scripts)
+* [studio-02/instruction/reference-evidence/](studio-02/instruction/reference-evidence/) (reference evidence)
+* [studio-02/submission/](studio-02/submission/) (where your team's work goes)
 
-The scripts used to generate the graded evidence are located in `code/studio-02/` (see its own README for the exact commands to run).
-
-Unlike Studio 01, this studio does not include an offline mock fixture and requires a working model connection using either a subscription login or an API key.
+Unlike Studio 01, Studio 02 has no offline mock fixture and requires a working model connection — either a ChatGPT Plus/Pro subscription login or an API key — to run.

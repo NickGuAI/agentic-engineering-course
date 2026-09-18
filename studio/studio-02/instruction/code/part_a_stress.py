@@ -12,11 +12,11 @@ benchmarks/select_qa1_topend.py; see setup.sh), takes the lowest --n item
 ids in each requested bucket, and asks pi one at a time.
 
 Usage:
-  python3 part_a_stress.py --model openai/gpt-5.6-luna --buckets 256k,512k,768k --n 5
+  python3 part_a_stress.py --model openai/gpt-5.6-luna --buckets 256k,512k,768k --n 5 --team <name>
 
-Run from code/studio-02/. Re-runnable: overwrites its own
-evidence/part_a/results.json / results.csv / summary.md; never deletes
-anything else under evidence/.
+Run from studio/studio-02/instruction/code/. Re-runnable: overwrites its own
+part_a/results.json / results.csv / summary.md; never deletes anything else
+under the evidence output directory.
 """
 import argparse
 import csv
@@ -32,7 +32,31 @@ BASE = Path(__file__).resolve().parent
 BENCHMARKS = BASE / "benchmarks"
 BUCKET_ORDER = ["256k", "512k", "768k"]
 
+SUBMISSION_ROOT = Path(__file__).resolve().parent.parent.parent / "submission"
+TEAM_NAME_RE = re.compile(r"^[A-Za-z0-9._-]{1,40}$")
+
 _ARTICLE_RE = re.compile(r"^(the|a|an)\s+", re.IGNORECASE)
+
+
+def resolve_team_and_out(team, out):
+    """Shared --team/--out resolution (see part_a_stress.py, part_b_isolate_compress.py,
+    part_c_memory.py, plot_qa1_curve.py -- kept identical in each script).
+
+    Returns (out_dir, sessions_dir). Exits 2 with a one-line stderr message if
+    neither --team nor --out is given, or if --team fails validation."""
+    if team is not None and (team == "_template" or not TEAM_NAME_RE.match(team)):
+        print(f"error: --team must match {TEAM_NAME_RE.pattern!r} and must not be '_template'", file=sys.stderr)
+        sys.exit(2)
+    if out:
+        out_dir = Path(out)
+    elif team:
+        out_dir = SUBMISSION_ROOT / team / "evidence"
+    else:
+        print("error: pass --team <name> (writes to studio/studio-02/submission/<name>/evidence/) "
+              "or --out <dir>", file=sys.stderr)
+        sys.exit(2)
+    sessions_dir = (BASE / "work" / "sessions" / (team or "default")).resolve()
+    return out_dir, sessions_dir
 
 
 def normalize_room(s: str) -> str:
@@ -76,11 +100,15 @@ def main():
     ap.add_argument("--model", default=DEFAULT_MODEL, help=f"provider/model-id (default: {DEFAULT_MODEL})")
     ap.add_argument("--buckets", default="256k,512k,768k", help="comma-separated buckets to test")
     ap.add_argument("--n", type=int, default=5, help="items per bucket (default: 5)")
-    ap.add_argument("--out", default="evidence", help="output directory (default: evidence)")
+    ap.add_argument("--team", default=None, help="team name; writes to studio/studio-02/submission/<name>/evidence/")
+    ap.add_argument("--out", default=None,
+                     help="output directory (overrides --team; default: derived from --team)")
     ap.add_argument("--work-dir", default="work/part_a", help="scratch cwd for the pi process (holds .pi/settings.json)")
     ap.add_argument("--timeout", type=int, default=1800)
     ap.add_argument("--thinking", default="low")
     args = ap.parse_args()
+
+    out_dir, sessions_dir = resolve_team_and_out(args.team, args.out)
 
     buckets = [b.strip() for b in args.buckets.split(",") if b.strip()]
     items_by_bucket = load_items(buckets, args.n)
@@ -95,12 +123,10 @@ def main():
         json.dumps({"compaction": {"enabled": False}}, indent=2), encoding="utf-8"
     )
 
-    out_dir = Path(args.out)
     part_a_dir = out_dir / "part_a"
     part_a_dir.mkdir(parents=True, exist_ok=True)
     raw_dir = part_a_dir / "raw"
     raw_dir.mkdir(parents=True, exist_ok=True)
-    sessions_dir = (out_dir / "sessions").resolve()
 
     results = []
     for bucket in buckets:

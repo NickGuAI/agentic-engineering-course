@@ -58,7 +58,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib.pi_runner import DEFAULT_MODEL, md_table, real_slice_by_tokens, real_token_count, run_pi, write_json, write_text  # noqa: E402
-from part_a_stress import BASE, load_items, score_babilong  # noqa: E402
+from part_a_stress import BASE, load_items, resolve_team_and_out, score_babilong  # noqa: E402
 
 THINKING = "low"
 CHUNK_TARGET_TOKENS = 96_000
@@ -484,13 +484,17 @@ def main():
     ap.add_argument("--model", default=DEFAULT_MODEL, help=f"provider/model-id (default: {DEFAULT_MODEL})")
     ap.add_argument("--buckets", default="256k,512k,768k", help="comma-separated buckets to run")
     ap.add_argument("--n", type=int, default=5, help="items per bucket (default: 5; same ids Part A used)")
-    ap.add_argument("--out", default="evidence", help="output directory (default: evidence)")
+    ap.add_argument("--team", default=None, help="team name; writes to studio/studio-02/submission/<name>/evidence/")
+    ap.add_argument("--out", default=None,
+                     help="output directory (overrides --team; default: derived from --team)")
     ap.add_argument("--concurrency", type=int, default=4, help="max concurrent pi calls (default: 4)")
     ap.add_argument("--timeout", type=int, default=900)
     ap.add_argument("--max-usd", type=float, default=None,
                      help="stop submitting new calls once the running total would exceed this (default: no limit)")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and cost estimate; make no pi calls")
     args = ap.parse_args()
+
+    out_dir, session_dir = resolve_team_and_out(args.team, args.out)
 
     buckets = [b.strip() for b in args.buckets.split(",") if b.strip()]
     items_by_bucket = load_items(buckets, args.n)
@@ -504,12 +508,7 @@ def main():
     print(data_check["finding"])
     print(f"\nLoaded {len(all_items)} items across {len(buckets)} bucket(s).")
 
-    out_dir = Path(args.out)
     part_b_dir = out_dir / "part_b"
-    raw_dir = part_b_dir / "raw"
-    raw_dir.mkdir(parents=True, exist_ok=True)
-    work_root = BASE / "work" / "part_b"
-    session_dir = (out_dir / "sessions").resolve()
 
     if args.dry_run:
         total_est = 0.0
@@ -519,9 +518,14 @@ def main():
             for condition, out_g in (("isolate", 60), ("summary", 250)):
                 est = n_chunks * Budget.estimate_call_cost_usd(per_chunk_tok, out_g) + Budget.estimate_call_cost_usd(1500, 30)
                 total_est += est
-        print(f"\n--dry-run: {len(all_items)} items x 2 conditions, estimated total ~${total_est:.4f} "
+        print(f"\nplanned output directory: {part_b_dir}")
+        print(f"--dry-run: {len(all_items)} items x 2 conditions, estimated total ~${total_est:.4f} "
               f"(--max-usd default: no limit)")
         return
+
+    raw_dir = part_b_dir / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    work_root = BASE / "work" / "part_b"
 
     budget = Budget(max_usd=args.max_usd)
 
@@ -591,7 +595,7 @@ def main():
         item = next(it for it in all_items if it["bucket"] == bucket and it["id"] == idn)
         final_items.append(finalize_item(item, condition, chunk_results[key], lead_rec))
 
-    part_a_path = BASE / "evidence" / "part_a" / "results.json"
+    part_a_path = out_dir / "part_a" / "results.json"
     part_a_by_key = {}
     if part_a_path.exists():
         part_a_results = json.loads(part_a_path.read_text(encoding="utf-8"))

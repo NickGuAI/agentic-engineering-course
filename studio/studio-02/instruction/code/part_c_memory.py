@@ -24,10 +24,11 @@ date is injected into that same system-prompt text so decisions.md gets a real
 date instead of whatever the model would otherwise guess.
 
 Usage:
-  python3 part_c_memory.py --model openai/gpt-5.6-luna --out evidence
+  python3 part_c_memory.py --model openai/gpt-5.6-luna --team <name>
 
-Run from code/studio-02/. Re-runnable: pass --fresh to wipe work/part_c/ and
-start the three sessions over (evidence/ is still never deleted).
+Run from studio/studio-02/instruction/code/. Re-runnable: pass --fresh to wipe
+work/part_c/ and start the three sessions over (the evidence output directory
+is still never deleted).
 """
 import argparse
 import datetime as _dt
@@ -45,6 +46,32 @@ from lib.pi_runner import (  # noqa: E402
     write_json,
     write_text,
 )
+
+CODE_DIR = Path(__file__).resolve().parent
+SUBMISSION_ROOT = CODE_DIR.parent.parent / "submission"
+TEAM_NAME_RE = re.compile(r"^[A-Za-z0-9._-]{1,40}$")
+
+
+def resolve_team_and_out(team, out):
+    """Shared --team/--out resolution (kept identical in part_a_stress.py,
+    part_b_isolate_compress.py, part_c_memory.py, plot_qa1_curve.py).
+
+    Returns (out_dir, sessions_dir). Exits 2 with a one-line stderr message if
+    neither --team nor --out is given, or if --team fails validation."""
+    if team is not None and (team == "_template" or not TEAM_NAME_RE.match(team)):
+        print(f"error: --team must match {TEAM_NAME_RE.pattern!r} and must not be '_template'", file=sys.stderr)
+        sys.exit(2)
+    if out:
+        out_dir = Path(out)
+    elif team:
+        out_dir = SUBMISSION_ROOT / team / "evidence"
+    else:
+        print("error: pass --team <name> (writes to studio/studio-02/submission/<name>/evidence/) "
+              "or --out <dir>", file=sys.stderr)
+        sys.exit(2)
+    sessions_dir = (CODE_DIR / "work" / "sessions" / (team or "default")).resolve()
+    return out_dir, sessions_dir
+
 
 FALLBACK_AGENTS_MD = """# Project memory
 
@@ -64,7 +91,7 @@ Never delete or rewrite earlier entries in `decisions.md`; only append.
 # The student-facing AGENTS.md template shipped alongside this studio.
 # Preferred if present at run time; the fallback above carries the same instructions
 # so this script works whether or not that file has been written yet.
-STARTER_AGENTS_MD = Path(__file__).resolve().parent.parent.parent / "studio" / "studio-02" / "starter" / "AGENTS.md"
+STARTER_AGENTS_MD = Path(__file__).resolve().parent / "part_c" / "AGENTS.md"
 
 SESSION1_PROMPT = (
     "Plan a small command-line note-taking tool. You must make and record ALL THREE of the "
@@ -89,9 +116,10 @@ SESSION3_PROMPT = "What did we decide in session 1 about the note-taking tool, a
 # Applied to BOTH conditions' recall step (session 3, with-memory and baseline alike), via
 # --append-system-prompt. Giving the recall step only a "read" tool (no "ls") was not enough
 # on its own: observed directly, a no-memory baseline still found the sibling with-memory
-# directory's decisions.md by guessing relative paths and climbing to code/studio-02/README.md
-# (which documents the with-memory/no-memory layout) with plain `read` calls, no listing
-# needed. This instruction is the second, load-bearing half of that fix.
+# directory's decisions.md by guessing relative paths and climbing to this
+# directory's README.md (which documents the with-memory/no-memory layout)
+# with plain `read` calls, no listing needed. This instruction is the second,
+# load-bearing half of that fix.
 SCOPE_INSTRUCTION = (
     "Only use information already available in your current working directory to answer. "
     "Do not read, open, or guess the contents of any file in a parent directory, a sibling "
@@ -182,15 +210,15 @@ def get_agents_md_text() -> str:
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--model", default=DEFAULT_MODEL)
-    ap.add_argument("--out", default="evidence")
+    ap.add_argument("--team", default=None, help="team name; writes to studio/studio-02/submission/<name>/evidence/")
+    ap.add_argument("--out", default=None, help="output directory (overrides --team; default: derived from --team)")
     ap.add_argument("--timeout", type=int, default=600)
     ap.add_argument("--fresh", action="store_true", help="wipe work/part_c/ and start the three sessions over")
     args = ap.parse_args()
 
-    out_dir = Path(args.out)
+    out_dir, sessions_dir = resolve_team_and_out(args.team, args.out)
     part_c_dir = out_dir / "part_c"
     part_c_dir.mkdir(parents=True, exist_ok=True)
-    sessions_dir = (out_dir / "sessions").resolve()
 
     with_memory_dir = Path("work/part_c/with-memory")
     no_memory_dir = Path("work/part_c/no-memory")
@@ -203,13 +231,13 @@ def main():
 
     agents_md_text = get_agents_md_text()
     if STARTER_AGENTS_MD.exists():
-        repo_root = Path(__file__).resolve().parent.parent.parent
+        code_dir = Path(__file__).resolve().parent
         try:
-            agents_md_source = str(STARTER_AGENTS_MD.relative_to(repo_root))
+            agents_md_source = str(STARTER_AGENTS_MD.relative_to(code_dir))
         except ValueError:
             agents_md_source = str(STARTER_AGENTS_MD)
     else:
-        agents_md_source = "(built-in fallback: studio/studio-02/starter/AGENTS.md was not found)"
+        agents_md_source = "(built-in fallback: part_c/AGENTS.md was not found)"
     (with_memory_dir / "AGENTS.md").write_text(agents_md_text, encoding="utf-8")
     print(f"AGENTS.md source: {agents_md_source}")
 
@@ -323,7 +351,7 @@ def main():
     # Tools are deliberately just "read", with no "ls". That alone turned out not
     # to be enough: a run gave the no-memory baseline just "read" and it still
     # found the sibling with-memory/decisions.md, by guessing relative paths and
-    # climbing with plain `read` calls to code/studio-02/README.md (which
+    # climbing with plain `read` calls to this directory's README.md (which
     # documents the with-memory/no-memory layout), then reading the sibling
     # directly -- no directory listing needed. SCOPE_INSTRUCTION, applied to both
     # conditions via --append-system-prompt, is the fix that actually stopped it.

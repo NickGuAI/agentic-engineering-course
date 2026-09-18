@@ -1,7 +1,7 @@
 # Part C: File-based Memory vs. Memoryless Baseline -- summary
 
 Model: `openai/gpt-5.6-luna`
-AGENTS.md source: studio/studio-02/starter/AGENTS.md
+AGENTS.md source: part_c/AGENTS.md
 
 Session 1 wrote decisions.md with ~3 dated entries.
 Session 2 (unrelated fib.py task) left decisions.md with ~4 dated entries.
