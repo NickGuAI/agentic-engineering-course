@@ -1,0 +1,11 @@
+# Raw agent session logs: inspect locally, never commit (course rule).
+outputs/**/trace.raw.jsonl
+
+# Snapshots of course-owned / downloaded material. Rebuild with: python3 code/build_references.py
+references/*
+!references/README.md
+!references/lectures/
+references/lectures/*
+!references/lectures/.gitkeep
+
+__pycache__/
