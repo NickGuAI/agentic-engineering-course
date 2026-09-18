@@ -1,0 +1,109 @@
+{
+  "model": "openai/gpt-5.6-luna",
+  "agents_md_source": "studio/studio-02/starter/AGENTS.md",
+  "session1": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 3,
+      "output": 61,
+      "cacheRead": 1734,
+      "cacheWrite": 183,
+      "reasoning": 0,
+      "totalTokens": 1981,
+      "cost": {
+        "input": 6.000000000000001e-07,
+        "output": 7.319999999999999e-05,
+        "cacheRead": 3.468e-05,
+        "cacheWrite": 4.575e-05,
+        "total": 0.00015423
+      }
+    },
+    "cost_usd": 0.00108,
+    "retried": false,
+    "decisions_md_created": true,
+    "dated_entries": 3,
+    "missing_after_retry": []
+  },
+  "session2": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 3,
+      "output": 37,
+      "cacheRead": 2059,
+      "cacheWrite": 163,
+      "reasoning": 0,
+      "totalTokens": 2262,
+      "cost": {
+        "input": 6.000000000000001e-07,
+        "output": 4.4399999999999995e-05,
+        "cacheRead": 4.118e-05,
+        "cacheWrite": 4.075e-05,
+        "total": 0.00012692999999999998
+      }
+    },
+    "cost_usd": 0.00147,
+    "fib_py_created": true,
+    "dated_entries_after": 4
+  },
+  "session3_with_memory": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 3,
+      "output": 82,
+      "cacheRead": 0,
+      "cacheWrite": 1026,
+      "reasoning": 0,
+      "totalTokens": 1111,
+      "cost": {
+        "input": 6.000000000000001e-07,
+        "output": 9.839999999999999e-05,
+        "cacheRead": 0,
+        "cacheWrite": 0.0002565,
+        "total": 0.0003555
+      }
+    },
+    "cost_usd": 0.000606,
+    "answer_text": "In session 1, we decided to:\n\n- Store each note as its own plain-text file, because it\u2019s human-readable and requires no parsing library.\n- Name the tool `note`, because it\u2019s short, clear, and directly describes its purpose.\n- Record dates as `YYYY-MM-DD` (ISO 8601), because the format is unambiguous and sorts chronologically.",
+    "recall": {
+      "storage_format": "correct",
+      "command_name": "correct",
+      "date_format": "correct"
+    }
+  },
+  "session3_no_memory_baseline": {
+    "ok": true,
+    "error": null,
+    "usage": {
+      "input": 3,
+      "output": 43,
+      "cacheRead": 1355,
+      "cacheWrite": 676,
+      "reasoning": 0,
+      "totalTokens": 2077,
+      "cost": {
+        "input": 6.000000000000001e-07,
+        "output": 5.16e-05,
+        "cacheRead": 2.71e-05,
+        "cacheWrite": 0.000169,
+        "total": 0.0002483
+      }
+    },
+    "cost_usd": 0.001614,
+    "answer_text": "I can\u2019t determine that from the current workspace. There are no session-1 notes, transcript, or memory files available here, so I don\u2019t have evidence of what was decided or why.",
+    "recall": {
+      "storage_format": "missing",
+      "command_name": "missing",
+      "date_format": "missing"
+    }
+  },
+  "ground_truth_blocks": {
+    "storage_format": "- 2026-09-17 \u2014 Storage format: Store notes as one plain-text file per note because it is human-readable and requires no parsing library.\n- 2026-09-17 \u2014 Command name: Name the tool `note` because it is short, clear, and directly describes its purpose.\n- 2026-09-17 \u2014 Note date format: Record each note date in ISO 8601 `YYYY-MM-DD` format because it is unambiguous and sorts chronologically.\n- 2026-09-17 \u2014 Fibonacci implementation: Start the sequence at 0 and generate it iteratively, printing each of the first 20 numbers on its own line because this is the conventional sequence definition and avoids recursive overhead.",
+    "command_name": "- 2026-09-17 \u2014 Storage format: Store notes as one plain-text file per note because it is human-readable and requires no parsing library.\n- 2026-09-17 \u2014 Command name: Name the tool `note` because it is short, clear, and directly describes its purpose.\n- 2026-09-17 \u2014 Note date format: Record each note date in ISO 8601 `YYYY-MM-DD` format because it is unambiguous and sorts chronologically.\n- 2026-09-17 \u2014 Fibonacci implementation: Start the sequence at 0 and generate it iteratively, printing each of the first 20 numbers on its own line because this is the conventional sequence definition and avoids recursive overhead.",
+    "date_format": "- 2026-09-17 \u2014 Storage format: Store notes as one plain-text file per note because it is human-readable and requires no parsing library.\n- 2026-09-17 \u2014 Command name: Name the tool `note` because it is short, clear, and directly describes its purpose.\n- 2026-09-17 \u2014 Note date format: Record each note date in ISO 8601 `YYYY-MM-DD` format because it is unambiguous and sorts chronologically.\n- 2026-09-17 \u2014 Fibonacci implementation: Start the sequence at 0 and generate it iteratively, printing each of the first 20 numbers on its own line because this is the conventional sequence definition and avoids recursive overhead."
+  },
+  "total_cost_usd": 0.00477,
+  "rescored_note": "Recall classifier anchors broadened; the saved answers were re-scored without new model calls."
+}

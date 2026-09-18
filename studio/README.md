@@ -1,56 +1,31 @@
-# Studio01 Workspace
+# Studio README
 
-This directory is the root workspace for Studio01. All shared materials, including the exercise guide [Studio01.md](Studio01.md) and the template [delegation-card.md](delegation-card.md), are located here.
+## Studio 01: Agent Execution & Delegation
 
-## Directory Structure
+Welcome to your first studio repository. Our workspace structure includes:
+* [studio-01/instruction/Studio01.md](studio-01/instruction/Studio01.md) (exercise)
+* [studio-01/instruction/README.md](studio-01/instruction/README.md) (workspace and PR workflow used for Studio 01)
+* [studio-01/instruction/delegation-card.md](studio-01/instruction/delegation-card.md) (template)
+* [studio-01/instruction/code/](studio-01/instruction/code/) (offline demo and tests)
 
-Students should create their working folder directly under `studio/` using their team name or username. Do not create a `studio-01` subfolder.
+During this project, you will draft a bounded delegation card, execute a baseline run to record a complete trace, adjust a single parameter or condition to evaluate the impact, and note whether the human user chooses to accept or defer.
 
-Example layout; organize code and outputs as useful:
-
-```text
-studio/
-├── Studio01.md
-├── README.md
-├── delegation-card.md
-└── <team-name-or-username>/       <-- Create this folder
-    ├── delegation-card.md         <-- Copied template
-    ├── code/                      <-- Your implementation
-    ├── outputs/                   <-- Run outputs/logs
-    └── explanation-<username>.md  <-- Personal explanation
-```
-
-## Agent Guidelines
-
-1. **Identify Folder:** Confirm the student's `<team-name>` or `<username>` and their chosen job before selecting or creating a folder.
-2. **Work Scope:** Keep changes and outputs within the chosen folder. Copy `delegation-card.md` to it only if missing. Do not overwrite shared materials or other students' files.
-3. **Card Fields:** Help the students fill exactly four fields: Task, Context, Success criteria, Restrictions. Do not add credentials or private info.
-
-## Student Explanations
-
-Agents must leave the explanation for each student to write. Each student must write a personal `explanation-<username>.md` by hand (no AI-generated text). For teams, each member writes their own separate file. Keep it brief:
-
-- A brief summary of what the agents did.
-- Human decisions and why they were made.
-- How results were verified.
-- Any uncertainties.
-
-## PR and Cleanup
-
-- Create a dedicated non-main working branch from updated `main` (forks are fine).
-- Commit your folder's work, completed card, and every student's explanation.
-- Open a PR targeting `main` in `NickGuAI/agentic-engineering-course`; summarize the changes and checks for review.
-- After confirming a successful merge into `main`, delete the merged local and remote working branch. Preserve `main` and branches with unmerged work.
-
-CourseWorks remains the official source for submission instructions and deadlines.
-
-## Offline fallback demo
-
-To run the offline fallback fixture from the repository root:
-
+To run the offline fallback fixture:
 ```bash
-python3 code/harness_demo.py --output /tmp/agentic-first-run.jsonl
-(cd code && python3 -m unittest -v test_harness)
+python3 studio/studio-01/instruction/code/harness_demo.py --output /tmp/agentic-first-run.jsonl
+(cd studio/studio-01/instruction/code && python3 -m unittest -v test_harness)
 ```
 
-This code executes local fixtures only. It requires no network calls, LLM access, or package installations. Note that any incorrect installation line in the fixture README is test data, not a command to run. The offline example demonstrates controlled execution and evidence freshness, not model capability.
+These scripts run purely within a local offline context, requiring no external network requests, active model connections, or package installations. Any erroneous configuration or installation command in the fixture's internal README is intended purely as mock test data, not as a step to execute. This self-contained setup is designed to show how traces are preserved and how validation state is verified, rather than to demonstrate the raw capability of any particular language model. Class sessions will cover options for running the live integration, meaning no paid API configurations are required before you begin.
+
+## Studio 02: Context Window Stress Test & Memory Architecture
+
+In this studio, the team will push a coding agent past its useful context length and watch it degrade. You will fix it with context isolation and targeted summarization. Finally, you will give the agent persistent file-based memory across three sessions and compare it against a memoryless baseline.
+
+* [studio-02/instruction/Studio_Instruction.md](studio-02/instruction/Studio_Instruction.md) (what to do)
+* [studio-02/instruction/GRADING_RUBRIC.md](studio-02/instruction/GRADING_RUBRIC.md) (how it's graded)
+* [studio-02/instruction/code/](studio-02/instruction/code/) (the scripts)
+* [studio-02/instruction/reference-evidence/](studio-02/instruction/reference-evidence/) (reference evidence)
+* [studio-02/submission/](studio-02/submission/) (where your team's work goes)
+
+Unlike Studio 01, Studio 02 has no offline mock fixture and requires a working model connection — either a ChatGPT Plus/Pro subscription login or an API key — to run.

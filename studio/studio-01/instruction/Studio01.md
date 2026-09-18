@@ -2,7 +2,7 @@
 
 **Workshop Duration:** 75 minutes.
 
-Ensure you have completed the setup in [Course Prep](../docs/course-prep.md).
+Ensure you have completed the setup in [Course Prep](../../../docs/course-prep.md).
 
 ## 1. Frame
 

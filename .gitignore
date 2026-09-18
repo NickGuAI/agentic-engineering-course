@@ -1,6 +1,15 @@
-.env
-.env.*
 __pycache__/
 *.pyc
+*.env
+.env
+**/work/
+**/benchmarks/babilong/
+**/benchmarks/qa1_768k_survivors.json
+**/benchmarks/subset_qa1_topend.json
+**/*.raw.jsonl
+**/submission/*/evidence/sessions/
+.env.*
 .DS_Store
 demo_trace.jsonl
+**/reference-evidence/sessions/
+**/reference-evidence/raw_topend_extend/
