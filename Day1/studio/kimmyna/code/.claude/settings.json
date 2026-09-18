@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(course-materials/**)",
+      "Write(course-materials/**)",
+      "Edit(approved/**)",
+      "Write(approved/**)",
+      "Edit(scripts/**)",
+      "Write(scripts/**)",
+      "WebSearch",
+      "WebFetch",
+      "Bash(rm:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)"
+    ],
+    "allow": [
+      "Read(**)",
+      "Write(summaries/**)",
+      "Write(runs/**)",
+      "Bash(python3 scripts/check_summary.py:*)"
+    ],
+    "defaultMode": "ask"
+  }
+}
