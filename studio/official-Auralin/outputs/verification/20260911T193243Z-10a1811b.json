@@ -1,0 +1,20 @@
+{
+  "run_id": "20260911T193243Z-10a1811b",
+  "articles": 10,
+  "failed_sources": 1,
+  "notify": true,
+  "digest": "20260911T193243Z-10a1811b.md",
+  "model_called": true,
+  "model_item_types": [
+    "agent_message"
+  ],
+  "model_usage": [
+    {
+      "input_tokens": 66742,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 2042,
+      "reasoning_output_tokens": 31
+    }
+  ]
+}
