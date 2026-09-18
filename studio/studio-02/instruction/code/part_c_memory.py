@@ -132,8 +132,8 @@ CATEGORIES = {
     "storage_format": {
         # The model paraphrases freely ("Store each note as its own plain-text file"),
         # so anchor on the decision's SUBJECT, not on the label we happened to use in
-        # the prompt. An earlier version required the literal word "storage" and scored
-        # a perfectly correct answer as missing.
+        # the prompt; requiring the literal word "storage" would score a correct
+        # paraphrase as missing.
         "anchor": re.compile(r"stor(?:e|age|ing)|file per note|plain[- ]text|markdown|\bjson\b|\bformat\b", re.IGNORECASE),
         "label": "storage format for notes",
     },

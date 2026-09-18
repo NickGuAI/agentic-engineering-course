@@ -9,6 +9,6 @@
 | Part C | 2 | The evidence files (`summary.md` and `results.json`) exist for that part under the team's submission folder, and the script completed, in the final push. |
 | Explanation | 4 | All six sections of EXPLANATION.md are filled in. |
 
-Submission deliverables are located in `studio/studio-02/submission/<team>/`.
+One submission per team. Deliverables are located in `studio/studio-02/submission/<team>/`.
 
 A late or absent submission scores 0 for that row.

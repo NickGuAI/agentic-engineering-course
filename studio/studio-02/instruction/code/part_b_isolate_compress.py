@@ -39,8 +39,8 @@ stops submitting new calls once the running total would exceed it (checked
 before every call, not after); by default there is no limit.
 
 Usage:
-  python3 part_b_isolate_compress.py --dry-run
-  python3 part_b_isolate_compress.py --model openai/gpt-5.6-luna --concurrency 4
+  python3 part_b_isolate_compress.py --dry-run --team <team>
+  python3 part_b_isolate_compress.py --model openai/gpt-5.6-luna --team <team> --concurrency 4
 """
 import argparse
 import csv
