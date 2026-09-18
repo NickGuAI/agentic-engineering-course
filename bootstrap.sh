@@ -90,7 +90,11 @@ for id in NickGuAI arielbenavi thevoid12; do
   fi
 done
 
-REPO_URL="$(gh repo view --json url -q .url)"
+REPO_URL="$(git remote get-url origin)"
+REPO_URL="${REPO_URL%.git}"
+if [[ "$REPO_URL" == git@github.com:* ]]; then
+  REPO_URL="https://github.com/${REPO_URL#git@github.com:}"
+fi
 echo ""
 echo "$REPO_URL"
 echo "Add your teammates: Settings > Collaborators"
