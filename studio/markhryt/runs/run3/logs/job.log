@@ -1,0 +1,7 @@
+2026-09-11 16:13:00,715 INFO    newsdigest.ingest: anthropic-news: 12 articles listed
+2026-09-11 16:13:00,901 INFO    newsdigest.job: anthropic-news: 10 new (cap 10)
+2026-09-11 16:13:01,082 INFO    newsdigest.ingest: anthropic-engineering: 25 articles listed
+2026-09-11 16:13:01,454 INFO    newsdigest.job: anthropic-engineering: 10 new (cap 10)
+2026-09-11 16:13:01,665 ERROR   newsdigest.job: source openai-news failed: not a valid RSS/XML feed (not well-formed (invalid token): line 726, column 301990); response starts with '<!DOCTYPE html><html data-dpl-id="dpl_C89ggTu3TcV7knNiZsSyoe'
+2026-09-11 16:13:06,524 WARNING newsdigest.job: no Claude credentials (ANTHROPIC_API_KEY unset, no `ant auth login` profile); fell back to extractive summaries
+2026-09-11 16:13:06,548 INFO    newsdigest.job: run complete: degraded -> ../runs/run3/digests/2026-09-11T201300+0000.md

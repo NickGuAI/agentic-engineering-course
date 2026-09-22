@@ -1,0 +1,4 @@
+# Run the digest every 6 hours. Install with:  crontab -e   (paste the line below, fix the paths)
+# The API key must come from the environment; never commit it. Put it in ~/.newsdigest.env as
+#   export ANTHROPIC_API_KEY=...
+0 */6 * * * . $HOME/.newsdigest.env; cd /ABSOLUTE/PATH/TO/studio/markhryt/code && /usr/bin/env python3 run_job.py >> ../outputs/logs/cron.log 2>&1

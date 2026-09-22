@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- macOS launchd job: runs every 6 hours.
+     Install:  cp com.markhryt.newsdigest.plist ~/Library/LaunchAgents/
+               launchctl load ~/Library/LaunchAgents/com.markhryt.newsdigest.plist
+     Remove:   launchctl unload ~/Library/LaunchAgents/com.markhryt.newsdigest.plist
+     Replace /ABSOLUTE/PATH/TO and set the API key via EnvironmentVariables (keep this file out of git
+     once it contains a key) or use a wrapper script that sources ~/.newsdigest.env. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.markhryt.newsdigest</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/env</string>
+    <string>python3</string>
+    <string>/ABSOLUTE/PATH/TO/studio/markhryt/code/run_job.py</string>
+  </array>
+  <key>WorkingDirectory</key><string>/ABSOLUTE/PATH/TO/studio/markhryt/code</string>
+  <key>StartInterval</key><integer>21600</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/ABSOLUTE/PATH/TO/studio/markhryt/outputs/logs/launchd.out.log</string>
+  <key>StandardErrorPath</key><string>/ABSOLUTE/PATH/TO/studio/markhryt/outputs/logs/launchd.err.log</string>
+</dict>
+</plist>
