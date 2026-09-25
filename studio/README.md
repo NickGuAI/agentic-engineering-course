@@ -32,9 +32,9 @@ Unlike Studio 01, Studio 02 has no offline mock fixture and requires a working m
 
 ## Studio 03: Agent Loops and Controlled Comparison
 
-Build a minimal OpenAI Responses loop and save a direct/ReAct run, then compare it with a plan-first run on the same research question. Students run the assignment on their laptops in their team’s private course repository.
+Build one minimal OpenAI Responses loop on your laptop, then compare a direct/ReAct run with a plan-first run on the same question. Your Bash tool calls the official Tavily CLI.
 
 * [studio-03/README.md](studio-03/README.md) (overview)
 * [studio-03/instruction/Studio_Instruction.md](studio-03/instruction/Studio_Instruction.md) (assignment and evidence requirements)
-* [studio-03/instruction/code/](studio-03/instruction/code/) (starter, runner, support, and fixed question)
-* [studio-03/submission/](studio-03/submission/) (team submissions and explanation template)
+* [studio-03/instruction/code/](studio-03/instruction/code/) (setup, official CLI, and fixed question)
+* [studio-03/submission/](studio-03/submission/) (one-file template and team submissions)

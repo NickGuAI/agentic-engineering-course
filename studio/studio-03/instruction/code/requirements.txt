@@ -1,2 +1,3 @@
 openai>=2.25.0,<3
 python-dotenv>=1.0.0
+tavily-cli==0.1.8

@@ -1,35 +1,35 @@
 # Studio 03 Explanation
 
 **Team:** [team name]
-
-**Members:** [UNI or GitHub IDs]
+**Members:** [names or IDs]
 
 ## Loop
 
-[Describe your instruction, tool-call parsing and result pairing, checkpoint, stop condition, and escalation path.]
+Describe your loop instruction, how it handles Responses tool calls and matches each result to its call ID, your checkpoint and stop condition, and your escalation path.
 
-## Part A run and Part B comparison
+## Runs and comparison
 
-| | Direct / ReAct baseline | Plan-and-Execute |
+| Metric | Direct / ReAct | Plan-and-Execute |
 |---|---|---|
 | Run ID | | |
-| Plan origin, if any | N/A | |
+| Plan origin (none, model-generated, or human) | | |
 | Model calls | | |
-| Bash tool calls (`tools_called`) | | |
-| CLI executions / rejected calls (`tool_executions` / `tool_rejections`) | | |
+| Bash tool calls | | |
+| CLI executions | | |
+| Rejected tool calls | | |
 | Input / output / cached tokens | | |
 | Wall time | | |
 
-[Compare source coverage and factual support first. Cite concrete trace events or call IDs from both runs, then describe metric differences and limits. Do not claim a general winner from one pair.]
+Compare what each run found, starting with factual coverage and source support. Cite specific trace events or call IDs. Then describe differences in calls, executions, token use, and wall time. Mark unavailable metrics as unknown, not zero. One pair of runs does not establish a general winner.
 
-## Sources and limits
+## Sources and unknowns
 
-- [Primary source URL, version or commit, access date, and claim supported]
-- [Primary source URL, version or commit, access date, and claim supported]
+For each primary source, give the URL, version or commit, access date, and claim it supports. Identify details the available evidence does not establish.
 
-[Name details the sources do not support and anything that limits this comparison.]
+- [Source URL, version or commit, access date, and supported claim]
+- [Source URL, version or commit, access date, and supported claim]
 
 ## Contributions
 
-- [UNI or GitHub ID]: [individual contribution]
-- [UNI or GitHub ID]: [individual contribution]
+- **Member:** [contribution]
+- **Member:** [contribution]
