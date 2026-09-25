@@ -1,0 +1,36 @@
+{
+  "job": "ai-research-update",
+  "window_days": 7,
+  "min_items": 3,
+  "max_items": 6,
+  "max_words": 600,
+  "audience": "CS students who follow AI but don't read every announcement",
+  "sources": [
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "index_url": "https://www.anthropic.com/news",
+      "fallback_urls": [],
+      "domain": "anthropic.com",
+      "required": true
+    },
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "index_url": "https://openai.com/news/",
+      "fallback_urls": ["https://openai.com/news/rss.xml"],
+      "domain": "openai.com",
+      "required": true
+    }
+  ],
+  "agent": {
+    "default": "claude",
+    "timeout_seconds": 900,
+    "max_attempts": 2,
+    "max_budget_usd": 2.0
+  },
+  "grounding": {
+    "min_quotes_per_item": 1,
+    "fail_on_unverifiable": false
+  }
+}
