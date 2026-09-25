@@ -1,0 +1,11 @@
+{
+  "run_id": "fixture-5f37d530-failure",
+  "mode": "synthetic_fixture",
+  "status": "blocked",
+  "warnings": [
+    "Source unavailable: anthropic_news (injected_http_failure).",
+    "source_failure_policy_stop"
+  ],
+  "output": "/Users/chengmingye/Desktop/COMS4995_Agenic_Engineering/Studio1/agentic-engineering-private/studio/studio-01/submission/jamieYe0317/outputs/fixture-5f37d530-failure",
+  "human_acceptance": "pending"
+}
