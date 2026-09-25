@@ -1,0 +1,1 @@
+How does compaction work in Codex CLI and OpenClaw? Compare triggers, summarized/preserved information, and session persistence using primary docs/source with date/version; acknowledge unsupported details.

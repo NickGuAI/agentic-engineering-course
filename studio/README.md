@@ -29,3 +29,12 @@ In this studio, the team will push a coding agent past its useful context length
 * [studio-02/submission/](studio-02/submission/) (where your team's work goes)
 
 Unlike Studio 01, Studio 02 has no offline mock fixture and requires a working model connection — either a ChatGPT Plus/Pro subscription login or an API key — to run.
+
+## Studio 03: Agent Loops and Controlled Comparison
+
+Build one minimal OpenAI Responses loop on your laptop, then compare a direct/ReAct run with a plan-first run on the same question. Your Bash tool calls the official Tavily CLI.
+
+* [studio-03/README.md](studio-03/README.md) (overview)
+* [studio-03/instruction/Studio_Instruction.md](studio-03/instruction/Studio_Instruction.md) (assignment and evidence requirements)
+* [studio-03/instruction/code/](studio-03/instruction/code/) (setup, official CLI, and fixed question)
+* [studio-03/submission/](studio-03/submission/) (one-file template and team submissions)
