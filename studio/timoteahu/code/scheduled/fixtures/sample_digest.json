@@ -1,0 +1,39 @@
+{
+  "run_date": "2026-09-24",
+  "sources_checked": [
+    {"source_id": "anthropic-news", "url_fetched": "https://www.anthropic.com/news", "status": "ok", "detail": "6 posts listed, 3 in window"},
+    {"source_id": "openai-news", "url_fetched": "https://openai.com/news/rss.xml", "status": "ok", "detail": "index returned HTTP 403; used fallback RSS feed"}
+  ],
+  "items": [
+    {
+      "source_id": "anthropic-news",
+      "title": "Claude discovers a novel enzyme system with CRISPR-like repeats",
+      "date": "2026-09-23",
+      "source_url": "https://www.anthropic.com/news/claude-discovers-novel-enzyme-system",
+      "claim_basis": "full_article",
+      "summary": "Claude agents searched a sequence database and flagged a previously unknown enzyme family, array-associated reverse transcriptases (ART), whose layout resembles CRISPR. The run used about 950 agents over 21 hours; humans wrote the prompt and did lab validation. Its function is not yet known.",
+      "why_it_matters": "A concrete example of many agents running a long open-ended search with humans verifying the result.",
+      "evidence_quotes": ["we don't yet know its function"]
+    },
+    {
+      "source_id": "anthropic-news",
+      "title": "Partnering with Accenture on embedded evaluation",
+      "date": "2026-09-18",
+      "source_url": "https://www.anthropic.com/news/accenture-embedded-evaluation",
+      "claim_basis": "full_article",
+      "summary": "Anthropic is partnering with Accenture's Faculty division on independent evaluation of frontier models, with evaluators embedded inside Anthropic. Both companies expect to invest at least $1 billion over five years.",
+      "why_it_matters": "Outside model evaluation is being funded like a real industry.",
+      "evidence_quotes": ["evaluating and red-teaming models, conducting alignment assessments, and testing model safeguards", "expect to invest at least $1 billion"]
+    },
+    {
+      "source_id": "openai-news",
+      "title": "OpenAI extends cyber access to Ukraine for civilian defense",
+      "date": "2026-09-23",
+      "source_url": "https://openai.com/index/openai-extends-cyber-access-to-ukraine-for-civilian-defense",
+      "claim_basis": "feed_description",
+      "summary": "OpenAI is extending access to its Daybreak program to the Government of Ukraine for cyber defense of civilian infrastructure. The feed does not say what Daybreak includes.",
+      "why_it_matters": "Frontier labs now grant specific governments access to security-focused programs.",
+      "evidence_quotes": ["extending access to its Daybreak program to the Government of Ukraine"]
+    }
+  ]
+}

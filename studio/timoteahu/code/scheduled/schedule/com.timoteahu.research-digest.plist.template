@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Weekly run, Mondays 09:00 local. launchd fires a missed StartCalendarInterval job once
+     when the Mac wakes, so a sleeping laptop no longer silently skips a week. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.timoteahu.research-digest</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/python3</string>
+    <string>__RUNNER__</string>
+    <string>--agent</string><string>__AGENT__</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict><key>PATH</key><string>__PATH__</string></dict>
+  <key>StartCalendarInterval</key>
+  <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+  <key>StandardOutPath</key><string>__LOGDIR__/launchd.out.log</string>
+  <key>StandardErrorPath</key><string>__LOGDIR__/launchd.err.log</string>
+</dict>
+</plist>
