@@ -68,7 +68,7 @@ Copy the `submission/_template/EXPLANATION.md` template into your team's submiss
 - Who did what
 
 ## Submit
-One submission per team. Commit and push all changes to your team's private repository before Session 3, Friday, September 25, 2026. Paste your repository URL once on CourseWorks (https://courseworks2.columbia.edu/courses/251648) — later studios are collected from the same repository, so you only paste the URL once. Never commit API keys.
+One submission per team. Commit and push all changes to your team's private repository before Session 3, Friday, September 25, 2026. Paste your repository URL once on this google form https://docs.google.com/forms/d/e/1FAIpQLScHxcBR8BkBmSz-grkiGKN4NvHZB7GcBJ4QXAi2NTuDVhdbHw/viewform — later studios are collected from the same repository, so you only paste the URL once. Never commit API keys. just one teammate for a task is good enough to fill the form if its a team activity.
 
 ## Grading
 Refer to `GRADING_RUBRIC.md` in the same folder; the 10 points are split 6 (completion, 2 per part) + 4 (explanation).
