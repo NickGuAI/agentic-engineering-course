@@ -8,4 +8,7 @@ Studio 03 uses completion criteria; this checklist assigns no points.
 - [ ] Keep the structured course evidence for both runs, including failures. An API or research failure alone does not make a working, recorded loop incomplete.
 - [ ] Complete `EXPLANATION.md` with concrete trace references, primary sources and their versions or dates, factual coverage and unknowns, the required usage and wall-time metrics, and team contributions.
 
+
+**Optional bonus:** Briefly describe orchestration approaches your team explored beyond the required ReAct and plan-first comparison. This is not required for completion.
+
 Producing a report does not by itself establish that its claims are accurate. Review claims against the captured source evidence, and mark unavailable metrics as unknown rather than zero.
