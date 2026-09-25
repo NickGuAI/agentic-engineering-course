@@ -1,0 +1,1 @@
+{"error": "Internal error: 1 validation error for call[tavily_search]\ntopic\n  Input should be 'general' [type=literal_error, input_value='news', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/literal_error"}
