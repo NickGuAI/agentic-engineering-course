@@ -29,3 +29,12 @@ In this studio, the team will push a coding agent past its useful context length
 * [studio-02/submission/](studio-02/submission/) (where your team's work goes)
 
 Unlike Studio 01, Studio 02 has no offline mock fixture and requires a working model connection — either a ChatGPT Plus/Pro subscription login or an API key — to run.
+
+## Studio 03: Agent Loops and Controlled Comparison
+
+Build a minimal OpenAI Responses loop and save a direct/ReAct run, then compare it with a plan-first run on the same research question. Students run the assignment on their laptops in their team’s private course repository.
+
+* [studio-03/README.md](studio-03/README.md) (overview)
+* [studio-03/instruction/Studio_Instruction.md](studio-03/instruction/Studio_Instruction.md) (assignment and evidence requirements)
+* [studio-03/instruction/code/](studio-03/instruction/code/) (starter, runner, support, and fixed question)
+* [studio-03/submission/](studio-03/submission/) (team submissions and explanation template)
