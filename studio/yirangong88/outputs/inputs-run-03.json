@@ -1,0 +1,12 @@
+{
+  "card_text": "# Delegation Card\n\n## Task\nHave a daily AI news newsletter. \nQualifying updates published in the last natural day from the execution day (EST). \nFor example, if I ran the execution on Sept 17, it should give me all the news on Sept 16. \n\n\n## Context\nInput/source: anthropic news, openai news. \nPreferences: bullet points, ask 2 questions in the end to help me think and actually engage with the news. \nTarget audience: someone that want's to be an AI product manager and AI engineer. It needs to touch on the product decisions behind certain moves; while also convering technical aspects of new launches if relevant. \n\n## Success criteria\nAll news are accurate and within the previous 24hrs. \nFactual, with link to the original message. \n\n## Restrictions\nDo not add information not relevant to tech. \nDo not invent facts. ",
+  "user_clarification": "Previous calendar day: Sept 16",
+  "prior_file_hashes": {
+    "studio/yirangong88/delegation-card.md": "2a133c96debaaf03899657229bca5f3368a0e9f8d3ab2b28080d06c19636cfea",
+    "studio/yirangong88/outputs/inputs-run-01.json": "b7e61478d92f61ff9fdf75250836cded7393930a77dec74f3989c4fb8f83d76d",
+    "studio/yirangong88/outputs/run-01.md": "58b3f580366f1017407dedfa38c33ddd06599147f79bde5db77a4cf8f2af9cbb",
+    "studio/yirangong88/outputs/execution-trace.md": "5192ebd77a8ed625f1a10636767adcbdbc3494f4df9f95fd4d46e30480776248",
+    "studio/yirangong88/outputs/checks.json": "8681473983cc190efa5b684a3c2c8f10299f741365f83a8dbfde83a2120c479d",
+    "studio/yirangong88/outputs/run-02.md": "35abf1dd60e3fc3535fb83e55026a1702184c09c88da35a33302efd2e9948345"
+  }
+}
