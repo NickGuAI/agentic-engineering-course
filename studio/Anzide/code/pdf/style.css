@@ -1,0 +1,108 @@
+/* Course Assistant tutorial PDF. Rendered by headless Chrome from pandoc HTML. */
+@page {
+  size: Letter;
+  margin: 18mm 18mm 20mm 18mm;
+  @bottom-left {
+    content: "COMS W4995 · Course Assistant tutorial";
+    font-family: -apple-system, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 8.5pt; color: #777;
+  }
+  @bottom-right {
+    content: "Page " counter(page) " of " counter(pages);
+    font-family: -apple-system, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 8.5pt; color: #777;
+  }
+}
+
+:root {
+  --ink: #1f2328;
+  --muted: #59636e;
+  --accent: #1f5fa8;
+  --accent-soft: #eaf2fb;
+  --rule: #d0d7de;
+  --code-bg: #f6f8fa;
+  --note-bg: #fff8e6;
+  --note-rule: #e0b400;
+}
+
+html { font-size: 10.5pt; }
+body {
+  font-family: -apple-system, "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--ink);
+  line-height: 1.45;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+header#title-block-header { border-bottom: 2px solid var(--accent); margin-bottom: 14pt; padding-bottom: 6pt; }
+h1.title { font-size: 20pt; margin: 0 0 4pt 0; color: var(--accent); }
+p.subtitle { font-size: 11pt; color: var(--muted); margin: 0; }
+
+h2 {
+  font-size: 14.5pt;
+  margin: 18pt 0 6pt 0;
+  padding-bottom: 3pt;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  break-after: avoid;
+}
+h3 {
+  font-size: 11.5pt;
+  margin: 12pt 0 4pt 0;
+  padding: 3pt 6pt;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  break-after: avoid;
+}
+p, li { margin: 3pt 0; }
+ul, ol { padding-left: 1.4em; margin: 3pt 0; }
+strong { color: var(--accent); }
+li strong:first-child { color: var(--ink); }   /* concept terms stay plain */
+
+code {
+  font-family: Menlo, "SF Mono", Consolas, "DejaVu Sans Mono", monospace;
+  font-size: 9pt;
+  background: var(--code-bg);
+  padding: 0 3px;
+  border-radius: 3px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 6pt 8pt;
+  margin: 4pt 0 6pt 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  break-inside: avoid;
+}
+pre code { background: none; padding: 0; }
+
+blockquote {
+  margin: 6pt 0;
+  padding: 4pt 8pt;
+  border-left: 4px solid var(--note-rule);
+  background: var(--note-bg);
+  color: var(--ink);
+}
+
+table { border-collapse: collapse; width: 100%; margin: 6pt 0; font-size: 9.5pt; break-inside: avoid; }
+th, td { border: 1px solid var(--rule); padding: 3pt 6pt; text-align: left; vertical-align: top; }
+th { background: var(--accent-soft); }
+tr:nth-child(even) td { background: #fafbfc; }
+
+a { color: var(--accent); text-decoration: none; word-break: break-all; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 10pt 0; }
+
+nav#TOC { font-size: 9.5pt; background: var(--code-bg); padding: 6pt 10pt; border-radius: 4px; }
+nav#TOC ul { list-style: none; padding-left: 0.8em; }
+
+/* "Draft" runs (checks failed) get a visible banner so nobody mistakes them for accepted output. */
+body.draft header#title-block-header::before {
+  content: "DRAFT — automated checks did not all pass; see report.md";
+  display: block;
+  color: #b42318;
+  font-weight: 600;
+  margin-bottom: 4pt;
+}
