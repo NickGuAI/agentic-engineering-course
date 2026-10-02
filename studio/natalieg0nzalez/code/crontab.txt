@@ -1,0 +1,2 @@
+CRON_TZ=America/New_York
+0 8 * * * /usr/bin/python3 /Users/nataliegonzalez/agentic-engineering-course/studio/natalieg0nzalez/code/briefing.py --send
