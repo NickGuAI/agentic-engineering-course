@@ -1,0 +1,11 @@
+{
+  "duration_seconds": 0.001,
+  "error": "Codex executable not found: /tmp/studio01-codex-does-not-exist",
+  "finished_at": "2026-09-11T16:39:33.786535-04:00",
+  "run_id": "20260911T163933-0400",
+  "started_at": "2026-09-11T16:39:33.785317-04:00",
+  "status": "failed",
+  "trace": "trace-20260911T163933-0400.jsonl",
+  "window_end": "2026-09-11T16:39:33.785317-04:00",
+  "window_start": "2026-09-10T16:39:33.785317-04:00"
+}
