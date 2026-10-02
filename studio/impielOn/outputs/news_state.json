@@ -1,0 +1,16 @@
+{
+  "seen_urls": [
+    "https://openai.com/index/astra-for-law/",
+    "https://openai.com/index/how-to-connect-ai-usage-to-business-value/",
+    "https://openai.com/index/reimagining-advertising-with-ai/",
+    "https://openai.com/news/engineering/",
+    "https://openai.com/news/research/",
+    "https://www.anthropic.com/engineering/april-23-postmortem",
+    "https://www.anthropic.com/engineering/how-we-contain-claude",
+    "https://www.anthropic.com/engineering/managed-agents",
+    "https://www.anthropic.com/news/enterprise-frontier-safeguards",
+    "https://www.anthropic.com/news/improving-alignment-security-efforts",
+    "https://www.anthropic.com/news/life-sciences-verification-program"
+  ],
+  "last_run": "2026-09-18T04:29:40.053829+00:00"
+}
