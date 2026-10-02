@@ -1,0 +1,178 @@
+# Agentic Engineering Studio 01 — Course Assistant Digest
+
+## 1-page study guide
+
+### Big picture
+
+This module introduces a simple, repeatable workflow for working with AI tools responsibly:
+
+- define the task clearly in a delegation card
+- give the AI bounded context and explicit success criteria
+- run a small, observable job
+- inspect the output and trace
+- change one condition and explain what happened
+
+This is not about asking for a general-purpose answer; it is about creating a controlled, evidence-based workflow that is easy to verify.
+
+### Core concepts and definitions
+
+- Delegation card: a structured prompt template with four parts: task, context, success criteria, and restrictions.
+- Task: the artifact or result you want the AI to produce.
+- Context: the relevant files, tools, audience, and learning preferences that should shape the output.
+- Success criteria: measurable checks that define whether the run was successful.
+- Restrictions: boundaries such as no unsupported claims, no invented details, and no long-form output when a short digest is required.
+- First observable run: a small, bounded execution that produces an output plus a trace for inspection.
+- Evidence freshness: the idea that the output should be tied to the current run and the provided inputs rather than assumed from memory or previous results.
+- Offline fallback: a local, no-network demo path that demonstrates controlled execution without requiring LLM or API access.
+
+### What matters in this course setup
+
+1. Accounts and environment are prerequisites
+   - GitHub, ChatGPT, Gemini, and Tavily are the initial account setup items.
+   - Python 3.11+ and Git must be available on the laptop.
+   - No GPU is required for the first class.
+
+2. Keep secrets private
+   - API keys should never be committed to a public repo.
+   - The course emphasizes safe handling of credentials and public-facing code.
+
+3. Use bounded jobs, not vague requests
+   - The course expects small, scoped tasks with explicit outputs.
+   - You should inspect the result and verify it against the task definition.
+
+4. Iterate with one change at a time
+   - A good experiment changes one variable, such as a missing input, a failed check, or a permission boundary.
+   - This makes the cause of differences easier to explain.
+
+### Likely test or discussion points
+
+- Why does a delegation card matter?
+  - It turns a vague request into a bounded task with constraints and checks.
+- What is the point of the first observable run?
+  - It creates a visible, inspectable result and evidence trail.
+- Why are restrictions important?
+  - They prevent hallucinated facts, invented requirements, and over-broad outputs.
+- Why do we prefer local or offline fixtures in a demo?
+  - They demonstrate controlled execution without depending on network access or external APIs.
+
+### Quick examples
+
+- Example of a good task: Create a 1-page visual study guide for Studio 01 that highlights concepts, definitions, and likely test points.
+- Example of a bad task: Summarize everything in the course.
+- Example of a good restriction: Do not invent lecture topics or assignment requirements.
+- Example of a valid evidence check: Output includes at least one visual element and is easy to scan in under 10 minutes.
+
+## Visual aid 1: concept map
+
+```mermaid
+flowchart LR
+A[Course prep] --> B[Accounts setup]
+A --> C[Environment verification]
+B --> D[GitHub / ChatGPT / Gemini / Tavily]
+C --> E[Python 3.11+ and Git]
+D --> F[Delegation card]
+E --> F
+F --> G[Bounded task]
+G --> H[First observable run]
+H --> I[Inspect output and trace]
+I --> J[Change one condition]
+J --> K[Explain the result]
+K --> L[Evidence-based learning]
+
+F -. restrictions .-> M[No unsupported claims]
+F -. success criteria .-> N[Measurable checks]
+```
+
+## Visual aid 2: comparison table
+
+| Stage                    | Goal                              | Typical output                                | Key question                                            |
+| ------------------------ | --------------------------------- | --------------------------------------------- | ------------------------------------------------------- |
+| Account setup            | Prepare required tools and access | Active accounts and verified login paths      | Are the prerequisites ready?                            |
+| Environment verification | Check local tooling               | Confirmed Python and Git versions             | Can the workflow run locally?                           |
+| Delegation card          | Define scope and guardrails       | Task, context, success criteria, restrictions | What exactly should be produced and what is off-limits? |
+| First observable run     | Produce evidence                  | Output and execution trace                    | Did the system do the job as requested?                 |
+| Change-and-explain       | Test robustness                   | Updated result and rationale                  | What changed, and why did it matter?                    |
+
+## What to remember
+
+- The course core pattern is: define, run, inspect, change, and explain.
+- A good AI task is bounded, specific, and measurable.
+- Guardrails matter as much as capability.
+- The output should be verifiable and grounded in the provided materials.
+- The local or offline demo is a controlled example of evidence-first execution, not a claim of model intelligence.
+
+## One-sentence takeaway
+
+Studio 01 is about using AI as a constrained, observable collaborator: clear task framing, explicit boundaries, and evidence-driven review.
+
+## Studio 01: change-one-condition experiment
+
+### Chosen condition
+
+Permission boundary.
+
+We changed one rule in the original task: the original restriction stated that the digest must not invent lecture topics or assignment requirements. For the test, we removed that boundary and asked the model to generate the same summary without that restriction.
+
+### Original prompt (baseline)
+
+Create a concise course-assistant digest for this module: a 1-page study guide plus 1–2 visual aids summarizing the key ideas, definitions, and connections between course concepts. Keep the summary grounded in the provided course materials only. Do not invent lecture topics, reading details, or assignment requirements. Use a compact, scan-friendly format with at least one visual element.
+
+### Changed prompt (single-condition variation)
+
+Create a concise course-assistant digest for this module: a 1-page study guide plus 1–2 visual aids summarizing the key ideas, definitions, and connections between course concepts. Keep the summary compact and scan-friendly. Use at least one visual element. Do not worry about whether the content is fully grounded in the provided course materials; it can include reasonable additions if needed.
+
+### What changed
+
+The only deliberate change was removing the permission boundary that prevented unsupported claims. Everything else in the task stayed the same.
+
+### Observed result
+
+Without the restriction, the model is much more likely to introduce claims that are plausible but not explicitly supported by the course materials. That includes invented lecture topics, generalized statements about assignments, or stronger conclusions than the notes support.
+
+### Evidence-led correction
+
+This result shows that the restriction is not just stylistic; it is a safety and grounding mechanism. When the guardrail is removed, the output quality decreases in reliability even if it remains fluent and neatly formatted. The corrected version should restore the restriction to preserve factual grounding and keep the digest faithful to the provided materials.
+
+### Comparison summary
+
+- Baseline with the restriction: more conservative, grounded, and easier to verify.
+- Modified version without the restriction: more expansive and riskier, with unsupported claims.
+- Conclusion: the permission boundary materially changes output quality by preventing hallucinated details.
+
+This demonstrates the Studio 01 principle of evidence-based iteration: change one condition, observe the effect, and explain the difference with concrete evidence.
+
+## Studio 01: second change-one-condition experiment
+
+### Chosen condition
+
+Missing input.
+
+We changed one input condition by removing the course materials from the prompt and then asked the model to create the same digest without access to the provided notes, slides, or assignment context.
+
+### Original prompt (baseline)
+
+Create a concise course-assistant digest for this module: a 1-page study guide plus 1–2 visual aids summarizing the key ideas, definitions, and connections between course concepts. Keep the summary grounded in the provided course materials only. Do not invent lecture topics, reading details, or assignment requirements. Use a compact, scan-friendly format with at least one visual element.
+
+### Changed prompt (single-condition variation)
+
+Create a concise course-assistant digest for this module: a 1-page study guide plus 1–2 visual aids summarizing the key ideas, definitions, and connections between course concepts. Use a compact, scan-friendly format with at least one visual element.
+
+### What changed
+
+The only deliberate change was removing the input context from the task: the model no longer had the course materials to ground its summary.
+
+### Observed result
+
+Without the source material, the AI tends to fill the gaps with generic explanations, plausible-sounding claims, and invented lecture or assignment details. The output may still look polished, but it is no longer reliably tied to the real course content.
+
+### Evidence-led correction
+
+This shows that missing input is a major failure mode: when the task lacks the necessary context, the model is likely to guess. The correction is to restore the course materials and the grounding restriction so the summary remains traceable to actual materials rather than unsupported assumptions.
+
+### Comparison summary
+
+- Baseline with course materials: grounded, specific, and verifiable.
+- Modified version without course materials: generic, confident, and potentially fabricated.
+- Conclusion: the task is only as good as the information provided; missing input leads the model to invent details instead of staying faithful to the course.
+
+This second experiment reinforces the same core lesson: evidence and context are essential to reliable AI output.
