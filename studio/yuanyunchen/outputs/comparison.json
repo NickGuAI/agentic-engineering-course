@@ -1,0 +1,28 @@
+{
+  "baseline": {
+    "status": "success",
+    "source_count": 3,
+    "digest_sha256": "3f880fed4a39b0d84743c1a280e11170ac7f267ce856bd97066a93b5aaaa885c",
+    "network_calls": 0
+  },
+  "perturbation": "Removed workspace.md from a separate copy of the declared inputs.",
+  "observed": {
+    "status": "blocked",
+    "reason": "missing_input",
+    "file": "workspace.md"
+  },
+  "correction": "Restored only workspace.md from the source-pinned original; no verifier or source pin was changed.",
+  "recovered": {
+    "status": "success",
+    "source_count": 3,
+    "digest_sha256": "3f880fed4a39b0d84743c1a280e11170ac7f267ce856bd97066a93b5aaaa885c",
+    "network_calls": 0
+  },
+  "checks": {
+    "missing_run_nonzero": true,
+    "no_digest_on_failure": true,
+    "recovery_success": true,
+    "recovered_digest_equals_baseline": true
+  },
+  "authorship": "Machine-generated experiment evidence, not the student personal explanation."
+}
