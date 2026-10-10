@@ -1,0 +1,21 @@
+{"at": "2026-09-11T19:38:03.629196+00:00", "event": "started", "revision": 2}
+{"at": "2026-09-11T19:38:03.992887+00:00", "event": "source", "id": "anthropic-news", "url": "https://www.anthropic.com/news", "status": "ok", "errors": [], "warnings": [], "discovered": 13, "deferred": 0}
+{"at": "2026-09-11T19:38:04.252153+00:00", "event": "source", "id": "anthropic-engineering", "url": "https://www.anthropic.com/engineering", "status": "ok", "errors": [], "warnings": [], "discovered": 25, "deferred": 0}
+{"at": "2026-09-11T19:38:04.512770+00:00", "event": "source", "id": "openai-news", "url": "https://openai.com/news/", "status": "ok", "errors": [], "warnings": [], "discovered": 1190, "deferred": 0}
+{"at": "2026-09-11T19:38:05.348215+00:00", "event": "unchanged", "url": "https://www.anthropic.com/threat-intelligence-report-september-2026"}
+{"at": "2026-09-11T19:38:05.591674+00:00", "event": "unchanged", "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1"}
+{"at": "2026-09-11T19:38:05.857164+00:00", "event": "unchanged", "url": "https://www.anthropic.com/news/enterprise-frontier-safeguards"}
+{"at": "2026-09-11T19:38:06.048158+00:00", "event": "unchanged", "url": "https://www.anthropic.com/news/improving-alignment-security-efforts"}
+{"at": "2026-09-11T19:38:06.392223+00:00", "event": "unchanged", "url": "https://www.anthropic.com/news/model-hardware-standard-research-preview"}
+{"at": "2026-09-11T19:38:06.590853+00:00", "event": "unchanged", "url": "https://www.anthropic.com/engineering/how-we-contain-claude"}
+{"at": "2026-09-11T19:38:06.847331+00:00", "event": "unchanged", "url": "https://www.anthropic.com/engineering/april-23-postmortem"}
+{"at": "2026-09-11T19:38:07.052761+00:00", "event": "unchanged", "url": "https://www.anthropic.com/engineering/managed-agents"}
+{"at": "2026-09-11T19:38:07.232955+00:00", "event": "unchanged", "url": "https://www.anthropic.com/engineering/claude-code-auto-mode"}
+{"at": "2026-09-11T19:38:07.679972+00:00", "event": "unchanged", "url": "https://www.anthropic.com/engineering/harness-design-long-running-apps"}
+{"at": "2026-09-11T19:38:07.736352+00:00", "event": "unchanged", "url": "https://openai.com/index/scaling-storage-one-billion-users-part-one"}
+{"at": "2026-09-11T19:38:07.874679+00:00", "event": "unchanged", "url": "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials"}
+{"at": "2026-09-11T19:38:07.940451+00:00", "event": "unchanged", "url": "https://openai.com/index/put-data-to-work"}
+{"at": "2026-09-11T19:38:08.003563+00:00", "event": "unchanged", "url": "https://openai.com/index/introducing-chatgpt-financial-services"}
+{"at": "2026-09-11T19:38:08.068012+00:00", "event": "unchanged", "url": "https://openai.com/index/expanding-ai-access-us-government"}
+{"at": "2026-09-11T19:38:08.068522+00:00", "event": "collected", "articles": 0, "sources": [{"id": "anthropic-news", "url": "https://www.anthropic.com/news", "status": "ok", "errors": [], "warnings": [], "discovered": 13, "deferred": 0}, {"id": "anthropic-engineering", "url": "https://www.anthropic.com/engineering", "status": "ok", "errors": [], "warnings": [], "discovered": 25, "deferred": 0}, {"id": "openai-news", "url": "https://openai.com/news/", "status": "ok", "errors": [], "warnings": ["https://openai.com/index/scaling-storage-one-billion-users-part-one: using official RSS description; full article unavailable: curl: (56) The requested URL returned error: 403", "https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials: using official RSS description; full article unavailable: curl: (56) The requested URL returned error: 403", "https://openai.com/index/put-data-to-work: using official RSS description; full article unavailable: curl: (56) The requested URL returned error: 403", "https://openai.com/index/introducing-chatgpt-financial-services: using official RSS description; full article unavailable: curl: (56) The requested URL returned error: 403", "https://openai.com/index/expanding-ai-access-us-government: using official RSS description; full article unavailable: curl: (56) The requested URL returned error: 403"], "discovered": 1190, "deferred": 0}]}
+{"at": "2026-09-11T19:38:08.073747+00:00", "event": "published", "articles": 0, "failed_sources": 0, "digest_sha256": "d80e7e6868984e31ec3e4d5c0c5164859d253f0cceb6f479219171c65c537d36"}
