@@ -18,7 +18,7 @@ The syllabus: "Each team builds a tool server that exposes a domain-specific cap
 
 Build an MCP server over local data you own, connect it to an agent in Codex, make sure your code stops "delete all data", and measure how reliably the agent uses your tools. You choose the domain, the language, the SDK and the design. There is no starter code.
 
-Teams of up to 3. Due Friday, October 16, 23:59 ET.
+Teams of up to 3. Due Friday, October 16, 13:10 ET, before class.
 
 ## Setup
 
