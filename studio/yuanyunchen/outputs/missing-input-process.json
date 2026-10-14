@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "code/course_assistant.py",
+    "--inputs",
+    "outputs/missing-inputs",
+    "--out",
+    "outputs/missing-input"
+  ],
+  "returncode": 2,
+  "stdout": "",
+  "stderr": ""
+}

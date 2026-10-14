@@ -1,0 +1,6 @@
+{"time_utc": "2026-09-16T18:51:39.309114+00:00", "event": "start", "runner": "offline deterministic renderer", "inputs": "outputs/missing-inputs"}
+{"time_utc": "2026-09-16T18:51:39.309403+00:00", "event": "source_verified", "file": "Studio01.md", "sha256": "b510dc0758744f2d6ad019a16029c81bc1ddbfcf37de37b609387e7f6ed14ab5"}
+{"time_utc": "2026-09-16T18:51:39.309478+00:00", "event": "source_verified", "file": "workspace.md", "sha256": "873bed4c48b9ca26713582790d43acdda64582a6574b414b85e1d86ca5a82c5e"}
+{"time_utc": "2026-09-16T18:51:39.309541+00:00", "event": "source_verified", "file": "course-prep.md", "sha256": "f1b395f1de590be81b87af25685147eb431bc2c3bf9d81075d920d668d686668"}
+{"time_utc": "2026-09-16T18:51:39.309853+00:00", "event": "digest_written", "sha256": "3f880fed4a39b0d84743c1a280e11170ac7f267ce856bd97066a93b5aaaa885c", "bytes": 6250}
+{"time_utc": "2026-09-16T18:51:39.309882+00:00", "event": "complete", "status": "success"}
