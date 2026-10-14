@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["articles"],
+  "properties": {
+    "articles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "summary", "why_it_matters", "category", "evidence", "material"],
+        "properties": {
+          "url": {"type": "string"},
+          "summary": {"type": "string"},
+          "why_it_matters": {"type": "string"},
+          "category": {"type": "string", "enum": ["Research", "Engineering", "Product", "Safety", "Policy", "Company"]},
+          "evidence": {"type": "string"},
+          "material": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}
