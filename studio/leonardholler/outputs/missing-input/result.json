@@ -1,0 +1,18 @@
+{
+  "status": "PARTIAL",
+  "article_count": 2,
+  "missing_sources": [
+    "openai-news"
+  ],
+  "checks": {
+    "at_most_five": true,
+    "unique_urls": true,
+    "dates_in_window": true,
+    "required_fields": true,
+    "all_sources_available": false
+  },
+  "input_sha256": "f6614ef03424242e3476b652ef28897a834e7bae1a8682434c7e56f31271dba6",
+  "run_date": "2026-09-18",
+  "executed_at_utc": "2026-09-18T17:14:32.714401+00:00",
+  "mode": "Replay of agent-collected source readings; no fresh network requests"
+}
