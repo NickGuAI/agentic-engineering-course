@@ -48,6 +48,7 @@ class Article:
     url: str
     content: str = field(repr=False)
     summary: str = ""
+    date_evidence: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -59,6 +60,7 @@ class SourceResult:
     candidates: int = 0
     eligible_articles: int = 0
     failure_kind: str | None = None
+    failed_articles: list[dict[str, str]] = field(default_factory=list)
 
 
 class FetchError(Exception):
@@ -78,53 +80,109 @@ class ModelInvocationError(RuntimeError):
 class PageParser(HTMLParser):
     """Collect links, article metadata and readable page text without dependencies."""
 
+    VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
+    EXCLUDED_TAGS = {"nav", "aside", "footer"}
+    RELATED_MARKERS = re.compile(r"related|recommend|suggest|popular|more[-_ ]?(stories|articles|posts)|sidebar|breadcrumb|read[-_ ]?next|recent[-_ ]?(stories|articles)|navigation|global[-_ ]?menu|site[-_ ]?(header|footer)", re.I)
+
     def __init__(self, base_url: str):
         super().__init__(convert_charrefs=True)
         self.base_url = base_url
         self.links: list[dict[str, str]] = []
-        self.meta: dict[str, str] = {}
+        self.meta: list[dict[str, str]] = []
         self.feed_links: list[str] = []
-        self.time_values: list[str] = []
+        self.time_values: list[dict[str, str]] = []
         self.jsonld: list[str] = []
         self.title_parts: list[str] = []
         self.h1_parts: list[str] = []
         self.text_parts: list[str] = []
+        self.main_text_parts: list[str] = []
+        self.article_blocks: dict[str, dict[str, list[str]]] = {}
+        self.primary_article_ids: list[str] = []
+        self._article_counter = 0
+        self.canonical_url: str | None = None
         self._anchor: dict[str, str] | None = None
         self._in_title = False
         self._in_h1 = False
+        self._stack: list[dict[str, Any]] = []
         self._skip_depth = 0
         self._jsonld_depth = 0
         self._jsonld_parts: list[str] = []
+        self._active_time: dict[str, str] | None = None
+
+    def _context(self, tag: str, attrs: dict[str, str]) -> tuple[bool, bool]:
+        marker = " ".join(attrs.get(key, "") for key in ("class", "id", "aria-label", "data-testid", "data-component"))
+        excluded = tag in self.EXCLUDED_TAGS or attrs.get("role", "").lower() == "navigation" or bool(self.RELATED_MARKERS.search(marker)) or any(frame["excluded"] for frame in self._stack)
+        primary = not excluded and (tag in {"main", "article"} or any(frame["primary"] for frame in self._stack))
+        return primary, excluded
+
+    def _push(self, tag: str, attrs: dict[str, str], primary: bool, excluded: bool) -> None:
+        if tag not in self.VOID_TAGS:
+            article_id = next((frame["article_id"] for frame in reversed(self._stack) if frame.get("article_id")), None)
+            if tag == "article":
+                self._article_counter += 1
+                article_id = str(self._article_counter)
+                self.article_blocks[article_id] = {"heading": [], "text": []}
+            self._stack.append({"tag": tag, "primary": primary, "excluded": excluded, "article_id": article_id})
+
+    def select_primary_article_content(self, page_title: str, expected_title: str = "") -> list[str]:
+        normalized_titles = {_normalize_title(value) for value in (page_title, expected_title) if value}
+        matches = [
+            article_id for article_id, block in self.article_blocks.items()
+            if _normalize_title(" ".join(block["heading"])) in normalized_titles
+        ]
+        if len(matches) == 1:
+            selected = matches
+        elif len(self.article_blocks) == 1:
+            selected = list(self.article_blocks)
+        else:
+            selected = []
+        self.primary_article_ids = selected
+        if selected:
+            self.text_parts = [part for article_id in selected for part in self.article_blocks[article_id]["text"]]
+        else:
+            self.text_parts = list(self.main_text_parts)
+        return selected
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attrs_dict = {key.lower(): (value or "") for key, value in attrs}
+        primary, excluded = self._context(tag, attrs_dict)
+        in_head = tag == "head" or any(frame["tag"] == "head" for frame in self._stack)
         if tag in {"script", "style", "noscript", "svg"}:
             self._skip_depth += 1
             if tag == "script" and "ld+json" in attrs_dict.get("type", "").lower():
                 self._jsonld_depth = 1
                 self._jsonld_parts = []
+            self._push(tag, attrs_dict, primary, excluded)
             return
         if self._skip_depth:
+            self._push(tag, attrs_dict, primary, excluded)
             return
         if tag == "a" and attrs_dict.get("href"):
             self._anchor = {"href": urllib.parse.urljoin(self.base_url, attrs_dict["href"]), "text": ""}
-        if tag == "meta":
+        if tag == "meta" and in_head:
             key = attrs_dict.get("property") or attrs_dict.get("name") or attrs_dict.get("itemprop")
             content = attrs_dict.get("content", "")
             if key and content:
-                self.meta[key.lower()] = content.strip()
+                self.meta.append({"key": key.lower(), "value": content.strip(), "scope": "document_head"})
         if tag == "link" and "alternate" in attrs_dict.get("rel", "").lower():
             mime = attrs_dict.get("type", "").lower()
             if "rss" in mime or "atom" in mime or "xml" in mime:
                 href = attrs_dict.get("href")
                 if href:
                     self.feed_links.append(urllib.parse.urljoin(self.base_url, href))
-        if tag == "time" and attrs_dict.get("datetime"):
-            self.time_values.append(attrs_dict["datetime"].strip())
+        if tag == "link" and "canonical" in attrs_dict.get("rel", "").lower() and attrs_dict.get("href"):
+            self.canonical_url = urllib.parse.urljoin(self.base_url, attrs_dict["href"])
+        if tag == "meta" and attrs_dict.get("property", "").lower() == "og:url" and attrs_dict.get("content"):
+            self.canonical_url = urllib.parse.urljoin(self.base_url, attrs_dict["content"])
+        if tag == "time" and attrs_dict.get("datetime") and primary and not excluded:
+            semantic = " ".join(attrs_dict.get(key, "") for key in ("itemprop", "class", "id", "aria-label", "data-testid"))
+            article_id = next((frame["article_id"] for frame in reversed(self._stack) if frame.get("article_id")), "")
+            self._active_time = {"raw": attrs_dict["datetime"].strip(), "visible": "", "source": "html_time", "scope": "main_article", "semantic": semantic, "article_id": article_id}
         if tag == "title":
             self._in_title = True
-        if tag == "h1":
+        if tag == "h1" and primary and not excluded:
             self._in_h1 = True
+        self._push(tag, attrs_dict, primary, excluded)
 
     def handle_endtag(self, tag: str) -> None:
         if tag in {"script", "style", "noscript", "svg"}:
@@ -132,10 +190,7 @@ class PageParser(HTMLParser):
                 self.jsonld.append("".join(self._jsonld_parts))
                 self._jsonld_depth = 0
             self._skip_depth = max(0, self._skip_depth - 1)
-            return
-        if self._skip_depth:
-            return
-        if tag == "a" and self._anchor is not None:
+        elif not self._skip_depth and tag == "a" and self._anchor is not None:
             self._anchor["text"] = " ".join(self._anchor["text"].split())
             self.links.append(self._anchor)
             self._anchor = None
@@ -143,6 +198,13 @@ class PageParser(HTMLParser):
             self._in_title = False
         if tag == "h1":
             self._in_h1 = False
+        if tag == "time" and self._active_time is not None:
+            self.time_values.append(self._active_time)
+            self._active_time = None
+        for index in range(len(self._stack) - 1, -1, -1):
+            if self._stack[index]["tag"] == tag:
+                del self._stack[index:]
+                break
 
     def handle_data(self, data: str) -> None:
         value = data.strip()
@@ -158,7 +220,16 @@ class PageParser(HTMLParser):
             self.title_parts.append(value)
         if self._in_h1:
             self.h1_parts.append(value)
-        self.text_parts.append(value)
+        if self._stack and self._stack[-1]["primary"] and not self._stack[-1]["excluded"]:
+            article_id = next((frame["article_id"] for frame in reversed(self._stack) if frame.get("article_id")), None)
+            if article_id:
+                self.article_blocks[article_id]["text"].append(value)
+                if self._in_h1:
+                    self.article_blocks[article_id]["heading"].append(value)
+            else:
+                self.main_text_parts.append(value)
+        if self._active_time is not None:
+            self._active_time["visible"] += (" " if self._active_time["visible"] else "") + value
 
 
 def _fetch(url: str, timeout: float, retries: int = 1) -> tuple[bytes, str, str]:
@@ -202,25 +273,77 @@ def _decode(payload: bytes, content_type: str) -> str:
         return payload.decode("utf-8", errors="replace")
 
 
-def _parse_date(value: str | None) -> date | None:
+def _parse_calendar_date(value: str | None) -> date | None:
     if not value:
         return None
-    value = html.unescape(value.strip())
-    if not value:
-        return None
+    clean = html.unescape(value).strip()
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", clean):
+        try:
+            return date.fromisoformat(clean)
+        except ValueError:
+            return None
+    for date_format in ("%B %d, %Y", "%b %d, %Y", "%B %d %Y", "%b %d %Y"):
+        try:
+            return datetime.strptime(clean, date_format).date()
+        except ValueError:
+            continue
+    month_pattern = r"(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
+    match = re.search(rf"\b{month_pattern}\.?\s+\d{{1,2}}(?:st|nd|rd|th)?[,]?\s+\d{{4}}\b", clean, re.I)
+    if match:
+        candidate = re.sub(r"(\d)(st|nd|rd|th)\b", r"\1", match.group(0), flags=re.I)
+        for date_format in ("%B %d, %Y", "%b %d, %Y", "%B %d %Y", "%b %d %Y"):
+            try:
+                return datetime.strptime(candidate, date_format).date()
+            except ValueError:
+                continue
+    return None
+
+
+def _parse_publication_evidence(evidence: dict[str, str]) -> dict[str, Any]:
+    """Parse one publication signal without losing whether it was a date or an instant."""
+    raw = html.unescape(evidence.get("raw", "")).strip()
+    item = {**evidence, "raw": raw, "published_date": None, "interpretation": "unparsed"}
+    calendar_value = _parse_calendar_date(raw)
+    if calendar_value:
+        item.update(published_date=calendar_value.isoformat(), interpretation="calendar_date")
+        return item
+    normalized = raw.replace("Z", "+00:00")
     try:
-        normalized = value.replace("Z", "+00:00")
         parsed = datetime.fromisoformat(normalized)
     except ValueError:
         try:
-            parsed = email.utils.parsedate_to_datetime(value)
+            parsed = email.utils.parsedate_to_datetime(raw)
         except (TypeError, ValueError, OverflowError):
-            return None
+            return item
     if parsed is None:
-        return None
+        return item
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=EASTERN)
-    return parsed.astimezone(EASTERN).date()
+        item["interpretation"] = "timezone_missing"
+        return item
+    offset = parsed.utcoffset()
+    if offset == timedelta(0) and parsed.time().replace(tzinfo=None) == datetime.min.time():
+        raw_day = parsed.date()
+        eastern_day = parsed.astimezone(EASTERN).date()
+        visible_day = _parse_calendar_date(evidence.get("visible"))
+        item["interpretation"] = "utc_midnight_calendar_encoding_unconfirmed"
+        item["utc_midnight_date_candidate"] = raw_day.isoformat()
+        item["eastern_timestamp_date_candidate"] = eastern_day.isoformat()
+        if visible_day == raw_day:
+            item.update(
+                published_date=raw_day.isoformat(),
+                interpretation="utc_midnight_calendar_date_confirmed_by_visible_article_date",
+                corroboration=evidence.get("visible", ""),
+            )
+        elif visible_day == eastern_day:
+            item.update(
+                published_date=eastern_day.isoformat(),
+                interpretation="utc_midnight_instant_converted_to_eastern_confirmed_by_visible_article_date",
+                corroboration=evidence.get("visible", ""),
+            )
+        return item
+    local_date = parsed.astimezone(EASTERN).date()
+    item.update(published_date=local_date.isoformat(), interpretation="zoned_timestamp_converted_to_eastern")
+    return item
 
 
 def _walk_jsonld(value: Any) -> list[dict[str, Any]]:
@@ -235,27 +358,140 @@ def _walk_jsonld(value: Any) -> list[dict[str, Any]]:
     return found
 
 
-def _page_metadata(parser: PageParser) -> tuple[str, date | None]:
-    title = " ".join(parser.h1_parts).strip() or " ".join(parser.title_parts).strip()
-    date_values = [
-        parser.meta.get("article:published_time"),
-        parser.meta.get("datepublished"),
-        parser.meta.get("date"),
-        parser.meta.get("pubdate"),
-        parser.meta.get("parsely-pub-date"),
-        *parser.time_values,
-    ]
+def _normalize_title(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", html.unescape(value).lower()).strip()
+
+
+def _normalized_url(value: str) -> tuple[str, str] | None:
+    try:
+        parsed = urllib.parse.urlsplit(value)
+        if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+            return None
+        return parsed.netloc.lower(), parsed.path.rstrip("/") or "/"
+    except ValueError:
+        return None
+
+
+def _is_article_type(value: Any) -> bool:
+    types = value if isinstance(value, list) else [value]
+    accepted = {"article", "newsarticle", "blogposting", "report", "techarticle"}
+    return any(str(item).rsplit("/", 1)[-1].lower() in accepted for item in types)
+
+
+def _jsonld_article_evidence(parser: PageParser, final_url: str, page_title: str) -> list[dict[str, str]]:
+    nodes: list[dict[str, Any]] = []
     for raw_json in parser.jsonld:
         try:
-            nodes = _walk_jsonld(json.loads(raw_json))
+            nodes.extend(_walk_jsonld(json.loads(raw_json)))
         except (json.JSONDecodeError, TypeError):
             continue
-        for node in nodes:
-            if not title and isinstance(node.get("headline"), str):
-                title = node["headline"].strip()
-            date_values.append(node.get("datePublished"))
-    published = next((parsed for value in date_values if (parsed := _parse_date(str(value)) if value else None)), None)
-    return title, published
+    articles = [node for node in nodes if _is_article_type(node.get("@type")) and node.get("datePublished")]
+    if not articles:
+        return []
+    page_urls = {_normalized_url(final_url)}
+    if parser.canonical_url:
+        page_urls.add(_normalized_url(parser.canonical_url))
+    page_urls.discard(None)
+    page_heading = _normalize_title(page_title)
+    matched = []
+    for node in articles:
+        node_urls = []
+        for key in ("url", "@id", "mainEntityOfPage"):
+            value = node.get(key)
+            if isinstance(value, dict):
+                value = value.get("@id") or value.get("url")
+            if isinstance(value, str):
+                node_urls.append(_normalized_url(value))
+        node_urls = [value for value in node_urls if value]
+        headline = node.get("headline") or node.get("name") or ""
+        title_matches = bool(page_heading and _normalize_title(str(headline)) == page_heading)
+        url_matches = any(value in page_urls for value in node_urls)
+        if title_matches or url_matches:
+            matched.append(node)
+    selected = matched if matched else articles if len(articles) == 1 else []
+    result = []
+    for node in selected:
+        result.append({
+            "raw": str(node["datePublished"]),
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match" if matched else "single_article_entity",
+            "visible": "",
+        })
+    return result
+
+
+def _resolve_publication_date(evidence_values: list[dict[str, str]]) -> tuple[date | None, dict[str, Any]]:
+    evidence = [_parse_publication_evidence(value) for value in evidence_values if value.get("raw")]
+    calendar_dates = {
+        item["published_date"] for item in evidence
+        if item["interpretation"] == "calendar_date" and item["published_date"]
+    }
+    for item in evidence:
+        candidate = item.get("utc_midnight_date_candidate")
+        if item["interpretation"] == "utc_midnight_calendar_encoding_unconfirmed" and candidate:
+            if candidate in calendar_dates:
+                item["published_date"] = candidate
+                item["interpretation"] = "utc_midnight_calendar_date_confirmed_by_other_publication_evidence"
+                calendar_dates.add(candidate)
+            else:
+                eastern_candidate = item.get("eastern_timestamp_date_candidate")
+                if eastern_candidate and any(
+                    other.get("published_date") == eastern_candidate
+                    and other["interpretation"] != "calendar_date"
+                    for other in evidence
+                ):
+                    item["published_date"] = eastern_candidate
+                    item["interpretation"] = "utc_midnight_timestamp_confirmed_as_eastern_instant"
+    valid_dates = {item["published_date"] for item in evidence if item.get("published_date")}
+    unresolved_candidates = {
+        item["utc_midnight_date_candidate"] for item in evidence
+        if item["interpretation"] == "utc_midnight_calendar_encoding_unconfirmed"
+    }
+    if len(valid_dates) != 1 or any(candidate not in valid_dates for candidate in unresolved_candidates):
+        return None, {"status": "unresolved_or_conflicting", "evidence": evidence}
+    publication_date = date.fromisoformat(next(iter(valid_dates)))
+    valid_evidence = [item for item in evidence if item.get("published_date") == publication_date.isoformat()]
+    return publication_date, {
+        "status": "resolved",
+        "selected": valid_evidence[0],
+        "corroborating": valid_evidence[1:],
+        "evidence": evidence,
+    }
+
+
+def _page_metadata(parser: PageParser, final_url: str, expected_title: str = "") -> tuple[str, date | None, dict[str, Any]]:
+    page_heading = " ".join(parser.h1_parts).strip()
+    matching_blocks = [
+        " ".join(block["heading"]).strip() for block in parser.article_blocks.values()
+        if _normalize_title(" ".join(block["heading"])) in {_normalize_title(page_heading), _normalize_title(expected_title)}
+        and block["heading"]
+    ]
+    if len(matching_blocks) == 1:
+        title = matching_blocks[0]
+    else:
+        title = page_heading or " ".join(parser.title_parts).strip()
+    selected_article_ids = parser.select_primary_article_content(title, expected_title)
+    evidence: list[dict[str, str]] = []
+    publication_meta = {"article:published_time", "datepublished", "parsely-pub-date"}
+    for meta in parser.meta:
+        if meta["key"].lower() in publication_meta:
+            evidence.append({"raw": meta["value"], "source": f"meta.{meta['key']}", "scope": meta["scope"], "visible": ""})
+    evidence.extend(_jsonld_article_evidence(parser, final_url, title))
+    for value in parser.time_values:
+        article_id = value.get("article_id", "")
+        if article_id and article_id not in selected_article_ids:
+            continue
+        if article_id and not selected_article_ids:
+            continue
+        semantic = value.get("semantic", "")
+        normalized_semantic = re.sub(r"[^a-z]", "", semantic.lower())
+        if "updated" in normalized_semantic or "modified" in normalized_semantic:
+            continue
+        if not any(token in normalized_semantic for token in ("datepublished", "published", "publication", "publishdate", "postdate", "articledate")):
+            continue
+        evidence.append({key: value.get(key, "") for key in ("raw", "source", "scope", "visible")})
+    published, resolution = _resolve_publication_date(evidence)
+    return title, published, resolution
 
 
 def _parse_feed(text: str, base_url: str) -> list[dict[str, str]]:
@@ -333,21 +569,25 @@ def _article_from_candidate(candidate: dict[str, str], source_name: str, timeout
     text = _decode(payload, content_type)
     parser = PageParser(final_url)
     parser.feed(text)
-    title, published = _page_metadata(parser)
+    candidate_title = html.unescape(candidate.get("title", "")).strip()
+    title, _, page_resolution = _page_metadata(parser, final_url, candidate_title)
     if not title:
-        title = html.unescape(candidate.get("title", "")).strip()
-    if not published:
-        for key in ("published", "pubdate"):
-            published = _parse_date(candidate.get(key))
-            if published:
-                break
+        title = candidate_title
+    evidence_values = [
+        {key: item.get(key, "") for key in ("raw", "source", "scope", "visible")}
+        for item in page_resolution.get("evidence", [])
+    ]
+    for key in ("published", "pubdate"):
+        if candidate.get(key):
+            evidence_values.append({"raw": candidate[key], "source": f"feed.{key}", "scope": "feed_entry_for_article_url", "visible": ""})
+    published, date_evidence = _resolve_publication_date(evidence_values)
     if not title or not published:
         return None
     content = " ".join(parser.text_parts)
     content = re.sub(r"\s+", " ", html.unescape(content)).strip()[:MAX_ARTICLE_TEXT]
     if not content:
         return None
-    return Article(title=title, published=published, source=source_name, url=final_url, content=content)
+    return Article(title=title, published=published, source=source_name, url=final_url, content=content, date_evidence=date_evidence)
 
 
 def retrieve_source(name: str, url: str, timeout: float, window_start: date, window_end: date) -> tuple[list[Article], SourceResult]:
@@ -356,21 +596,21 @@ def retrieve_source(name: str, url: str, timeout: float, window_start: date, win
     except FetchError as exc:
         return [], SourceResult(name, url, "failed", str(exc), failure_kind=exc.kind)
     articles: list[Article] = []
-    errors: list[FetchError] = []
+    errors: list[dict[str, str]] = []
     for candidate in candidates:
         try:
             article = _article_from_candidate(candidate, name, timeout)
         except FetchError as exc:
-            errors.append(exc)
+            errors.append({"url": candidate["url"], "error": str(exc), "failure_kind": exc.kind})
             continue
         if article and window_start <= article.published <= window_end:
             articles.append(article)
     if errors:
         counts: dict[str, int] = {}
         for error in errors:
-            counts[error.kind] = counts.get(error.kind, 0) + 1
+            counts[error["failure_kind"]] = counts.get(error["failure_kind"], 0) + 1
         error_summary = ", ".join(f"{kind}: {count}" for kind, count in sorted(counts.items()))
-        result = SourceResult(name, final_url, "partial", f"{len(errors)} article page(s) could not be fetched ({error_summary})", len(candidates), len(articles), "article_page_failure")
+        result = SourceResult(name, final_url, "partial", f"{len(errors)} article page(s) could not be fetched ({error_summary})", len(candidates), len(articles), "article_page_failure", errors)
     elif not candidates:
         result = SourceResult(name, final_url, "partial", "source page fetched, but no feed entries or article links were discovered", 0, 0)
     else:
@@ -586,6 +826,7 @@ def _markdown_report(articles: list[Article], results: list[SourceResult], run_d
                 f"### {i}. {article.title}",
                 "",
                 f"- **Publication date:** {article.published.isoformat()}",
+                f"- **Date evidence:** {article.date_evidence.get('selected', {}).get('source', 'unknown')} = `{article.date_evidence.get('selected', {}).get('raw', '')}` ({article.date_evidence.get('selected', {}).get('interpretation', 'unrecorded')})",
                 f"- **Source:** {article.source}",
                 f"- **Article:** [{article.url}]({article.url})",
                 f"- **Summary:** {article.summary or 'Summary unavailable.'}",
@@ -599,6 +840,8 @@ def _markdown_report(articles: list[Article], results: list[SourceResult], run_d
     for result in results:
         detail = f" — {result.detail}" if result.detail else ""
         lines.append(f"- **{result.name}** ({result.url}): {result.outcome}{detail}; {result.candidates} candidate(s), {result.eligible_articles} eligible article(s).")
+        for failure in result.failed_articles:
+            lines.append(f"  - Failed article: {failure.get('url', '')} — {failure.get('error', 'unknown retrieval error')} [{failure.get('failure_kind', 'unknown')}]")
     lines.append("")
     return "\n".join(lines)
 
@@ -702,7 +945,14 @@ def _run(args: argparse.Namespace) -> tuple[Path, Path, dict[str, Any]]:
         "source_selection_notice": warning,
         "sources": [asdict(result) for result in source_results],
         "articles": [
-            {"title": article.title, "publication_date": article.published.isoformat(), "source": article.source, "url": article.url, "summary": article.summary}
+            {
+                "title": article.title,
+                "publication_date": article.published.isoformat(),
+                "publication_date_evidence": article.date_evidence,
+                "source": article.source,
+                "url": article.url,
+                "summary": article.summary,
+            }
             for article in articles
         ],
         "report_file": report_path.name,
