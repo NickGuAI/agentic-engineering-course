@@ -1,0 +1,3 @@
+usage: briefing.py [-h] [--send]
+briefing.py: error: set BRIEFING_TO to one or two email addresses at runtime
+2
