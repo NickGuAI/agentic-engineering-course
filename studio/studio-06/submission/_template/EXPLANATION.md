@@ -1,5 +1,7 @@
 # Studio 06 Design and Comparison
 
+Optional example. You can answer these questions in README instead.
+
 **Team:** [team name]
 **Members:** [names or IDs]
 

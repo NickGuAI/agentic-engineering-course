@@ -30,7 +30,7 @@ class EvaluationFixtures(unittest.TestCase):
         for mode, score in (("single", 0.4), ("multi", 0.6)):
             destination = self.output / mode
             destination.mkdir(parents=True)
-            rows = [{"id": task["id"], "prompt": task["prompt"], "overall_score": score} for task in self.selected]
+            rows = [{"id": task["id"], "prompt": task["prompt"], **{field: score for field in evaluate.SCORE_FIELDS}} for task in self.selected]
             (destination / "raw_results.jsonl").write_text("".join(json.dumps(row) + "\n" for row in rows))
 
     def test_packaging_preserves_prompts_and_reports(self):
@@ -79,6 +79,15 @@ class EvaluationFixtures(unittest.TestCase):
         self.assertEqual(env["OPENAI_API_KEY"], "offline-fixture")
         self.assertNotIn("MAX_OUTPUT_TOKENS", env)
         self.assertNotIn("LLM_CONCURRENCY", env)
+
+    def test_missing_dimension_is_rejected(self):
+        self.fixture_scores()
+        path = self.output / "single/raw_results.jsonl"
+        rows = evaluate.read_jsonl(path)
+        del rows[0]["readability"]
+        path.write_text("".join(json.dumps(row) + "\n" for row in rows))
+        with self.assertRaisesRegex(ValueError, "readability"):
+            evaluate.summarize(self.output, self.selected)
 
 
 if __name__ == "__main__":

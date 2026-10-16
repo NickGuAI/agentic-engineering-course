@@ -35,7 +35,7 @@ Follow the [evaluation procedure](EVALUATION.md). It uses the original DeepResea
 
 RACE grades each report against its reference on comprehensiveness, insight, instruction following, and readability. Each criterion receives a score from 0 to 10.
 
-The benchmark computes weighted totals for your report, `T`, and the reference, `R`. Its overall score is `T / (T + R)`. Higher is better. A score of `0.5` means equal weighted totals. For example, `7 / (7 + 8) = 0.4667`.
+The benchmark applies its original weights to compare your report with its reference. See the [score explanation](EVALUATION.md#4-read-the-six-scores).
 
 The benchmark score describes report quality. The course awards the 2 comparison points for running and comparing the results.
 
@@ -43,14 +43,15 @@ The benchmark score describes report quality. The course awards the 2 comparison
 
 Put these files in your team's [submission folder](../submission/README.md):
 
-- Your implementation and a short command that starts each mode.
-- `EVIDENCE.md`: a compact run excerpt showing five or more active research sub-agents, their overlapping times, and their searches.
-- `reports/single/99.md`, `93.md`, and `100.md`.
-- `reports/multi/99.md`, `93.md`, and `100.md`.
-- The evaluator's score files and generated `comparison.csv`.
-- `EXPLANATION.md`: what you built, why you chose it, and what the single/multi comparison shows.
+- Your implementation.
+- Six reports and their original RACE outputs.
+- `README.md`: run commands, what you built and why, the single/multi comparison, and links to your run evidence and results.
 
-Use native run events or a short table for `EVIDENCE.md`. Include worker identifiers and start/end times so a reader can see the overlap. Include search activity from those workers. Five workers listed in source code alone do not show that they ran.
+Show the parallel research run in your README or link to a compact excerpt elsewhere. Choose the format that fits your framework.
+
+The evaluation helper uses example report paths. You can map your reports to those paths or prepare the evaluator's JSONL yourself.
+
+`comparison.csv` and the separate explanation/evidence templates are optional conveniences. They are not independent graded files.
 
 A grading agent reads the files at your submitted commit. It does not run your code. See the [two-row rubric](GRADING_RUBRIC.md).
 

@@ -4,8 +4,8 @@
 
 | Line | Points | Condition for credit | Read from |
 |---|---|---|---|
-| Implementation | 8 | Your deep research agent actually runs at least five research sub-agents searching in parallel. | Implementation, run command, and `EVIDENCE.md` |
-| Comparison | 2 | Run both modes on all three tasks, score the six reports with RACE, and compare the results. | Six reports, native RACE score files, `comparison.csv`, and `EXPLANATION.md` |
+| Implementation | 8 | Your deep research agent actually runs at least five research sub-agents searching in parallel. | Implementation and parallel-run evidence |
+| Comparison | 2 | Run both modes on all three tasks, score the six reports with RACE, and compare the results. | Six reports, original RACE outputs, and README comparison |
 
 There are no additional checkpoints or explanation points. There is no minimum RACE score or class ranking.
 

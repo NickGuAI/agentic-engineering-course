@@ -14,6 +14,7 @@ import sys
 REVISION = "f2735b5c3636759c22f9e936c0232de8bf545b67"
 TASK_FILE = Path(__file__).resolve().parents[1] / "selected-tasks.jsonl"
 MODES = ("single", "multi")
+SCORE_FIELDS = ("comprehensiveness", "insight", "instruction_following", "readability", "overall_score")
 SOURCE_FILES = (
     "deepresearch_bench_race.py",
     "utils/api.py",
@@ -123,10 +124,11 @@ def summarize(output, selected):
             task_id = row["id"]
             if "error" in row or row.get("prompt") != expected[task_id]["prompt"]:
                 raise ValueError(f"RACE returned an error or a different prompt for {mode}, task {task_id}.")
-            score = row.get("overall_score")
-            if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score) or not 0 <= score <= 1:
-                raise ValueError(f"RACE returned no valid overall_score for {mode}, task {task_id}.")
-            scores[mode][task_id] = score
+            for field in SCORE_FIELDS:
+                score = row.get(field)
+                if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score) or not 0 <= score <= 1:
+                    raise ValueError(f"RACE returned no valid {field} for {mode}, task {task_id}.")
+            scores[mode][task_id] = row["overall_score"]
     with (output / "comparison.csv").open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
         writer.writerow(["task_id", "topic", "single", "multi", "multi_minus_single"])

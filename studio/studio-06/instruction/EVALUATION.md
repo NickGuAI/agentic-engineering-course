@@ -6,13 +6,15 @@ The course helper packages your reports and invokes that evaluator. It does not 
 
 ## 1. Save one report per task in each mode
 
-Use the exact [three prompts](TASKS.md). Save the six final reports under your submission folder:
+Use the exact [three prompts](TASKS.md). The helper expects these example paths under your submission folder:
 
 ```text
 reports/single/99.md     reports/multi/99.md
 reports/single/93.md     reports/multi/93.md
 reports/single/100.md    reports/multi/100.md
 ```
+
+Your own report locations are fine. Copy or map the reports to these paths for the helper, or prepare native JSONL yourself.
 
 Keep your research agents away from the benchmark's reference reports and scoring criteria. The evaluator reads those files after research is complete.
 
@@ -44,6 +46,7 @@ These commands use Bash. Enter your key at the hidden prompt. The key stays in t
 read -rsp 'Class OpenAI API key: ' OPENAI_API_KEY
 export OPENAI_API_KEY
 
+LLM_BACKEND=openai RACE_MODEL=gpt-5.5 CLEAN_MODEL=gpt-5.6-luna \
 "$PYTHON" "$STUDIO/instruction/code/evaluate.py" \
   --submission "$SUBMISSION" \
   --benchmark "$BENCHMARK"
@@ -59,6 +62,19 @@ The helper creates a fresh `eval/race-01/` directory. It packages the reports as
 
 It passes the selected three-task query file to RACE. The benchmark matches reports, criteria, and references by exact prompt text.
 
+The helper runs RACE from the benchmark checkout because its criteria and reference paths are relative constants. It uses these native arguments:
+
+| Argument | Value or purpose |
+|---|---|
+| `target_model` | `single` or `multi`, the input filename stem, not a model API ID |
+| `--only_en` | Evaluate the selected English tasks |
+| `--query_file` | The exact three-task query JSONL |
+| `--raw_data_dir` | This run's packaged report directory |
+| `--cleaned_data_dir` | This run's fresh cleaned-report directory |
+| `--output_dir` | A separate result directory for each mode |
+
+It leaves `--max_workers` at the native default of 5. Do not use `--skip_cleaning`: in this revision, it also skips scoring.
+
 ## 4. Read the six scores
 
 Open these files:
@@ -71,13 +87,15 @@ Open these files:
 | `comparison.csv` | The three score pairs, differences, and means |
 | `evaluation.json` | Evaluator revision, source hashes, input hashes, commands, and completion status |
 
-Each raw score row includes `overall_score` and four dimension scores. RACE gives both reports 0–10 scores for each criterion. It applies the original weights, then computes `T / (T + R)`.
+Each raw score row includes `overall_score` and four normalized dimension scores. RACE gives both reports 0–10 scores for each criterion. It applies the original weights to obtain totals `T` and `R`.
 
-An overall score of `0.5` means your report and the reference have equal weighted totals. A higher score is better. It is not a percentage of correct answers.
+When `T + R > 0`, the overall score is `T / (T + R)`. A score of `0.5` means equal weighted totals. If both totals are zero, this evaluator returns zero. For example, `7 / (7 + 8) = 0.4667`.
 
-The helper writes `comparison.csv` only after it verifies all six scores and their original prompts.
+A higher score is better. It is not a percentage of correct answers.
 
-Compare the three pairs in `EXPLANATION.md`. Use examples from your reports to explain the differences. There is no minimum RACE score.
+The native process can exit successfully with missing task scores. Verify exactly three successful expected task IDs in each mode. Check all four dimensions and `overall_score` for missing values. The helper performs these checks before it writes `comparison.csv`.
+
+Compare the three pairs in README. Link to the original RACE outputs. The CSV is an optional convenience. There is no minimum RACE score.
 
 ## If an evaluation fails
 
@@ -95,7 +113,7 @@ export OPENAI_API_KEY
 unset OPENAI_API_KEY
 ```
 
-Fresh directories prevent an earlier cleaned report from being reused after you change an input report. Do not turn a failed or missing score into zero.
+Each new run gets fresh input, cleaned-report, and result paths. Keep separate result directories for single and multi: existing task IDs cause RACE to skip evaluation. Fresh cleaned paths also prevent cached reports from being reused. Do not turn a failed or missing score into zero.
 
 If all six native scores already exist, regenerate the comparison without model calls:
 

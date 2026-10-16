@@ -1,3 +1,5 @@
 # Parallel Research Evidence
 
-[Include a compact run excerpt or table with worker IDs, overlapping start/end times, and search activity.]
+Optional example. You can include run evidence in README or link to an excerpt in another file.
+
+[Use the format that fits your framework to show the parallel research run.]
