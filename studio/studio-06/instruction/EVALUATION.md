@@ -87,7 +87,7 @@ Open these files:
 | `comparison.csv` | The three score pairs, differences, and means |
 | `evaluation.json` | Evaluator revision, source hashes, input hashes, commands, and completion status |
 
-Each raw score row includes `overall_score` and four normalized dimension scores. RACE gives both reports 0–10 scores for each criterion. It applies the original weights to obtain totals `T` and `R`.
+Each raw score row includes `overall_score` and four normalized dimension scores. RACE gives both reports 0–10 scores for each criterion. It applies the original weights to obtain total `T` for your report and total `R` for the official reference report.
 
 When `T + R > 0`, the overall score is `T / (T + R)`. A score of `0.5` means equal weighted totals. If both totals are zero, this evaluator returns zero. For example, `7 / (7 + 8) = 0.4667`.
 
