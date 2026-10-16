@@ -4,7 +4,7 @@ Build a deep research agent with at least five research sub-agents searching in 
 
 Run a single-agent version and a multi-agent version on the [three selected tasks](TASKS.md). Produce one report per task in each mode: six reports in total. Repeated runs are optional.
 
-**Total: 10 points. Due date: to be announced on CourseWorks.**
+**Total: 10 points. Due Friday, October 23, 2026, 13:10 ET, before class.**
 
 ## What earns the 10 points?
 
@@ -45,18 +45,28 @@ Put these files in your team's [submission folder](../submission/README.md):
 
 - Your implementation.
 - Six reports and their original RACE outputs.
-- `README.md`: run commands, what you built and why, the single/multi comparison, and links to your run evidence and results.
+- `README.md`: setup and run commands.
+- `EXPLANATION.md`: answer the questions below and link to your run evidence and results.
 
-Show the parallel research run in your README or link to a compact excerpt elsewhere. Choose the format that fits your framework.
+Show the parallel research run in `EXPLANATION.md` or link to a compact excerpt elsewhere. Choose the format that fits your framework.
 
 The evaluation helper uses example report paths. You can map your reports to those paths or prepare the evaluator's JSONL yourself.
 
-`comparison.csv` and the separate explanation/evidence templates are optional conveniences. They are not independent graded files.
+`comparison.csv` and the separate evidence template are optional conveniences. They are not independent graded files.
 
 A grading agent reads the files at your submitted commit. It does not run your code. See the [two-row rubric](GRADING_RUBRIC.md).
 
+## Explanation
+
+In `EXPLANATION.md`, answer these questions:
+
+1. What did you build?
+2. Why did you choose these agent roles and this architecture?
+3. What did you change from the code or framework you started with, and why?
+4. How did the single-agent and multi-agent results compare?
+
 ## Submit to your team's private repository
 
-Commit and push your work to the private repository created by `bootstrap.sh`. Each member submits the same team pull-request link through CourseWorks when the assignment is available.
+Commit and push your work to the private repository created by `bootstrap.sh`. Each member submits the same team pull-request link through CourseWorks by Friday, October 23, 2026, 13:10 ET, before class.
 
 Never commit API keys, credential files, or full raw session logs. Every member should be able to explain the implementation and results.

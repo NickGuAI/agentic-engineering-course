@@ -95,7 +95,7 @@ A higher score is better. It is not a percentage of correct answers.
 
 The native process can exit successfully with missing task scores. Verify exactly three successful expected task IDs in each mode. Check all four dimensions and `overall_score` for missing values. The helper performs these checks before it writes `comparison.csv`.
 
-Compare the three pairs in README. Link to the original RACE outputs. The CSV is an optional convenience. There is no minimum RACE score.
+Compare the three pairs in `EXPLANATION.md`. Link to the original RACE outputs. The CSV is an optional convenience. There is no minimum RACE score.
 
 ## If an evaluation fails
 

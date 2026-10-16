@@ -9,11 +9,12 @@ cd "studio/studio-06/submission/$TEAM"
 mkdir -p reports/single reports/multi eval work
 ```
 
-Keep your implementation, six reports, original RACE outputs, and README in this folder. This example layout matches the evaluation helper:
+Keep your implementation, six reports, original RACE outputs, `README.md`, and `EXPLANATION.md` in this folder. This example layout matches the evaluation helper:
 
 ```text
 studio/studio-06/submission/<team>/
-├── README.md                 Run commands, design, comparison, and evidence links
+├── README.md                 Setup and run commands
+├── EXPLANATION.md            What you built, why, what you changed, and the comparison
 ├── <your implementation>
 ├── reports/
 │   ├── single/{99,93,100}.md
@@ -31,12 +32,12 @@ studio/studio-06/submission/<team>/
 
 The [evaluation procedure](../instruction/EVALUATION.md) creates the `eval/race-01/` files. Your own report locations are fine. Map them to the helper's paths or prepare native JSONL yourself.
 
-Include parallel-run evidence in README or link to an excerpt in another file. There is no fixed evidence-file format.
+Include parallel-run evidence in `EXPLANATION.md` or link to an excerpt in another file. There is no fixed evidence-file format.
 
-The copied `EXPLANATION.md` and `EVIDENCE.md` templates are optional examples. You can put their content in README. `comparison.csv` is convenient output, not a required graded file.
+Complete `EXPLANATION.md` from the template. `EVIDENCE.md` is an optional example for a separate run excerpt. `comparison.csv` is convenient output, not a required graded file.
 
 Commit the six reports and original evaluation results with your code. Keep full raw session logs and credentials out of Git.
 
-Push to your team's private repository. Each member submits the same team pull-request link through CourseWorks when the assignment is available.
+Push to your team's private repository. Each member submits the same team pull-request link through CourseWorks by Friday, October 23, 2026, 13:10 ET, before class.
 
-Due date: to be announced on CourseWorks.
+Due Friday, October 23, 2026, 13:10 ET, before class.

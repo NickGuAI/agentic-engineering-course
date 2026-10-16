@@ -25,4 +25,4 @@ Build a deep research agent with at least five sub-agents searching in parallel.
 - [Grading rubric](instruction/GRADING_RUBRIC.md)
 - [Submission guide and template](submission/README.md)
 
-Due date: to be announced on CourseWorks.
+Due Friday, October 23, 2026, 13:10 ET, before class.
