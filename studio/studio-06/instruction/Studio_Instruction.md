@@ -62,8 +62,7 @@ In `EXPLANATION.md`, answer these questions:
 
 1. What did you build?
 2. Why did you choose these agent roles and this architecture?
-3. What did you change from the code or framework you started with, and why?
-4. How did the single-agent and multi-agent results compare?
+3. How did the single-agent and multi-agent results compare?
 
 ## Submit to your team's private repository
 

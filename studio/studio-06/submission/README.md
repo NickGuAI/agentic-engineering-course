@@ -14,7 +14,7 @@ Keep your implementation, six reports, original RACE outputs, `README.md`, and `
 ```text
 studio/studio-06/submission/<team>/
 ├── README.md                 Setup and run commands
-├── EXPLANATION.md            What you built, why, what you changed, and the comparison
+├── EXPLANATION.md            What you built, why, and the comparison
 ├── <your implementation>
 ├── reports/
 │   ├── single/{99,93,100}.md

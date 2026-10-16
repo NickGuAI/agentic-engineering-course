@@ -11,10 +11,6 @@
 
 [Explain your choices.]
 
-## What did you change from the code or framework you started with, and why?
-
-[Describe your changes. If you built from scratch, say so.]
-
 ## How did the single-agent and multi-agent results compare?
 
 [Compare the three pairs of RACE scores. Link to the six reports and original score files.]
