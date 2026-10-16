@@ -47,3 +47,14 @@ Build an MCP server over local data you own, connect it to an agent in Codex wit
 * [studio-05/instruction/Studio_Instruction.md](studio-05/instruction/Studio_Instruction.md) (assignment, checkpoints and evidence)
 * [studio-05/instruction/GRADING_RUBRIC.md](studio-05/instruction/GRADING_RUBRIC.md) (how it's graded, 10 points)
 * [studio-05/submission/](studio-05/submission/) (template and your team's folder in your private repo)
+
+## Studio 06: Wide Research
+
+Build a deep research agent with at least five sub-agents searching in parallel. Compare it with one agent on three fixed DeepResearchBench tasks. Implementation earns 8 points, and the comparison earns 2 points.
+
+* [studio-06/README.md](studio-06/README.md) (overview)
+* [studio-06/instruction/Studio_Instruction.md](studio-06/instruction/Studio_Instruction.md) (assignment)
+* [studio-06/instruction/TASKS.md](studio-06/instruction/TASKS.md) (the three exact prompts)
+* [studio-06/instruction/EVALUATION.md](studio-06/instruction/EVALUATION.md) (evaluation commands)
+* [studio-06/instruction/GRADING_RUBRIC.md](studio-06/instruction/GRADING_RUBRIC.md) (8+2 points)
+* [studio-06/submission/](studio-06/submission/) (template and your team's private submission folder)
