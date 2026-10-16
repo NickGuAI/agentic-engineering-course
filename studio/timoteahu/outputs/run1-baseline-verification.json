@@ -1,0 +1,51 @@
+{
+  "digest": "outputs/run1-baseline-research-update-2026-09-24.md",
+  "passed": true,
+  "checks": [
+    {
+      "name": "has_items",
+      "ok": true,
+      "detail": "3 items"
+    },
+    {
+      "name": "item1_date",
+      "ok": true,
+      "detail": "Claude discovers a novel enzyme system with CRISPR-like repeats: 2026-09-23 (window 2026-09-17..2026-09-24)"
+    },
+    {
+      "name": "item1_source",
+      "ok": true,
+      "detail": "Claude discovers a novel enzyme system with CRISPR-like repeats: www.anthropic.com"
+    },
+    {
+      "name": "item2_date",
+      "ok": true,
+      "detail": "Partnering with Accenture on embedded evaluation: 2026-09-18 (window 2026-09-17..2026-09-24)"
+    },
+    {
+      "name": "item2_source",
+      "ok": true,
+      "detail": "Partnering with Accenture on embedded evaluation: www.anthropic.com"
+    },
+    {
+      "name": "item3_date",
+      "ok": true,
+      "detail": "Introducing the Life Sciences Verification Program: 2026-09-17 (window 2026-09-17..2026-09-24)"
+    },
+    {
+      "name": "item3_source",
+      "ok": true,
+      "detail": "Introducing the Life Sciences Verification Program: www.anthropic.com"
+    },
+    {
+      "name": "coverage_anthropic.com",
+      "ok": true,
+      "detail": "present"
+    },
+    {
+      "name": "word_limit",
+      "ok": true,
+      "detail": "311/600 words"
+    }
+  ]
+}

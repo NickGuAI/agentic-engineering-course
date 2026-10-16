@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ResearchDigest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_date", "sources_checked", "items"],
+  "properties": {
+    "run_date": {"type": "string", "description": "YYYY-MM-DD"},
+    "sources_checked": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "url_fetched", "status", "detail"],
+        "properties": {
+          "source_id": {"type": "string"},
+          "url_fetched": {"type": "string"},
+          "status": {"type": "string", "enum": ["ok", "empty_in_window", "failed"]},
+          "detail": {"type": "string"}
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "title", "date", "source_url", "claim_basis",
+                     "summary", "why_it_matters", "evidence_quotes"],
+        "properties": {
+          "source_id": {"type": "string"},
+          "title": {"type": "string"},
+          "date": {"type": "string", "description": "YYYY-MM-DD publication date shown on the page"},
+          "source_url": {"type": "string"},
+          "claim_basis": {"type": "string", "enum": ["full_article", "feed_description"]},
+          "summary": {"type": "string"},
+          "why_it_matters": {"type": "string"},
+          "evidence_quotes": {
+            "type": "array",
+            "description": "1-3 short verbatim quotes copied from the source page that back the summary",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}
