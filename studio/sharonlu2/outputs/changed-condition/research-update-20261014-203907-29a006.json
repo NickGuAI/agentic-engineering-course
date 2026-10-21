@@ -1,0 +1,133 @@
+{
+  "run_id": "research-update-20261014-203907-29a006",
+  "started_at": "2026-10-14T20:39:07.526934-04:00",
+  "timezone": "America/New_York",
+  "window": {
+    "start_inclusive": "2026-10-07",
+    "end_inclusive": "2026-10-13",
+    "run_date_excluded": "2026-10-14"
+  },
+  "status": "incomplete",
+  "model": {
+    "provider": "Codex CLI",
+    "name": "gpt-6-luna",
+    "invoked": true,
+    "status": "succeeded",
+    "not_called_reason": null,
+    "log_id": "codex-20261015T003928Z-ee8857c0",
+    "raw_log_dir": "/Users/xingrul2/.local/share/4995-logs/studio01/changed-condition-20261014-203907/model",
+    "error": null
+  },
+  "source_selection_notice": "Invalid custom URL(s): not-a-url. Falling back to default sources.",
+  "sources": [
+    {
+      "name": "not-a-url",
+      "url": "not-a-url",
+      "outcome": "failed",
+      "detail": "invalid custom URL; using default sources",
+      "candidates": 0,
+      "eligible_articles": 0,
+      "failure_kind": "invalid_url"
+    },
+    {
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news",
+      "outcome": "checked",
+      "detail": "source checked successfully",
+      "candidates": 30,
+      "eligible_articles": 5,
+      "failure_kind": null
+    },
+    {
+      "name": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering",
+      "outcome": "partial",
+      "detail": "1 article page(s) could not be fetched (request_failure: 1)",
+      "candidates": 30,
+      "eligible_articles": 1,
+      "failure_kind": "article_page_failure"
+    },
+    {
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/",
+      "outcome": "checked",
+      "detail": "source checked successfully",
+      "candidates": 30,
+      "eligible_articles": 12,
+      "failure_kind": null
+    }
+  ],
+  "articles": [
+    {
+      "title": "Helping small businesses put AI to work",
+      "publication_date": "2026-10-13",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/helping-small-businesses-put-ai-to-work/",
+      "summary": "OpenAI and America’s SBDC plan to train about 150 small-business advisors and offer hands-on workshops intended to reach at least 1,000 businesses. A related report says about 4 million employees at firms with fewer than 500 people used OpenAI tools during one week in September, with small-business users turning to AI agents relatively often for finance, supply chain, legal, and marketing work."
+    },
+    {
+      "title": "Redesigning source control at Anthropic",
+      "publication_date": "2026-10-12",
+      "source": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering/redesigning-source-control",
+      "summary": "Anthropic says its monorepo’s merge rate grew from about 2,500 changes per day in May 2026 to more than 30,000 in September, making source control a bottleneck. It built Scion, a server-centered version control system designed for always-online agents, with sparse or on-demand checkouts, horizontally scalable data storage, and APIs for source-control operations."
+    },
+    {
+      "title": "SentinelOne cuts malware analysis from weeks to hours",
+      "publication_date": "2026-10-09",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/sentinelone/",
+      "summary": "SentinelOne reports that OpenAI Daybreak reduced the time to reverse-engineer a malware sample from four to six weeks to roughly eight hours, allowing researchers to examine more samples and compare threats. The company says people remain accountable for consequential decisions such as architectural changes, while some narrower fixes may be automated."
+    },
+    {
+      "title": "Our approach to EU text provenance rules",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/eu-text-provenance/",
+      "summary": "OpenAI plans to add invisible statistical text watermarks to eligible ChatGPT and Codex output in the EU, while API customers globally can opt in for select models; detector access will initially be limited to approved researchers and expert organizations. Evaluations found detection harder for short or constrained text and after editing, and the article stresses that watermark results do not establish authorship, ownership, responsibility, or accuracy."
+    },
+    {
+      "title": "LegalOn halves Codex costs while maintaining development speed",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/legalon-halves-codex-costs/",
+      "summary": "LegalOn says it reduced estimated daily Codex costs by about 65% while maintaining development speed by matching models to task complexity, limiting Fast mode by default, and setting budgets by department, group, and individual. Its reported approach assigns routine implementation to Luna, standard design and analysis to Sol, and complex analysis and architecture work to Astra."
+    },
+    {
+      "title": "Introducing the Anthropic Cyber Mission",
+      "publication_date": "2026-10-08",
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
+      "summary": "Anthropic launched the Cyber Mission with two initial efforts: a Critical Infrastructure Defense Program that provides frontier models, on-site engineers, and threat research through partner providers, and OSS Scanner, which offers enrolled open-source projects free periodic model scans. OSS Scanner reports include proof-of-concept exploits and suggested fixes, are sent without human review, and may contain inaccuracies; Anthropic expects a true-positive rate above 90%."
+    },
+    {
+      "title": "How Third Moment Research runs 10,000 agents for 36+ hours",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/third-moment-research/",
+      "summary": "Third Moment Research says its system runs 10,000 agents concurrently on research sessions lasting 36–48 hours, using OpenAI models and Codex to study agent behavior and generate training scenarios. In one example, Codex identified optimizations that cut a backtest from about three hours to three to five minutes; the company also uses Daybreak to test whether agents can escape their research environments."
+    },
+    {
+      "title": "Building on our commitment to American scientific discovery",
+      "publication_date": "2026-10-08",
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/genesis-mission-commitment",
+      "summary": "Anthropic committed $150 million over three years to the federal Genesis Mission, providing Claude, Claude Code, API credits, training, and technical support to several hundred research projects across more than 15 agencies. The company says it will also work with agencies and national laboratories on priorities including fusion energy and quantum computing."
+    },
+    {
+      "title": "Asana cuts model costs 76x in browser tests with GPT‑6.1 Sol",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/asana-browser-agent/",
+      "summary": "Asana used GPT-6 Astra in Codex to investigate and test changes to its StackAI browser agent, producing a GPT-6.1 Sol workflow that averaged $0.47 and about four minutes per run—reported as 76 times cheaper and five times faster than the original production setup. The changes included caching browsing history, retaining more text, and removing screenshots in batches; all 18 optimized runs completed the task correctly."
+    },
+    {
+      "title": "2026 Usage Policy update",
+      "publication_date": "2026-10-08",
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/2026-usage-policy-update",
+      "summary": "Anthropic’s updated Usage Policy, effective November 12, clarifies restrictions on deceptive campaigns, election interference, weapons-related software, non-consensual surveillance, and law-enforcement recommendations. It also spells out human oversight and disclosure requirements for high-risk uses, adds safeguards for models connected to physical-action hardware, and prohibits sustained needless cruelty toward models in extreme cases."
+    }
+  ],
+  "report_file": "research-update-20261014-203907-29a006.md"
+}

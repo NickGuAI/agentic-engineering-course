@@ -1,0 +1,410 @@
+{
+  "run_id": "research-update-20261014-205025-f70277",
+  "started_at": "2026-10-14T20:50:25.358294-04:00",
+  "timezone": "America/New_York",
+  "window": {
+    "start_inclusive": "2026-10-07",
+    "end_inclusive": "2026-10-13",
+    "run_date_excluded": "2026-10-14"
+  },
+  "status": "incomplete",
+  "model": {
+    "provider": "Codex CLI",
+    "name": "gpt-6-luna",
+    "invoked": true,
+    "status": "succeeded",
+    "not_called_reason": null,
+    "log_id": "codex-20261015T005044Z-f0bf7679",
+    "raw_log_dir": "/Users/xingrul2/.local/share/4995-logs/studio01/corrected-20261014-205025/model",
+    "error": null
+  },
+  "source_selection_notice": null,
+  "sources": [
+    {
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news",
+      "outcome": "checked",
+      "detail": "source checked successfully",
+      "candidates": 30,
+      "eligible_articles": 3,
+      "failure_kind": null,
+      "failed_articles": []
+    },
+    {
+      "name": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering",
+      "outcome": "partial",
+      "detail": "1 article page(s) could not be fetched (request_failure: 1)",
+      "candidates": 30,
+      "eligible_articles": 0,
+      "failure_kind": "article_page_failure",
+      "failed_articles": [
+        {
+          "url": "https://www.anthropic.com/jobs",
+          "error": "response exceeded 2000000 bytes",
+          "failure_kind": "request_failure"
+        }
+      ]
+    },
+    {
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/",
+      "outcome": "partial",
+      "detail": "1 article page(s) could not be fetched (request_failure: 1)",
+      "candidates": 30,
+      "eligible_articles": 8,
+      "failure_kind": "article_page_failure",
+      "failed_articles": [
+        {
+          "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+          "error": "request failed: HTTPError: HTTP Error 403: Forbidden",
+          "failure_kind": "request_failure"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "title": "Higgsfield takes AI video from 1 minute to over 10",
+      "publication_date": "2026-10-13",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Tue, 13 Oct 2026 12:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-13",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Tue, 13 Oct 2026 12:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-13",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/higgsfield-longer-videos-voice/",
+      "summary": "Higgsfield says GPT‑6 Astra has enabled its creative agents to produce videos over 10 minutes, with external tool use helping address consistency across longer videos. The company also uses GPT‑Image‑2.5 for promotional visuals and Codex to turn creative prototypes into production software."
+    },
+    {
+      "title": "Sophos cuts threat investigation time by 96% with OpenAI Daybreak",
+      "publication_date": "2026-10-09",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Fri, 09 Oct 2026 07:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-09",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Fri, 09 Oct 2026 07:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-09",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/sophos/",
+      "summary": "Sophos reports that Daybreak agents reduced average response time for cases they handle from about 38 minutes to 89 seconds, with AI resolving 52% of MDR cases end to end. Its workflow gathers case context, plans and conducts investigations, and recommends or takes response actions within customer-defined controls, escalating decisions needing human judgment."
+    },
+    {
+      "title": "Asana cuts model costs 76x in browser tests with GPT‑6.1 Sol",
+      "publication_date": "2026-10-09",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Fri, 09 Oct 2026 07:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-09",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Fri, 09 Oct 2026 07:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-09",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/asana-browser-agent/",
+      "summary": "In a 144-run browser-agent study, Asana used GPT‑6 Astra in Codex to test workflow changes; the resulting GPT‑6.1 Sol setup averaged $0.47 and about four minutes per run, versus at least $36.21 and 22.5 minutes for the original Model B setup. The optimized workflow increased history retention and changed caching and screenshot handling; all its runs completed the task correctly."
+    },
+    {
+      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
+      "publication_date": "2026-10-08",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Thu, 08 Oct 2026 12:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-08",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Thu, 08 Oct 2026 12:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/pollo-ai/",
+      "summary": "Pollo AI combines GPT‑5.6 for routing, GPT‑6 Astra for more demanding creative planning, and GPT‑Image‑2.5 for image generation in guided workflows for videos and campaign assets. The company reports that these workflows reduce users’ time spent choosing or switching models by more than 50%."
+    },
+    {
+      "title": "LegalOn halves Codex costs while maintaining development speed",
+      "publication_date": "2026-10-08",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Thu, 08 Oct 2026 12:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-08",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Thu, 08 Oct 2026 12:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/legalon-halves-codex-costs/",
+      "summary": "LegalOn reports cutting estimated daily Codex costs by about 65% while maintaining development speed by matching GPT‑6 Luna, GPT‑6.1 Sol, and GPT‑6 Astra to task complexity, alongside usage limits and budget controls. It is also developing a metric to connect AI costs for each feature release with the customer value delivered."
+    },
+    {
+      "title": "Introducing the Anthropic Cyber Mission",
+      "publication_date": "2026-10-08",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "2026-10-08T09:04:16.632Z",
+          "source": "meta.article:published_time",
+          "scope": "document_head",
+          "visible": "",
+          "published_date": "2026-10-08",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [
+          {
+            "raw": "2026-10-08T09:04:16.632Z",
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ],
+        "evidence": [
+          {
+            "raw": "2026-10-08T09:04:16.632Z",
+            "source": "meta.article:published_time",
+            "scope": "document_head",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          },
+          {
+            "raw": "2026-10-08T09:04:16.632Z",
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
+      "summary": "Summary unavailable: the model did not return a usable summary."
+    },
+    {
+      "title": "How Oracle turns days of work into minutes with ChatGPT and Codex",
+      "publication_date": "2026-10-08",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Thu, 08 Oct 2026 16:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-08",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Thu, 08 Oct 2026 16:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/oracle/",
+      "summary": "Oracle reports using ChatGPT Work and Codex across recruiting, business analytics, and site reliability workflows, with 130,000 active ChatGPT users and more than 95,000 active Codex users. Examples include reducing recruiter research from 2–4 days to 15–20 minutes and helping SREs retrieve incident context and playbooks; Oracle leaders stress that people remain responsible for system design, security, and output."
+    },
+    {
+      "title": "Building on our commitment to American scientific discovery",
+      "publication_date": "2026-10-08",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "2026-10-08T13:00:00.000Z",
+          "source": "meta.article:published_time",
+          "scope": "document_head",
+          "visible": "",
+          "published_date": "2026-10-08",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [
+          {
+            "raw": "2026-10-08T13:00:00.000Z",
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ],
+        "evidence": [
+          {
+            "raw": "2026-10-08T13:00:00.000Z",
+            "source": "meta.article:published_time",
+            "scope": "document_head",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          },
+          {
+            "raw": "2026-10-08T13:00:00.000Z",
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/genesis-mission-commitment",
+      "summary": "Summary unavailable: the model did not return a usable summary."
+    },
+    {
+      "title": "2026 Usage Policy update",
+      "publication_date": "2026-10-08",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "2026-10-08T17:00:00.000Z",
+          "source": "meta.article:published_time",
+          "scope": "document_head",
+          "visible": "",
+          "published_date": "2026-10-08",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [
+          {
+            "raw": "2026-10-08T17:00:00.000Z",
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ],
+        "evidence": [
+          {
+            "raw": "2026-10-08T17:00:00.000Z",
+            "source": "meta.article:published_time",
+            "scope": "document_head",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          },
+          {
+            "raw": "2026-10-08T17:00:00.000Z",
+            "source": "jsonld.datePublished",
+            "scope": "article_entity_match",
+            "visible": "",
+            "published_date": "2026-10-08",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/2026-usage-policy-update",
+      "summary": "Summary unavailable: the model did not return a usable summary."
+    },
+    {
+      "title": "Radisson Hotel Group brings hotel discovery into ChatGPT",
+      "publication_date": "2026-10-07",
+      "publication_date_evidence": {
+        "status": "resolved",
+        "selected": {
+          "raw": "Wed, 07 Oct 2026 07:00:00 GMT",
+          "source": "feed.pubdate",
+          "scope": "feed_entry_for_article_url",
+          "visible": "",
+          "published_date": "2026-10-07",
+          "interpretation": "zoned_timestamp_converted_to_eastern"
+        },
+        "corroborating": [],
+        "evidence": [
+          {
+            "raw": "Wed, 07 Oct 2026 07:00:00 GMT",
+            "source": "feed.pubdate",
+            "scope": "feed_entry_for_article_url",
+            "visible": "",
+            "published_date": "2026-10-07",
+            "interpretation": "zoned_timestamp_converted_to_eastern"
+          }
+        ]
+      },
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/radisson/",
+      "summary": "Radisson and Accenture built a ChatGPT hotel-discovery plugin in six weeks that lets travelers compare locations, prices, and amenities before continuing to Radisson’s booking site. For July–August 2026, the plugin’s visit-to-booking conversion was about 1.5 times Radisson’s organic search conversion."
+    }
+  ],
+  "report_file": "research-update-20261014-205025-f70277.md"
+}
