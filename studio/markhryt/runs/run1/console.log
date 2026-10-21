@@ -1,0 +1,15 @@
+2026-09-11 15:46:27,673 INFO    newsdigest.ingest: anthropic-news: 12 articles listed
+2026-09-11 15:46:28,032 INFO    newsdigest.job: anthropic-news: 10 new (cap 10)
+2026-09-11 15:46:28,400 INFO    newsdigest.ingest: anthropic-engineering: 25 articles listed
+2026-09-11 15:46:28,929 INFO    newsdigest.job: anthropic-engineering: 10 new (cap 10)
+2026-09-11 15:46:29,479 INFO    newsdigest.ingest: openai-news: 1190 articles listed
+2026-09-11 15:46:29,480 INFO    newsdigest.job: openai-news: 10 new (cap 10)
+2026-09-11 15:46:35,689 WARNING newsdigest.job: no Claude credentials (ANTHROPIC_API_KEY unset, no `ant auth login` profile); fell back to extractive summaries
+2026-09-11 15:46:35,714 INFO    newsdigest.job: run complete: degraded -> ../runs/run1/digests/2026-09-11T194627+0000.md
+2026-09-11 15:46:35,715 INFO    newsdigest.job: sleeping 60s until next run
+2026-09-11 15:47:36,371 INFO    newsdigest.ingest: anthropic-news: 12 articles listed
+2026-09-11 15:47:36,374 INFO    newsdigest.job: anthropic-news: 0 new (cap 10)
+2026-09-11 15:47:36,711 INFO    newsdigest.ingest: anthropic-engineering: 25 articles listed
+2026-09-11 15:47:36,711 INFO    newsdigest.job: anthropic-engineering: 0 new (cap 10)
+2026-09-11 15:47:36,876 INFO    newsdigest.ingest: openai-news: 1190 articles listed
+2026-09-11 15:47:36,876 INFO    newsdigest.job: openai-news: 0 new (cap 10)
