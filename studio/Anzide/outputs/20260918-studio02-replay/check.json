@@ -1,0 +1,104 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "id": "STRUCT-1",
+      "name": "Skeleton sections present",
+      "passed": true,
+      "detail": "",
+      "failures": []
+    },
+    {
+      "id": "STRUCT-2",
+      "name": "Steps numbered in sequence",
+      "passed": true,
+      "detail": "",
+      "failures": []
+    },
+    {
+      "id": "STRUCT-3",
+      "name": "Every step has Do and Check",
+      "passed": true,
+      "detail": "",
+      "failures": []
+    },
+    {
+      "id": "COVER-1",
+      "name": "Every source block mapped or explicitly omitted",
+      "passed": true,
+      "detail": "49 blocks, 0 omitted",
+      "failures": []
+    },
+    {
+      "id": "COVER-2",
+      "name": "Code lines and inline code kept verbatim",
+      "passed": true,
+      "detail": "",
+      "failures": []
+    },
+    {
+      "id": "COVER-3",
+      "name": "URLs kept verbatim",
+      "passed": true,
+      "detail": "",
+      "failures": []
+    },
+    {
+      "id": "COVER-4",
+      "name": "Numbers kept",
+      "passed": true,
+      "detail": "",
+      "failures": []
+    },
+    {
+      "id": "LENGTH-1",
+      "name": "Tutorial within word budget",
+      "passed": true,
+      "detail": "1121 words vs 665 in source (budget 1163)",
+      "failures": []
+    },
+    {
+      "id": "LENGTH-2",
+      "name": "Each prerequisite note <= 50 words",
+      "passed": true,
+      "detail": "6 notes",
+      "failures": []
+    },
+    {
+      "id": "ERRATA-1",
+      "name": "Each correction quotes real source text and rates confidence",
+      "passed": true,
+      "detail": "1 corrections",
+      "failures": []
+    },
+    {
+      "id": "PDF-1",
+      "name": "PDF exists, has pages, text extractable",
+      "passed": true,
+      "detail": "210 KB",
+      "failures": []
+    }
+  ],
+  "stats": {
+    "source_blocks": 49,
+    "source_words": 665,
+    "tutorial_words": 1121,
+    "word_budget": 1163,
+    "tutorials": 3,
+    "steps": 9,
+    "notes": 6,
+    "omitted": 0,
+    "errata": 1
+  },
+  "omitted": [],
+  "errata": [
+    {
+      "block": 11,
+      "source_says": "`>= 3.9`",
+      "should_be": "Python 3.11+",
+      "evidence": "`docs/course-prep.md` says \"Python 3.11+\", as does the syllabus Resources section; the lab's `setup.sh` checks for 3.9. Using 3.11+ satisfies both.",
+      "confidence": "likely"
+    }
+  ],
+  "attempt": "initial"
+}
