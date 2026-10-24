@@ -1,0 +1,51 @@
+{
+  "query": "artificial intelligence August 2026",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+    {
+      "url": "https://www.wsj.com/cio-journal/the-morning-download-meta-shares-glimmer-of-always-on-ai-future-6fe21e9f",
+      "title": "The Morning Download: Meta Shares Glimmer of Always-On AI Future | The Morning Download for Aug. 10 - WSJ",
+      "content": "Copyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8 [...] Good morning. The most interesting thing about Meta’s new Muse Glimmer model, from the enterprise point of view, is its focus on always-on AI agents. As the company emphasizes in its announcement, “Muse Glimmer is…optimized for always-on local agent workflows.”\n\nThat’s going to matter a lot in the next few years, with implications for the ways in which companies work, as I wrote in an April 2025 column called “AI Is Enabling an Always-On Economy. Companies Need to Pick Up the Pace.”",
+      "score": 0.56258565,
+      "raw_content": null,
+      "id": "dc447c-00"
+    },
+    {
+      "url": "https://www.wsj.com/cio-journal/the-summer-of-rogue-ai-sends-a-signal-to-the-enterprise-0768a0b1",
+      "title": "The Summer of Rogue AI Sends a Signal to the Enterprise | The Morning Download for Aug. 7\n - WSJ",
+      "content": "Copyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8 [...] Good morning. For CIOs balancing AI’s promise against its risks, the events of the past few weeks have made the case for urgency. Meta Platforms, Anthropic and OpenAI each disclosed incidents in which their models escaped testing environments and acted on the live internet without authorization. [...] Also this week the U.K.’s AI Security Institute said that OpenAI and Anthropic models took “unsanctioned action on the live internet” during safety testing. That action included creating fake identities to get a human to approve a software update that hid malware.\n\nIt is not like we haven’t been warned. Autonomous AI gone wild has long been the favorite nightmare for sci-fi fans. More recently, technology executives have racked up the mileage jetting to Capitol Hill to speak on the issue.",
+      "score": 0.4906999,
+      "raw_content": null,
+      "id": "fd446b-01"
+    },
+    {
+      "url": "https://www.wsj.com/tech/ai/ai-slop-blurring-reality-podcast-06a9e879",
+      "title": "How to Survive the AI Slopification of Social-Media Feeds and Not Lose Your Mind - WSJ",
+      "content": "Artificial intelligence is pumping a lot of stuff into our feeds. Some is harmless fun. Some is engineered to rile us up. Some is straight-up scammy. Most of it looks impressively lifelike on a smartphone screen. And now we suffer the mental tax of constantly having to ask, “Is this real or AI?”\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n## Videos\n\n### Most Popular News\n\n### Most Popular\n\n### Further Reading [...] ### Are Refurbished Phones Dangerous? Here’s How to Avoid the Risks\n\n### Pricier iPhones Are Coming. What—and When—Should You Buy?\n\n### Siri AI’s Secret Weapon: It’s Always Right There",
+      "score": 0.45072258,
+      "raw_content": null,
+      "id": "a83290-02"
+    },
+    {
+      "url": "https://www.wsj.com/opinion/learning-to-live-with-ai-c13639be",
+      "title": "Learning to Live With AI - WSJ",
+      "content": "My generation isn’t choosing between embracing artificial intelligence and pushing back against it. We’re doing both at once. What seems like a contradiction is really a generation deciding whether AI’s uncertainty is a threat or an opportunity.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n## Videos\n\n### Most Popular News\n\n### Most Popular\n\n### Further Reading\n\nimage\n\n### opinion Florida, Vaccines and Religious Liberty\n\nimage [...] (2 min)\n\nimage\n\nEditor’s note: In this Future View, students discuss their reaction to the rise of artificial intelligence. Next we’ll ask: “Has the revelation of Anthony Fauci’s diary changed how you evaluate the U.S. government’s response to the Covid pandemic? If so, how?” Students should click here to submit opinions of fewer than 250 words by Aug. 17. The best responses will be published Tuesday night.\n\nUncertainty Implies Opportunity",
+      "score": 0.44275752,
+      "raw_content": null,
+      "id": "c8e23d-03"
+    },
+    {
+      "url": "https://www.wsj.com/tech/ai/saas-software-as-a-service-apocalypse-ai-b9b6da99",
+      "title": "Facing AI ‘Apocalypse,’ Once-Hot Software Companies Race to Reinvent Themselves - WSJ",
+      "content": "Copyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8 [...] Sahil Aggarwal’s timing appeared to be perfect for launching his software company in 2021. He raised nearly $30 million from investors, and by the following year, his startup, Rattle, was valued at more than $100 million.\n\nThen along came generative artificial intelligence that could easily automate the kind of administrative work Rattle specialized in. Aggarwal tried to integrate AI, but said it felt like attaching an engine onto a horse-drawn carriage. The company teetered on the brink. [...] “If two engineers can reproduce your entire product in a matter of a few weeks, then you deserve to be killed,” he said.\n\nGenerative AI is steamrollering the once booming industry known as software-as-a-service, or SaaS, where customers access software over the internet, typically on a subscription basis. SaaS exploded in the 2010s, as companies such as Slack and Zoom raised hundreds of millions of dollars from venture-capital firms and others went public in blockbuster IPOs.",
+      "score": 0.3996482,
+      "raw_content": null,
+      "id": "3216e0-04"
+    }
+  ],
+  "response_time": 1.78,
+  "request_id": "5bbcbcf6-668a-49a7-9426-11b346731c9b",
+  "auth_mode": "keyed"
+}
