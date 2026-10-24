@@ -1,0 +1,5 @@
+outputs/.lock
+outputs/state.json
+outputs/launchd.stdout.log
+outputs/launchd.stderr.log
+__pycache__/

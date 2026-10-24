@@ -1,0 +1,25 @@
+{
+  "changed_condition": "codex_executable_path",
+  "failed_run": {
+    "run_id": "20260911T163933-0400",
+    "configured_path": "/tmp/studio01-codex-does-not-exist",
+    "status": "failed",
+    "error": "Codex executable not found: /tmp/studio01-codex-does-not-exist",
+    "run_record": "run-20260911T163933-0400.json",
+    "trace": "trace-20260911T163933-0400.jsonl"
+  },
+  "correction": "Use the installed executable at /opt/homebrew/bin/codex and retain the nested read-only sandbox.",
+  "corrected_run": {
+    "run_id": "20260911T164713-0400",
+    "configured_path": "/opt/homebrew/bin/codex",
+    "status": "succeeded",
+    "required_sources_checked": 4,
+    "stories_published": 5,
+    "duration_seconds": 58.48,
+    "delivery_budget_seconds": 120,
+    "delivery_budget_met": true,
+    "run_record": "run-20260911T164713-0400.json",
+    "trace": "trace-20260911T164713-0400.jsonl",
+    "briefing": "briefing-20260911T164713-0400.md"
+  }
+}
