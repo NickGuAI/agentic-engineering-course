@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-09-18T18:47:28.224993+00:00",
+  "tests_run": 79,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "implementation": {
+    "git_commit": "42f6e1248de225f053916636b13d14ecb0ab4045",
+    "files": {
+      "code/evidence.py": "e2f5f842d83b00af5802adcdfbc05dbc7f17267836268517a9e0a4aeef70f183",
+      "code/experiments.py": "db5df68325ec7040bb6392c1f7108d0581ee5b26575f3612554abd58db2f895d",
+      "code/harness.py": "a400c7ad1f4eff8b814c9c4647ab0ad8b6b17bf43c1aed4c75017158ba7e620e",
+      "code/model.py": "16f8b2fa19f2d42b117e2aeb5f67825aefe806c9a451ac413d18e9a3abd978a5",
+      "code/run.py": "83eeb4963fd81afed65b0505a5f6808c7006faeed60bdcfd7071f069a26ced69",
+      "code/server.py": "f25e209865abbdd12f0acf0e244c96fb9b731cecb9f7ae31a8399e7e48597def",
+      "code/sources.py": "dd32f0279c62fb204c48d2f6a616a2f71a77745f0fb2d67461313e76067d4c34",
+      "code/verify.py": "2e758ad8390c41d7502143076579ffdf69026eac1021e3384411e62620722b1a",
+      "prompts/summarize.md": "552ca7ffbb4573891009121df62281d6ec2a860e6fcc53fb2e6ae521bbcac52e",
+      "prompts/summary.schema.json": "da7afd40dd72c52656679a63d8bdb232047ed9943e09eb1b62289329e6cdb868"
+    },
+    "hash": "f4a34bce70cfad93277681d9ba15382c2e6dc33828c3df6d3d38d37e6c0f965e"
+  },
+  "command": "python3 -m unittest discover -s tests -v",
+  "scope": "Offline fixtures and fake model responses; HTTP integration binds loopback only."
+}

@@ -1,0 +1,11 @@
+{
+  "run_id": "live-20260918",
+  "mode": "live",
+  "status": "partial",
+  "warnings": [
+    "Source unavailable: openai_news (http_403).",
+    "Collection coverage limit: article_fetch_limit."
+  ],
+  "output": "/Users/chengmingye/Desktop/COMS4995_Agenic_Engineering/Studio1/agentic-engineering-private/studio/studio-01/submission/jamieYe0317/outputs/live-20260918",
+  "human_acceptance": "pending"
+}

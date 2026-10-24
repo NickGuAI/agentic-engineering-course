@@ -1,0 +1,6 @@
+work/
+__pycache__/
+*.pyc
+.venv/
+.env*
+*.raw.jsonl

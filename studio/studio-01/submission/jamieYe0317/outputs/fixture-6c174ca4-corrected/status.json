@@ -1,0 +1,10 @@
+{
+  "run_id": "fixture-6c174ca4-corrected",
+  "mode": "synthetic_fixture",
+  "status": "partial",
+  "warnings": [
+    "Source unavailable: anthropic_news (injected_http_failure)."
+  ],
+  "output": "/Users/chengmingye/Desktop/COMS4995_Agenic_Engineering/Studio1/agentic-engineering-private/studio/studio-01/submission/jamieYe0317/outputs/fixture-6c174ca4-corrected",
+  "human_acceptance": "pending"
+}
