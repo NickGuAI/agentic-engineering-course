@@ -1,0 +1,13 @@
+$ python3 code/validate.py 17-09-2026 --posts-per-source 4
+Checked 17-09-2026.md: 9 posts across 3 sources
+
+3 check(s) failed:
+  - Anthropic News: expected 4 posts, found 3
+  - Anthropic Engineering: expected 4 posts, found 3
+  - OpenAI News: expected 4 posts, found 3
+exit code: 1
+
+$ python3 code/validate.py 17-09-2026
+Checked 17-09-2026.md: 9 posts across 3 sources
+All checks passed.
+exit code: 0
