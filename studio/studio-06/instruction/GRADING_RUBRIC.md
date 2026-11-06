@@ -6,7 +6,7 @@
 |---|---|---|---|
 | Single-agent | 2 | Your single-agent version runs the research without delegating to sub-agents. | Implementation and single-agent reports |
 | Multi-agent | 4 | Your deep research agent actually runs at least five research sub-agents searching in parallel. | Implementation and parallel-run evidence |
-| Comparison and explanation | 4 | Run both modes on all three tasks, score the six reports with RACE, compare the results, and explain what you built and why you chose these agent roles and this architecture. | Six reports, original RACE outputs, and the three answers in `EXPLANATION.md` |
+| Comparison and explanation | 4 | Run both modes on all three tasks. Score the six reports with RACE. Answer the three explanation questions. | Six reports, original RACE outputs, and the three answers in `EXPLANATION.md` |
 
 There are no additional checkpoints. There is no minimum RACE score or class ranking.
 

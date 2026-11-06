@@ -10,7 +10,7 @@ Run a single-agent version and a multi-agent version on the [three selected task
 
 - **Single-agent — 2 points:** Your single-agent version runs the research without delegating to sub-agents.
 - **Multi-agent — 4 points:** Your deep research agent actually runs at least five research sub-agents searching in parallel.
-- **Comparison and explanation — 4 points:** Run both modes on all three tasks, score the six reports with RACE, compare the results, and explain what you built and why you chose these agent roles and this architecture.
+- **Comparison and explanation — 4 points:** Run both modes on all three tasks. Score the six reports with RACE. Answer the three explanation questions.
 
 There are no additional checkpoints. There is no minimum RACE score or class ranking.
 
