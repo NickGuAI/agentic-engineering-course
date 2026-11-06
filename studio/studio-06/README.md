@@ -17,7 +17,7 @@
                     Compare the six scores
 ```
 
-Build a deep research agent with at least five sub-agents searching in parallel. Choose any architecture or framework. Compare it with a single-agent version on three fixed tasks. Implementation earns 8 points. The comparison earns 2 points. There is no minimum benchmark score.
+Build a deep research agent with at least five sub-agents searching in parallel. Choose any architecture or framework. Compare it with a single-agent version on three fixed tasks. The single-agent version earns 2 points, the multi-agent version earns 4, and the comparison and explanation earn 4. There is no minimum benchmark score.
 
 - [Assignment instructions](instruction/Studio_Instruction.md)
 - [Three exact task prompts](instruction/TASKS.md)

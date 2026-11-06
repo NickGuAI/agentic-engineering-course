@@ -8,10 +8,11 @@ Run a single-agent version and a multi-agent version on the [three selected task
 
 ## What earns the 10 points?
 
-- **Implementation — 8 points:** Your deep research agent actually runs at least five research sub-agents searching in parallel.
-- **Comparison — 2 points:** Run both modes on all three tasks, score the six reports with RACE, and compare the results.
+- **Single-agent — 2 points:** Your single-agent version runs the research without delegating to sub-agents.
+- **Multi-agent — 4 points:** Your deep research agent actually runs at least five research sub-agents searching in parallel.
+- **Comparison and explanation — 4 points:** Run both modes on all three tasks, score the six reports with RACE, compare the results, and explain what you built and why you chose these agent roles and this architecture.
 
-There are no additional checkpoints or explanation points. There is no minimum RACE score or class ranking.
+There are no additional checkpoints. There is no minimum RACE score or class ranking.
 
 ## What should you run?
 
@@ -37,7 +38,7 @@ RACE grades each report against its reference on comprehensiveness, insight, ins
 
 The benchmark applies its original weights to compare your report with its reference. See the [score explanation](EVALUATION.md#4-read-the-six-scores).
 
-The benchmark score describes report quality. The course awards the 2 comparison points for running and comparing the results.
+The benchmark score describes report quality. The course awards the 4 comparison and explanation points for the six scored reports and your answers to the three explanation questions.
 
 ## What do you submit?
 
@@ -54,7 +55,7 @@ The evaluation helper uses example report paths. You can map your reports to tho
 
 `comparison.csv` and the separate evidence template are optional conveniences. They are not independent graded files.
 
-A grading agent reads the files at your submitted commit. It does not run your code. See the [two-row rubric](GRADING_RUBRIC.md).
+A grading agent reads the files at your submitted commit. It does not run your code. See the [three-row rubric](GRADING_RUBRIC.md).
 
 ## Explanation
 

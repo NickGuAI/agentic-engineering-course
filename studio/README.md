@@ -50,11 +50,11 @@ Build an MCP server over local data you own, connect it to an agent in Codex wit
 
 ## Studio 06: Wide Research
 
-Build a deep research agent with at least five sub-agents searching in parallel. Compare it with one agent on three fixed DeepResearchBench tasks. Implementation earns 8 points, and the comparison earns 2 points.
+Build a deep research agent with at least five sub-agents searching in parallel. Compare it with one agent on three fixed DeepResearchBench tasks. The single-agent version earns 2 points, the multi-agent version earns 4, and the comparison and explanation earn 4.
 
 * [studio-06/README.md](studio-06/README.md) (overview)
 * [studio-06/instruction/Studio_Instruction.md](studio-06/instruction/Studio_Instruction.md) (assignment)
 * [studio-06/instruction/TASKS.md](studio-06/instruction/TASKS.md) (the three exact prompts)
 * [studio-06/instruction/EVALUATION.md](studio-06/instruction/EVALUATION.md) (evaluation commands)
-* [studio-06/instruction/GRADING_RUBRIC.md](studio-06/instruction/GRADING_RUBRIC.md) (8+2 points)
+* [studio-06/instruction/GRADING_RUBRIC.md](studio-06/instruction/GRADING_RUBRIC.md) (2+4+4 points)
 * [studio-06/submission/](studio-06/submission/) (template and your team's private submission folder)
