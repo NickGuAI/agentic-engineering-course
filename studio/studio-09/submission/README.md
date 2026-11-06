@@ -26,4 +26,4 @@ studio/studio-09/submission/<team>/
     └── hand-labels.jsonl     your hand labels beside the judge's verdicts
 ```
 
-Commit and push to your team's private repository before the deadline. The grading agent reads the commit you submit. Do not commit API keys, `.env` files or full trajectories. [KIT: what to leave out of eval/job/.]
+Commit and push to your team's private repository before the due time in CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files or full trajectories. [KIT: what to leave out of eval/job/.]
