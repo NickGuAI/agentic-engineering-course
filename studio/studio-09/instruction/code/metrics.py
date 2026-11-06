@@ -116,6 +116,11 @@ def read_judge(trial_dir, question_id, reward):
         and re.fullmatch(r"[0-9a-f]{64}", judge["prompt_hash"]),
         f"{label}: judge prompt_hash must be a SHA-256 hex digest",
     )
+    require(
+        isinstance(judge.get("rubric_sha256"), str)
+        and re.fullmatch(r"[0-9a-f]{64}", judge["rubric_sha256"]),
+        f"{label}: judge rubric_sha256 must be a SHA-256 hex digest",
+    )
     return judge
 
 
@@ -214,12 +219,14 @@ def summarize(job_dir, questions_path, team):
                 "model": model_info.get("name") or agent_config.get("model_name"),
                 "model_provider": model_info.get("provider"),
                 "judge_model": judge["model"],
+                "rubric_sha256": judge["rubric_sha256"],
                 "job_id": job_id,
                 "job_name": job_dir.name,
                 "configuration_sha256": hashlib.sha256(fingerprint.encode()).hexdigest(),
                 "questions_sha256": questions_hash,
             }
         require(judge["model"] == setup["judge_model"], f"{label}: mixed judge models")
+        require(judge["rubric_sha256"] == setup["rubric_sha256"], f"{label}: mixed judge rubrics")
         groups[question_id].append({
             "trial_id": label,
             "pass": judge["pass"],
