@@ -1,0 +1,16 @@
+schema_version = "1.4"
+artifacts = ["/app/answer.md", "/app/trace.jsonl", "/app/usage.json"]
+
+[agent]
+timeout_sec = 1200
+
+[verifier]
+timeout_sec = 240
+environment_mode = "shared"
+
+[environment]
+build_timeout_sec = 600
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+network_mode = "public"
