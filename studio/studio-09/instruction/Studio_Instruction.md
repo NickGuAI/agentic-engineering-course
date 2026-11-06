@@ -16,7 +16,7 @@ The syllabus: "Design an evaluation harness for your multi-agent system. Define 
 
 Evaluate the deep research system your team built in Studio 06. Write 10 research questions that each have one known answer, run every question five times in Harbor, grade every run with one LLM judge call, and report pass@1 and pass^5. The questions, the answers and the harness are yours. The judge and its rubric are fixed.
 
-Teams of up to 3, the same teams as Studio 06. Due Friday, November 13, 2026, 13:10 ET, before class.
+Teams of up to 3, the same teams as Studio 06. The due date is in the CourseWorks assignment.
 
 ## Setup
 
@@ -92,7 +92,7 @@ Each trial's `verifier/judge.json` has `status`, `question_id`, `pass`, `scores`
 
 ## Submit
 
-Copy the template folder once, as the [submission guide](../submission/README.md) shows, then commit and push to your team's own private repository before the deadline. Nothing is collected from the public course repository. A grading agent reads your private repository at the commit you submit. It does not run your code.
+Copy the template folder once, as the [submission guide](../submission/README.md) shows, then commit and push to your team's own private repository before the due time in CourseWorks. Nothing is collected from the public course repository. A grading agent reads your private repository at the commit you submit. It does not run your code.
 
 ## Rules
 
