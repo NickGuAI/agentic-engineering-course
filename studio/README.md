@@ -61,7 +61,7 @@ Build a deep research agent with at least five sub-agents searching in parallel.
 
 ## Studio 09: Build Your Eval
 
-Evaluate the deep research system you built in Studio 06. Write 10 research questions with a known answer, run each five times in Harbor, grade every run with one LLM judge call, and report pass@1 and pass^5. The questions and the harness are yours; the judge and its rubric are fixed.
+Evaluate the deep research system you built in Studio 06. Write 10 research questions, each with one known answer. Run each question five times in Harbor. Grade every run with one judge call, then report pass@1 and pass^5. The questions, the answers and your agent file are yours. The judge and its rubric are fixed.
 
 * [studio-09/README.md](studio-09/README.md) (overview)
 * [studio-09/instruction/Studio_Instruction.md](studio-09/instruction/Studio_Instruction.md) (assignment, checkpoints and evidence)

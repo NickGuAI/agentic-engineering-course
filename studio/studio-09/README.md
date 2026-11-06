@@ -10,7 +10,7 @@
                                                                      pass@1 and pass^5
 ```
 
-Evaluate the deep research system you built in Studio 06. Write 10 research questions that each have one known answer, run every question five times in Harbor, grade every run with one LLM judge call, and report pass@1 and pass^5. The questions, the answers and the harness are yours; the judge and its rubric are fixed. You are graded on four checkpoints and your explanation, 10 points in all.
+Evaluate the deep research system you built in Studio 06. Write 10 research questions, each with one known answer. Run each question five times in Harbor. Grade every run with one judge call, then report pass@1 and pass^5. The questions, the answers and your agent file are yours. The judge and its rubric are fixed. You are graded on four checkpoints and your explanation, 10 points in all.
 
 - [Assignment instructions](instruction/Studio_Instruction.md)
 - [Grading rubric](instruction/GRADING_RUBRIC.md)

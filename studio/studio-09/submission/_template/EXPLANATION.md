@@ -16,4 +16,4 @@ Model your system used: [model]
 
 3. Reliability: what do pass@1 and pass^5 say about your system?
 
-4. Judge: where did the judge disagree with you, and why?
+4. Judge: how well did the judge's verdicts match yours, and why?
