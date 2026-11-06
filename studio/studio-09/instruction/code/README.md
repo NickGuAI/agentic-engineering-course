@@ -61,8 +61,8 @@ rather than key values, in its job configuration. Never replace them with a
 literal key. The agent and verifier need separate flags even in a shared
 sandbox.
 
-Create `questions.jsonl` from the example format, then replace the placeholder
-content with your verified questions, keys, rules, and sources.
+Copy the sample questions into `questions.jsonl`. Use the same format for your
+verified questions, keys, rules, and sources.
 
 ```bash
 cp questions.example.jsonl questions.jsonl
@@ -71,8 +71,8 @@ cp questions.example.jsonl questions.jsonl
 Each line is a JSON object with `id` (`q01` through `q10`), `question`, `answer`
 (reference text), `pass_rule` (one sentence), `sources` (a nonempty list of
 primary-source URLs), and `written_on` (YYYY-MM-DD). The generator also accepts
-a smaller file for setup checks. The `questions.example.jsonl` placeholder
-rows demonstrate the format; they are not verified research questions.
+a smaller file for setup checks. `questions.example.jsonl` contains two
+verified sample questions.
 
 Build the Harbor tasks. Use a new output directory after editing any question.
 The generator refuses to overwrite an existing directory.
@@ -174,15 +174,17 @@ provided excerpts; it cannot open URLs. Inspect source claims yourself.
 A valid judgment writes `reward.txt` containing only `0` or `1` and a newline.
 It also writes `judge.json` with `status`, `question_id`, boolean `pass`,
 `scores` (the five 0–1 criteria), `reason`, `unscored`, `model`, `prompt_hash`,
-`settings`, `usage`, `response_id`, and `wall_time_seconds`. API failures leave
-an error record and no reward; fix them before computing metrics.
+`rubric_sha256` (SHA-256 of the exact rubric.md bytes), `settings`, `usage`,
+`response_id`, and `wall_time_seconds`. Error records also retain the rubric
+fingerprint when the file was readable. API failures leave an error record
+and no reward; fix them before computing metrics.
 
 The results JSON has this core shape (the numbers below only illustrate the
 field types):
 
 ```json
 {
-  "setup": {"team": "my-team", "job_name": "studio06-eval", "agent": "studio-06-team", "model": "gpt-5.6-luna"},
+  "setup": {"team": "my-team", "job_name": "studio06-eval", "agent": "studio-06-team", "model": "gpt-5.6-luna", "rubric_sha256": "64-character SHA-256 hex digest"},
   "runs_per_question": 5,
   "questions": [
     {"id": "q01", "runs": [
@@ -201,5 +203,6 @@ Each question has exactly five `runs` in the actual report; the compact example
 shows one. Retain the question IDs and trial IDs so a reader can recompute the
 metrics. Keep raw Harbor jobs local; they contain prompts, answers, and traces.
 `setup` also records the agent version, model provider, judge model, job UUID,
-and SHA-256 hashes of the configuration and questions file. The top-level
+and SHA-256 hashes of the configuration, questions file, and rubric. The
+rubric fingerprint must be the same in every trial. The top-level
 `harbor_pass_at_k` object retains Harbor's separate pass@2, pass@4, and pass@5.

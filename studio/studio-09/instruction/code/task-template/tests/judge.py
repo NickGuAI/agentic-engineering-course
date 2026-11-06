@@ -46,10 +46,12 @@ def validate(result: dict) -> None:
 def main() -> None:
     LOGS.mkdir(parents=True, exist_ok=True)
     start = time.monotonic()
-    record = {"status": "error", "model": MODEL, "prompt_hash": None}
+    record = {"status": "error", "model": MODEL, "prompt_hash": None, "rubric_sha256": None}
     try:
+        rubric_bytes = (TESTS / "rubric.md").read_bytes()
+        record["rubric_sha256"] = hashlib.sha256(rubric_bytes).hexdigest()
+        rubric = rubric_bytes.decode("utf-8")
         key = json.loads((TESTS / "answer.json").read_text())
-        rubric = (TESTS / "rubric.md").read_text()
         answer_path = Path("/app/answer.md")
         answer = answer_path.read_text() if answer_path.exists() else ""
         trace_path = Path("/app/trace.jsonl")
