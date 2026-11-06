@@ -19,11 +19,11 @@ studio/studio-09/submission/<team>/
 ├── questions.jsonl           your 10 questions, answers, pass rules and sources
 └── eval/
     ├── oracle/
-    │   ├── pass/             the oracle trial on one question [KIT: files]
-    │   └── fail/             the wrong-answer trial on the same question [KIT: files]
-    ├── job/                  the five-attempt job [KIT: config and per-trial result.json and judge.json]
+    │   ├── pass/             the oracle trial on one question: its result.json and verifier/
+    │   └── fail/             the wrong-answer trial on the same question: its result.json and verifier/
+    ├── job/                  the five-attempt job: its result.json and config.json, and each trial's result.json and verifier/
     ├── results.json          from metrics.py: pass_1, pass_5 and every run
     └── hand-labels.jsonl     your hand labels beside the judge's verdicts
 ```
 
-Commit and push to your team's private repository before the due time in CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files or full trajectories. [KIT: what to leave out of eval/job/.]
+Commit and push to your team's private repository before the due time in CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files, or the job's `artifacts/` and agent logs: they hold prompts, answers and traces.
