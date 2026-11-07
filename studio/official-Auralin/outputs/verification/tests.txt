@@ -1,0 +1,26 @@
+test_article_ignores_script_navigation_footer (test_agent.AgentTests.test_article_ignores_script_navigation_footer) ... ok
+test_blocked_article_uses_explicit_rss_coverage (test_agent.AgentTests.test_blocked_article_uses_explicit_rss_coverage) ... ok
+test_changed_content_resummarized_and_nonmaterial_edit_silent (test_agent.AgentTests.test_changed_content_resummarized_and_nonmaterial_edit_silent) ... ok
+test_concurrent_and_replayed_publication_rejected (test_agent.AgentTests.test_concurrent_and_replayed_publication_rejected) ... ok
+test_date_in_article_hero_outside_article_body (test_agent.AgentTests.test_date_in_article_hero_outside_article_body) ... ok
+test_failed_article_is_retried_after_baseline (test_agent.AgentTests.test_failed_article_is_retried_after_baseline) ... ok
+test_failed_digest_write_does_not_advance_state (test_agent.AgentTests.test_failed_digest_write_does_not_advance_state) ... ok
+test_failed_source_does_not_discard_other_results (test_agent.AgentTests.test_failed_source_does_not_discard_other_results) ... ok
+test_featured_root_article_and_mixed_rss_paths (test_agent.AgentTests.test_featured_root_article_and_mixed_rss_paths) ... ok
+test_first_run_baseline_does_not_backfill_older_articles (test_agent.AgentTests.test_first_run_baseline_does_not_backfill_older_articles) ... ok
+test_future_dates_and_blocked_pages_are_not_success (test_agent.AgentTests.test_future_dates_and_blocked_pages_are_not_success) ... ok
+test_html_dedup_scope_and_dates (test_agent.AgentTests.test_html_dedup_scope_and_dates) ... ok
+test_invalid_evidence_does_not_advance_state (test_agent.AgentTests.test_invalid_evidence_does_not_advance_state) ... ok
+test_missing_and_invented_urls_rejected (test_agent.AgentTests.test_missing_and_invented_urls_rejected) ... ok
+test_new_day_gets_own_file_and_preserves_previous_day (test_agent.AgentTests.test_new_day_gets_own_file_and_preserves_previous_day) ... ok
+test_no_duplicate_digest_on_second_run (test_agent.AgentTests.test_no_duplicate_digest_on_second_run) ... ok
+test_rebuild_uses_completed_runs_and_preserves_state (test_agent.AgentTests.test_rebuild_uses_completed_runs_and_preserves_state) ... ok
+test_report_day_uses_eastern_timezone_and_dst (test_agent.AgentTests.test_report_day_uses_eastern_timezone_and_dst) ... ok
+test_same_day_recovery_combines_articles_without_duplicates (test_agent.AgentTests.test_same_day_recovery_combines_articles_without_duplicates) ... ok
+test_unchanged_run_preserves_daily_report (test_agent.AgentTests.test_unchanged_run_preserves_daily_report) ... ok
+test_url_boundary (test_agent.AgentTests.test_url_boundary) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.160s
+
+OK

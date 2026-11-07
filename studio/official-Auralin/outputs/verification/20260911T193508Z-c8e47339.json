@@ -1,0 +1,21 @@
+{
+  "run_id": "20260911T193508Z-c8e47339",
+  "articles": 5,
+  "failed_sources": 0,
+  "limited_sources": 1,
+  "notify": true,
+  "digest": "20260911T193508Z-c8e47339.md",
+  "model_called": true,
+  "model_item_types": [
+    "agent_message"
+  ],
+  "model_usage": [
+    {
+      "input_tokens": 16746,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 545,
+      "reasoning_output_tokens": 0
+    }
+  ]
+}
