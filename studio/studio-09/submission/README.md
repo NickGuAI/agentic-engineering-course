@@ -1,6 +1,6 @@
 # Studio 09 Submission
 
-From the course repository root in your team's private repository, choose your team slug (letters, digits, `-` and `_`) and copy the template folder once. Then copy the kit's files, as the [kit README](../instruction/code/README.md) shows:
+Work from the course repository root in your team's private repository. Choose a team slug of letters, digits, `-` and `_`. Copy the template folder once. Then copy the kit's files, as the [kit README](../instruction/code/README.md) shows:
 
 ```bash
 TEAM='your-team'
@@ -25,4 +25,4 @@ studio/studio-09/submission/<team>/
     └── hand-labels.jsonl     your hand labels beside the judge's verdicts
 ```
 
-Commit and push to your team's private repository before the due time in CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files, or the job's `artifacts/` and agent logs: they hold prompts, answers and traces.
+Commit and push to your team's private repository before the due date in CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files, or the job's `artifacts/` and agent logs: they hold prompts, answers and traces.
