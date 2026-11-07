@@ -25,4 +25,4 @@ studio/studio-09/submission/<team>/
     └── hand-labels.jsonl     your hand labels beside the judge's verdicts
 ```
 
-Commit and push to your team's private repository before the due date in CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files, or the job's `artifacts/` and agent logs: they hold prompts, answers and traces.
+Commit and push to your team's private repository (the one `bootstrap.sh` created) before the due date in CourseWorks. Each member submits the same team pull-request link through CourseWorks. The grading agent reads the commit you submit. Do not commit API keys, `.env` files, or the job's `artifacts/` and agent logs: they hold prompts, answers and traces.
