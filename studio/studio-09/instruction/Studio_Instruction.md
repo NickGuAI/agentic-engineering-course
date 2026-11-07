@@ -110,7 +110,7 @@ The two sample questions in `questions.example.jsonl` show the form and let you 
 
 ## Submit
 
-Commit and push to your team's own private repository before the due date in CourseWorks. Nothing is collected from the public course repository. A grading agent reads your private repository at the commit you submit. It does not run your code. The [submission guide](../submission/README.md) shows the folder.
+Commit and push to your team's own private repository (the one `bootstrap.sh` created) before the due date in CourseWorks. Each member submits the same team pull-request link through CourseWorks. Nothing is collected from the public course repository. A grading agent reads your private repository at the commit you submit. It does not run your code. The [submission guide](../submission/README.md) shows the folder.
 
 ## Rules
 
