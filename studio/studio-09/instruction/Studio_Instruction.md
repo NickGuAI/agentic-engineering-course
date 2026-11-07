@@ -14,7 +14,7 @@
 
 The syllabus: "Design an evaluation harness for your multi-agent system. Define 20+ test cases. Measure pass@1 and pass^5. Implement LLM-as-Judge scoring." This studio asks for 10 questions.
 
-Evaluate the deep research system your team built in Studio 06. Write 10 research questions, each with one known answer. Run each question five times in Harbor. Harbor is an open-source framework that runs an agent on a task inside a container. It calls each run a trial. Grade every trial with one call to an LLM judge, a model that scores the answer against your key. Then report pass@1, the share of trials that pass, and pass^5, the share of questions whose five trials all pass. The questions, the answers and your agent file are yours. The judge and its rubric are fixed.
+Evaluate the deep research system your team built in Studio 06. Write 10 research questions, each with one known answer. Run each question five times in Harbor. Harbor is an open-source framework that runs an agent on a task inside a Docker sandbox. It calls each run a trial. Grade every trial with one call to a large language model (LLM) judge, a model that scores the answer against your key. Then report pass@1, the share of trials that pass, and pass^5, the share of questions whose five trials all pass. The questions, the answers and your agent file are yours. The judge and its rubric are fixed.
 
 Teams of up to 3, the same teams as Studio 06. The due date is in the CourseWorks assignment.
 
@@ -43,7 +43,7 @@ Every team meets the same four checkpoints and writes the explanation. Each line
 ### Checkpoint 2: Questions
 
 - `questions.jsonl` has 10 questions of your own, each with `id`, `question`, `answer`, `pass_rule`, at least one source URL and `written_on`.
-- Every pass rule decides pass or fail from names, numbers or dates in the answer. No two questions share an answer.
+- Every question in `questions.jsonl` has one known answer that its pass rule checks: names, numbers or dates. No two questions share an answer.
 
 ### Checkpoint 3: pass@1 and pass^5
 
@@ -52,7 +52,7 @@ Every team meets the same four checkpoints and writes the explanation. Each line
 
 ### Checkpoint 4: LLM judge
 
-- Every trial's `judge.json` records the judge model, the course rubric's hash, five scores from 0 to 1 and a reason. Its verdict equals the trial's reward.
+- Every trial's `judge.json` records the kit's judge model (`gpt-5.5`), the course rubric's hash, five scores from 0 to 1 and a reason. Its verdict equals the trial's reward.
 - You labeled at least 10 trials by hand, pass or fail, and `eval/hand-labels.jsonl` records each label beside the judge's verdict, with the agreement rate.
 
 ### Explanation
@@ -74,7 +74,7 @@ The kit's [README](code/README.md) gives every command with its purpose. In this
 5. Run your system five times per question: `harbor run -p tasks -a agent:TeamAgent -m "$MODEL" -e docker -k 5 -n 2 -r 0 -o jobs --job-name studio06-eval`, with the `--agent-env` and `--verifier-env` flags from the README.
 6. Compute the report: `python metrics.py jobs/studio06-eval --questions questions.jsonl --output eval/results.json --team "$TEAM"`.
 7. Copy the job into `eval/job/` with the README's copy commands. They keep the job's `result.json` and `config.json`, and every trial's `result.json` and `verifier/` folder. They drop each trial's `artifacts/` and agent logs, which hold prompts, answers and traces.
-8. Read 10 trials' answers yourself. Label each one pass or fail against your key, and write `eval/hand-labels.jsonl`.
+8. Read 10 trials' answers yourself, from `jobs/studio06-eval/<trial>/artifacts/app/answer.md`. Label each one pass or fail against your key, and write `eval/hand-labels.jsonl`.
 
 The two sample questions in `questions.example.jsonl` show the form and let you check your setup. They do not count among your 10.
 
@@ -86,7 +86,7 @@ The two sample questions in `questions.example.jsonl` show the form and let you 
 {"id": "q01", "question": "…", "answer": "…", "pass_rule": "…", "sources": ["https://…"], "written_on": "2026-11-09"}
 ```
 
-`eval/oracle/pass/<trial>/` and `eval/oracle/fail/<trial>/` each hold one trial folder: its `result.json` and its `verifier/` folder.
+`eval/oracle/pass/` and `eval/oracle/fail/` each hold one trial folder with its `result.json` and `verifier/` folder.
 
 `eval/job/<trial>/` holds each trial's `result.json` and `verifier/` folder, with `reward.txt` (`1` or `0`) and `judge.json`. One `judge.json`, shortened:
 
@@ -110,7 +110,7 @@ The two sample questions in `questions.example.jsonl` show the form and let you 
 
 ## Submit
 
-Commit and push to your team's own private repository before the due time in CourseWorks. Nothing is collected from the public course repository. A grading agent reads your private repository at the commit you submit. It does not run your code. The [submission guide](../submission/README.md) shows the folder.
+Commit and push to your team's own private repository before the due date in CourseWorks. Nothing is collected from the public course repository. A grading agent reads your private repository at the commit you submit. It does not run your code. The [submission guide](../submission/README.md) shows the folder.
 
 ## Rules
 

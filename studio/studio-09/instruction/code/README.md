@@ -73,22 +73,31 @@ rather than key values, in its job configuration. Never replace them with a
 literal key. The agent and verifier need separate flags even in a shared
 sandbox.
 
-Start `questions.jsonl` from the sample file to check your setup. Then replace
-its two rows with your own 10 questions, keys, rules and sources.
+Write your own 10 questions, keys, rules and sources into `questions.jsonl`
+before you build `tasks`. Each line is a JSON object with these fields:
+
+- `id`: `q01` through `q10`.
+- `question`: the question text.
+- `answer`: the reference answer.
+- `pass_rule`: how the judge decides pass or fail.
+- `sources`: a nonempty list of primary-source URLs.
+- `written_on`: the date, as YYYY-MM-DD.
+
+To check your setup on the two sample questions first, use a separate file, a
+separate tasks folder and separate job names, such as `oracle-sample`. Put
+those names into the commands below for that check. The two rows of
+`questions.example.jsonl` are the course's sample questions, with answers the
+course verified from primary sources on 2026-11-06.
 
 ```bash
-cp questions.example.jsonl questions.jsonl
+cp questions.example.jsonl questions.sample.jsonl
+python make_tasks.py questions.sample.jsonl --output tasks-sample --team "$TEAM"
 ```
 
-Each line is a JSON object with `id` (`q01` through `q10`), `question`, `answer`
-(the reference text), `pass_rule` (how the judge decides pass or fail), `sources` (a nonempty list of
-primary-source URLs) and `written_on` (YYYY-MM-DD). The generator also accepts
-a smaller file for setup checks. The two rows of `questions.example.jsonl` are
-the course's sample questions, with answers the course verified from primary
-sources on 2026-11-06.
-
 Build the Harbor tasks. Use a new output directory after editing any question.
-The generator refuses to overwrite an existing directory.
+The generator refuses to overwrite an existing directory. After a rebuild or a
+rerun, put the new folder and job names into the copy commands and the metrics
+command below.
 
 ```bash
 python make_tasks.py questions.jsonl --output tasks --team "$TEAM"
@@ -188,8 +197,8 @@ python metrics.py jobs/studio06-eval --questions questions.jsonl \
 ```
 
 For a setup-only report, use `jobs/setup-research` with a different output
-path. The metrics script checks that each expected question has exactly five
-trials, that rewards match the judge decisions, and that no trial has an
+path. The metrics script checks three things. Each expected question has
+exactly five trials. Rewards match the judge decisions. No trial has an
 infrastructure error.
 
 Copy the job into your evidence folder. The copy keeps the job's `result.json`
@@ -222,10 +231,15 @@ reads the excerpts it is given. It cannot open URLs, so inspect source claims
 yourself.
 
 A valid judgment writes `reward.txt` with only `0` or `1` and a newline. It
-also writes `judge.json` with `status`, `question_id`, boolean `pass`, `scores`
-(the five 0–1 criteria), `reason`, `unscored`, `model`, `prompt_hash`,
-`rubric_sha256` (the SHA-256 of the exact `rubric.md` bytes), `settings`,
-`usage`, `response_id` and `wall_time_seconds`. An error record keeps the
+also writes `judge.json` with these fields:
+
+- `status`, `question_id`, boolean `pass`, `scores` (the five 0–1 criteria),
+  `reason` and `unscored`.
+- `model`, `prompt_hash` and `rubric_sha256` (the SHA-256 of the exact
+  `rubric.md` bytes).
+- `settings`, `usage`, `response_id` and `wall_time_seconds`.
+
+An error record keeps the
 rubric fingerprint when the file was readable. An API failure leaves an error
 record and no reward. Fix it before computing metrics.
 
@@ -252,7 +266,7 @@ and `trial_id` is the trial's folder name.
 Each question has exactly five `runs` in the real report. The compact example
 shows one. Keep the question ids and trial ids so a reader can recompute the
 metrics. Keep raw Harbor jobs local. `setup` also records the agent version,
-the model provider, the judge model, the job UUID and SHA-256 hashes of the
-configuration, the questions file and the rubric. The rubric fingerprint must
-be the same in every trial. The top-level `harbor_pass_at_k` object keeps
+the model provider, the judge model and the job UUID. It also records SHA-256
+hashes of the configuration, the questions file and the rubric. The rubric
+fingerprint must be the same in every trial. The top-level `harbor_pass_at_k` object keeps
 Harbor's separate pass@2, pass@4 and pass@5.
