@@ -68,3 +68,13 @@ Evaluate the deep research system you built in Studio 06. Write 10 research ques
 * [studio-09/instruction/GRADING_RUBRIC.md](studio-09/instruction/GRADING_RUBRIC.md) (how it's graded, 10 points)
 * [studio-09/instruction/code/](studio-09/instruction/code/) (starter kit: task template, judge, scripts)
 * [studio-09/submission/](studio-09/submission/) (template and your team's folder in your private repo)
+
+## Studio 10: Red Team Day
+
+Attack a course-provided AgentDojo Slack agent with your own injection, exfiltration and unauthorized-action attacks, crack it, then climb a ladder of stronger class models. Add one defense and measure what it costs in ordinary work. The attacks and the defense are yours; the suite, the target and the checks are fixed.
+
+* [studio-10/README.md](studio-10/README.md) (overview)
+* [studio-10/instruction/Studio_Instruction.md](studio-10/instruction/Studio_Instruction.md) (assignment, checkpoints and evidence)
+* [studio-10/instruction/GRADING_RUBRIC.md](studio-10/instruction/GRADING_RUBRIC.md) (how it's graded, 10 points)
+* [studio-10/instruction/code/](studio-10/instruction/code/) (starter kit: target harness, attack and defense templates, scripts)
+* [studio-10/submission/](studio-10/submission/) (template and your team's folder in your private repo)
