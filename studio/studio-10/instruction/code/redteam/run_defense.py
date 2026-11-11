@@ -11,6 +11,7 @@ def summarize(rows, completed):
         "attack_success": sum(sum(row["runs"]) for row in rows),
         "attack_trials": sum(len(row["runs"]) for row in rows),
         "task_completion": completed,
+        "attacks": rows,
     }
 
 

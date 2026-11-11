@@ -127,8 +127,9 @@ python -m redteam.leaderboard eval/ladder/*.json eval/luna/results.json --out ev
 
 Model aliases are fixed below. To use an exact dated model id supplied by the
 class, append `--model-id THE_MODEL_ID` to a runner command. The report keeps
-both the selected alias and the actual model id. Every `gpt-6*` request forces
-`reasoning_effort="none"` and omits temperature, including `tool_filter`'s
+both the selected alias and the actual model id. An override must start with
+the alias's canonical model id; an unrelated model is rejected. Every `gpt-6*`
+request forces `reasoning_effort="none"` and omits temperature, including `tool_filter`'s
 filter request. Warmup uses temperature zero; 54mini and 55 use defaults.
 
 | Alias | Model id |
@@ -169,8 +170,10 @@ OPENAI_API_KEY="$CLASS_KEY" python -m redteam.run_defense --attacks attacks --de
 The defense report has `target`, `defense` (`source` and `name`),
 `completion_tasks`, `baseline`, `defended`, and `completion_ratio`. Both
 condition blocks hold `attack_success`, `attack_trials`, and clean
-`task_completion`. The ratio is defended completions divided by baseline
-completions, without rounding. If the baseline completes zero tasks, the
+`task_completion`, plus an `attacks` list of the per-attack/task result rows.
+Both lists record the same attack/task ids in the same order. The ratio is
+defended completions divided by baseline completions, without rounding.
+If the baseline completes zero tasks, the
 ratio is undefined and the runner fails instead of writing a result.
 
 Build your ungraded team leaderboard line from the model reports and the
