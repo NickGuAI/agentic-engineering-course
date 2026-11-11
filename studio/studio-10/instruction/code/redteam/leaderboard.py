@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from .models import MODELS
+from .models import MODELS, valid_model_id
 
 
 def check_runs(runs, count):
@@ -51,6 +51,10 @@ def aggregate(paths, output):
             alias = entry["model_alias"]
             if alias not in MODELS or type(entry["cracked"]) is not bool:
                 raise ValueError("Unknown model alias or invalid cracked flag")
+            if not valid_model_id(alias, entry["model"]):
+                raise ValueError(
+                    f"Model {entry['model']!r} is not the canonical id or a dated variant for alias {alias!r}"
+                )
             if entry["cracked"]:
                 check_runs(entry["by"]["runs"], count)
                 if not any(entry["by"]["runs"]):
