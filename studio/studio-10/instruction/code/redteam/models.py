@@ -11,5 +11,10 @@ MODELS = {
 
 
 def resolve_model(alias: str, model_id: str | None = None) -> str:
-    """An explicit dated model id overrides the selected alias."""
-    return model_id or MODELS[alias]
+    """Allow only overrides that start with the alias's canonical model id."""
+    canonical = MODELS[alias]
+    if model_id is not None and not model_id.startswith(canonical):
+        raise ValueError(
+            f"--model-id {model_id!r} must start with {canonical!r} for --model {alias}"
+        )
+    return canonical if model_id is None else model_id

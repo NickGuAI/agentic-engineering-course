@@ -10,7 +10,7 @@
 | 2.1 | 1 | Your attacks crack gpt-5.4-mini: the `54mini` model in `eval/ladder/results.json` has `cracked` true and names the attack and runs that did it. | `eval/ladder/results.json` |
 | 2.2 | 1 | Your attacks crack gpt-5.5: the `55` model has `cracked` true and names the attack and runs that did it. | `eval/ladder/results.json` |
 | 2.3 | 1 | Your attacks crack gpt-6-sol: the `sol` model has `cracked` true and names the attack and runs that did it. | `eval/ladder/results.json` |
-| 3.1 | 1 | You add one defense to luna and record its effect: `eval/defense/results.json` has a `baseline` and a `defended` block, each with `attack_success`, `attack_trials` and `task_completion` over the same attack set and Slack tasks. | `eval/defense/results.json` |
+| 3.1 | 1 | You add one defense to luna and record its effect: `eval/defense/results.json` has a `baseline` and a `defended` block, each with `attack_success`, `attack_trials`, `task_completion` and the same per-attack `attacks` rows, over the full 21 Slack tasks (`completion_tasks` is 21). | `eval/defense/results.json` |
 | 3.2 | 1 | Your defense keeps the agent working: `completion_ratio` in `eval/defense/results.json` is at least 0.80, defended task completion over baseline task completion. | `eval/defense/results.json` |
 | 4 | 2 | `EXPLANATION.md` answers the four questions. | `EXPLANATION.md` |
 
@@ -18,5 +18,5 @@ All files are in `studio/studio-10/submission/<team>/` in your team's private re
 
 - A grading agent reads your repository at that commit and checks each line. It does not run your code. A line the files cannot settle goes to a TA.
 - A late or missing file scores 0 for its lines.
-- How many models you crack and how much your defense blocks do not affect the grade; they set the leaderboard and the Red Team award.
+- The luna and ladder cracks listed above earn their points. Cracking terra and how far your defense blocks beyond the 0.80 threshold do not affect the grade; they set the leaderboard and the Red Team award.
 - Every member must be able to explain the attacks, the defense and the numbers behind every line (merge defense).
