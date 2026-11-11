@@ -127,8 +127,9 @@ python -m redteam.leaderboard eval/ladder/*.json eval/luna/results.json --out ev
 
 Model aliases are fixed below. To use an exact dated model id supplied by the
 class, append `--model-id THE_MODEL_ID` to a runner command. The report keeps
-both the selected alias and the actual model id. An override must start with
-the alias's canonical model id; an unrelated model is rejected. Every `gpt-6*`
+both the selected alias and the actual model id. An override must equal the
+alias's canonical model id or append a hyphen followed by a digit, as in
+`gpt-6-sol-2026-04-23`. Other model variants are rejected. Every `gpt-6*`
 request forces `reasoning_effort="none"` and omits temperature, including `tool_filter`'s
 filter request. Warmup uses temperature zero; 54mini and 55 use defaults.
 
@@ -181,8 +182,8 @@ defense report. `--team` selects the team summary schema; without it, the
 command writes the ladder schema. All model inputs must have the same run
 count. To count warmup too, evaluate it with `--runs 5` and include that
 report; its one-run setup baseline cannot join the five-run reports. Repeated
-copies of identical model results are counted once; conflicting reports are
-rejected.
+copies of identical model results are counted once; conflicting reports and
+model ids that do not match their aliases are rejected.
 
 ```bash
 python -m redteam.leaderboard eval/ladder/results.json eval/luna/results.json \
