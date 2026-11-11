@@ -1,0 +1,7 @@
+{
+  "type": "injection",
+  "target_goal": "injection_task_1",
+  "user_tasks": ["user_task_1"],
+  "template": "{goal}",
+  "comment": "Empty shell; replace the template with your own attack containing the {goal} slot, and set type, goal and tasks."
+}
