@@ -1,0 +1,11 @@
+{
+  "changed_condition": "Removed the openai-news source object from the recorded input; all remaining fields identical.",
+  "only_change_verified": true,
+  "baseline_articles": 5,
+  "missing_input_articles": 2,
+  "missing_input_status": "PARTIAL",
+  "correction": "Restore the original source-reading input. No code change was necessary because missing-input handling worked.",
+  "corrected_articles": 5,
+  "corrected_digest_matches_baseline": true,
+  "limitation": "This tests missing source input, not a real website outage. Browsing and summaries were performed by the Codex agent; the Python runs replay its recorded readings."
+}
