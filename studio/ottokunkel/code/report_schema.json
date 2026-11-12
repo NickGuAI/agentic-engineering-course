@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "source_checks": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "Anthropic News",
+              "Anthropic Engineering",
+              "OpenAI News",
+              "X.com"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["checked", "unavailable"]
+          },
+          "details": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": ["source", "status", "details", "url"]
+      }
+    },
+    "stories": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "headline": {
+            "type": "string"
+          },
+          "source_name": {
+            "type": "string"
+          },
+          "published_at": {
+            "type": "string"
+          },
+          "date_precision": {
+            "type": "string",
+            "enum": ["timestamp", "date_only"]
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["news", "engineering", "paper", "official_post"]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "headline",
+          "source_name",
+          "published_at",
+          "date_precision",
+          "kind",
+          "summary",
+          "description",
+          "url"
+        ]
+      }
+    }
+  },
+  "required": ["source_checks", "stories"]
+}

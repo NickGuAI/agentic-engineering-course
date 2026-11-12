@@ -1,0 +1,2 @@
+{"run_id": "20260911T163933-0400", "started_at": "2026-09-11T16:39:33.785317-04:00", "type": "studio01.wrapper_start", "window_end": "2026-09-11T16:39:33.785317-04:00", "window_start": "2026-09-10T16:39:33.785317-04:00"}
+{"error": "Codex executable not found: /tmp/studio01-codex-does-not-exist", "run_id": "20260911T163933-0400", "status": "failed", "type": "studio01.wrapper_finish"}
