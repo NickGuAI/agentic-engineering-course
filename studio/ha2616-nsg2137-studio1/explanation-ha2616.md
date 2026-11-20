@@ -1,0 +1,5 @@
+For this assignment, I assigned Codex a daily task of finding the latest research news from sources like Anthropic and OpenAI news channels. I asked it to consolidate its findings across these sources into a concise email for my personal Gmail inbox every day at 8 AM. That was the original goal; the three captured local runs saved briefings without scheduling or sending email. I prefer to read text in paragraph and bullet list structure, so that was how I asked it to format the briefings.
+
+On the first run it succeeded in the task and saved the briefing as expected. For the second run, I provided it with a path to a nonexistent source-list file to see if the agent would be able to safely handle this error. In response, it stopped before browsing, correctly identified the error, and told me to create the missing file with official Anthropic/OpenAI URLs.
+
+On the third run, I restored the correct source-list file path, and the agent correctly made web calls and was able to complete the job and save a briefing again.
