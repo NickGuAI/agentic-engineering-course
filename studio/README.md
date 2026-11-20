@@ -78,3 +78,12 @@ Attack a course-provided AgentDojo Slack agent with your own injection, exfiltra
 * [studio-10/instruction/GRADING_RUBRIC.md](studio-10/instruction/GRADING_RUBRIC.md) (how it's graded, 10 points)
 * [studio-10/instruction/code/](studio-10/instruction/code/) (starter kit: target harness, attack and defense templates, scripts)
 * [studio-10/submission/](studio-10/submission/) (template and your team's folder in your private repo)
+
+## Studio 11: Evaluate Your AI Coding Workflow
+
+Evaluate the AI coding workflow your team already uses, from the session logs your coding agents write. Read each task's time with AI, reviewing and fixing from its trace, check the agent's claims against the records, find where failures start, and retest one change on three failed tasks. The tools, the tasks and the change are yours.
+
+* [studio-11/README.md](studio-11/README.md) (overview)
+* [studio-11/instruction/Studio_Instruction.md](studio-11/instruction/Studio_Instruction.md) (assignment, checkpoints and evidence)
+* [studio-11/instruction/GRADING_RUBRIC.md](studio-11/instruction/GRADING_RUBRIC.md) (how it's graded, 10 points)
+* [studio-11/submission/](studio-11/submission/) (template and your team's folder in your private repo)

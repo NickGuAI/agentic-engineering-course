@@ -1,0 +1,9 @@
+work/
+*.jsonl
+.env
+.env.*
+auth.json
+credentials.json
+__pycache__/
+*.py[cod]
+.venv/
