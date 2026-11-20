@@ -63,12 +63,12 @@ Work in `studio/studio-11/submission/<team>/` in your private repository. Keep r
 1. Copy the template folder, as the [submission guide](../submission/README.md) shows.
 2. Write `method.md`: your rule for the three times, in terms of the fields your traces and records hold, and your test for verified success.
 3. Work on your project as you normally do, with your AI tools. Give each task an id, `t01` upwards.
-4. After each task, copy its session log to `work/raw/<task id>.jsonl`. Find it by its session id: Claude Code names the file `<session id>.jsonl`, and a Codex file name ends with it. A task that took several sessions has several logs: `t01-1.jsonl`, `t01-2.jsonl`.
+4. After each task, copy its session log to `work/raw/<task id>.jsonl`. Find it by its session id, or by the time you started and the folder you worked in. Claude Code names the file `<session id>.jsonl` and keeps one folder per project. A Codex file name ends with the session id, and its first line gives the folder (`cwd`). A task that took several sessions has several logs: `t01-1.jsonl`, `t01-2.jsonl`.
 5. Save the other records your rule or your claims use in `records/`. Time spent reviewing is often not in the agent's log: a pull request's review and merge times are. For example, `gh pr view 12 --json state,createdAt,mergedAt,reviews,statusCheckRollup > records/pr-12.json`.
 6. Clean the logs: remove every secret. Copy the raw logs to `work/clean/` and scan them:
    `gitleaks dir work/clean --redact --report-format json --report-path work/secret-scan.json`
    The report gives each secret's file and line. Replace each one with `[REDACTED]` in `work/clean/`, then scan again. A log is cleaned when the report is an empty list, `[]`.
-   gitleaks does not find a password in a sentence, a database URL with a password, or a key quoted inside JSON. Before you commit, search `work/clean/` for your own keys and for `password`, `token`, `secret` and `://` followed by `@`. Remove other people's names and email addresses.
+   gitleaks does not find a password in a sentence, a database URL with a password, or a key quoted inside JSON. Before you commit, search `work/clean/` for your own keys and for `password`, `secret`, `_TOKEN=` and `://` followed by `@`. Remove other people's names and email addresses.
 7. Copy the last report and compress each cleaned log into `traces/`:
    `mkdir -p traces && cp work/secret-scan.json traces/`
    `gzip -9 -c work/clean/t01.jsonl > traces/t01.jsonl.gz`
@@ -80,7 +80,7 @@ Work in `studio/studio-11/submission/<team>/` in your private repository. Keep r
 
 ## File formats
 
-`tasks.csv` has one row per task. `commit` is the task's commit on your project's main branch. With squash merges, it is the squash commit (`mergeCommit` in `gh pr view`). If your project is in another repository, name its URL in `method.md` and give the course staff read access. `trace` lists the task's logs in `traces/`, separated by spaces. Times are in minutes, by your rule. `tokens` is the total by the rule in `method.md`, or empty.
+`tasks.csv` has one row per task. `commit` is the commit that holds the task's change: on your main branch once merged, or on a branch you keep pushed if it was not merged. With squash merges, it is the squash commit (`mergeCommit` in `gh pr view`). If your project is in another repository, name its URL in `method.md` and give read access to the accounts `bootstrap.sh` invites. `trace` lists the task's logs in `traces/`, separated by spaces. Times are in minutes, by your rule. `tokens` is your count of the task's tokens, or empty.
 
 ```csv
 task_id,title,commit,trace,started_at,ended_at,ai_min,review_min,fix_min,tokens
