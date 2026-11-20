@@ -5,7 +5,7 @@
   +-------------------------+     +----------------------+     +----------------------------+     +----------------------+
   | 10+ real tasks from     | --> | per task: time with  | --> | what the agent claimed vs  | --> | 3 failed tasks run   |
   | your project, each with |     | AI, reviewing and    |     | what the records show;     |     | again, before and    |
-  | its full session log    |     | fixing; the outcome  |     | where each failure began   |     | after one change     |
+  | its full session log    |     | fixing; tokens       |     | where each failure began   |     | after one change     |
   | and its commit          |     |                      |     |                            |     |                      |
   +-------------------------+     +----------------------+     +----------------------------+     +----------------------+
 ```
@@ -21,7 +21,7 @@ Teams of up to 3, the same teams as your final project. The due date is in the C
 ## Setup
 
 - The AI coding tools your team already uses: Claude Code, Codex, Cursor or another. Every task's trace must give a timestamp for each message and tool call.
-  - Claude Code writes one session log per session in `~/.claude/projects/<project folder>/`.
+  - Claude Code writes one session log per session, `~/.claude/projects/<project folder>/<session id>.jsonl`. Subagents write their own logs in `<session id>/subagents/`. Copy those too, as more logs of the task.
   - Codex writes one session log per session in `~/.codex/sessions/<year>/<month>/<day>/`.
   - A tool that keeps no such log needs one added before you start, for example a wrapper that writes each message with its time. Lecture 11 calls this instrumentation (1.1).
 - Git and `gzip`.
@@ -32,9 +32,9 @@ Teams of up to 3, the same teams as your final project. The due date is in the C
 
 Every team meets the same four checkpoints and writes the explanation. Each line below is one line of the [grading rubric](GRADING_RUBRIC.md), and each names the file that shows it. Each checkpoint is worth 2 points and the explanation is worth 2, for 10 points in all. Nothing else is graded.
 
-### Checkpoint 1: The whole task, from the traces
+### Checkpoint 1: Task times from the traces
 
-- `tasks.csv` lists at least 10 tasks from your team's project, each with its commit, its full cleaned trace in `traces/` and the three times that the rule in `method.md` gives from that trace and the records in `records/`. `results.md` gives the true time ratio.
+- `tasks.csv` lists at least 10 tasks from your team's project, each with its commit and its full cleaned trace in `traces/`. Each task's three times follow from its trace and `records/` by the rule in `method.md`. `results.md` gives the true time ratio.
 
 ### Checkpoint 2: Claims against records
 
@@ -42,7 +42,7 @@ Every team meets the same four checkpoints and writes the explanation. Each line
 
 ### Checkpoint 3: Where failures start
 
-- `failures.md` gives every failed or fixed task its first failure, as a line in its trace with a code, and names each code's count, layer (spec, harness, model, tool or environment), probable cause and trace evidence.
+- `failures.md` gives every failed or fixed task its first failure: a line in its trace and a code. For each code, it gives the count, the layer (spec, harness, model, tool or environment), the probable cause and the trace evidence.
 
 ### Checkpoint 4: One change, retested
 
@@ -61,37 +61,40 @@ Every team meets the same four checkpoints and writes the explanation. Each line
 Work in `studio/studio-11/submission/<team>/` in your private repository. Keep raw logs in `work/`, which Git ignores. In this order:
 
 1. Copy the template folder, as the [submission guide](../submission/README.md) shows.
-2. Write `method.md`: your rule for the three times, in terms of the fields your traces and records hold, and your test for verified success. Write it before you fill in `tasks.csv`.
+2. Write `method.md`: your rule for the three times, in terms of the fields your traces and records hold, and your test for verified success.
 3. Work on your project as you normally do, with your AI tools. Give each task an id, `t01` upwards.
-4. After each task, copy its session log to `work/raw/<task id>.jsonl`. Use the newest file in the folder your tool writes to, as Setup lists. A task that took several sessions has several logs: `t01-1.jsonl`, `t01-2.jsonl`.
+4. After each task, copy its session log to `work/raw/<task id>.jsonl`. Find it by its session id: Claude Code names the file `<session id>.jsonl`, and a Codex file name ends with it. A task that took several sessions has several logs: `t01-1.jsonl`, `t01-2.jsonl`.
 5. Save the other records your rule or your claims use in `records/`. Time spent reviewing is often not in the agent's log: a pull request's review and merge times are. For example, `gh pr view 12 --json state,createdAt,mergedAt,reviews,statusCheckRollup > records/pr-12.json`.
 6. Clean the logs: remove every secret. Copy the raw logs to `work/clean/` and scan them:
-   `gitleaks dir work/clean --report-format json --report-path traces/secret-scan.json`
-   Replace every secret it finds with `[REDACTED]` in `work/clean/`, then scan again. A log is cleaned when the report is an empty list. Commit that report.
-7. Compress each cleaned log into `traces/`: `gzip -9 -c work/clean/t01.jsonl > traces/t01.jsonl.gz`.
-8. Fill in `tasks.csv` from the traces and records by your rule.
-9. Fill in `claims.csv`: for each task, quote the agent's last message on it, and say what the tests, the trace, Git or `records/` show.
+   `gitleaks dir work/clean --redact --report-format json --report-path work/secret-scan.json`
+   The report gives each secret's file and line. Replace each one with `[REDACTED]` in `work/clean/`, then scan again. A log is cleaned when the report is an empty list, `[]`.
+   gitleaks does not find a password in a sentence, a database URL with a password, or a key quoted inside JSON. Before you commit, search `work/clean/` for your own keys and for `password`, `token`, `secret` and `://` followed by `@`. Remove other people's names and email addresses.
+7. Copy the last report and compress each cleaned log into `traces/`:
+   `mkdir -p traces && cp work/secret-scan.json traces/`
+   `gzip -9 -c work/clean/t01.jsonl > traces/t01.jsonl.gz`
+8. Complete `tasks.csv` from the traces and records by your rule.
+9. Complete `claims.csv`: for each task, quote the agent's last message on it, and say what the tests, the trace, Git or `records/` show.
 10. Write `failures.md`. For each failed or fixed task, read its trace from the start and stop at the first step that went wrong.
-11. Pick at least 3 failed tasks for the retest. For each, write a case in `retest/cases/` that the agent can run again from the same starting commit. Run every case once, make the one change, run every case again. Clean and compress each run's log, as in steps 6 and 7, into `retest/traces/`.
+11. Pick at least 3 failed tasks for the retest. For each, write a case in `retest/cases/` that the agent can run again from the same starting commit. Run every case once, make the one change, run every case again. Clean and compress each run's log, as in steps 6 and 7, into `retest/traces/`. If fewer than 3 of your tasks failed or needed fixing, add tasks until 3 have.
 12. Write `results.md` and `EXPLANATION.md`.
 
 ## File formats
 
-`tasks.csv` has one row per task. `trace` lists the task's logs in `traces/`, separated by spaces. Times are in minutes, by your rule. `tokens` is the total the trace records, or empty if it records none.
+`tasks.csv` has one row per task. `commit` is the task's commit on your project's main branch. With squash merges, it is the squash commit (`mergeCommit` in `gh pr view`). If your project is in another repository, name its URL in `method.md` and give the course staff read access. `trace` lists the task's logs in `traces/`, separated by spaces. Times are in minutes, by your rule. `tokens` is the total by the rule in `method.md`, or empty.
 
 ```csv
 task_id,title,commit,trace,started_at,ended_at,ai_min,review_min,fix_min,tokens
 t01,Add retries to the search tool,3f2a9c1,traces/t01.jsonl.gz,2026-11-23T14:02:10Z,2026-11-23T14:41:55Z,12.5,6.0,9.0,184220
 ```
 
-`claims.csv` has one row per task. `claim` quotes the agent's last message on the task, as it wrote it. `claim_line` is that message's line number in the uncompressed trace. `claimed_success` is `yes` if that message says the task is finished or its checks pass, and `no` otherwise, including when it says nothing about the result. `record` says what the tests, the trace, Git or `records/` show about the result, and `record_ref` points to it. `verified_success` is `yes` or `no`, by the test in `method.md`. If your team squash-merges, a task's own commit never reaches the main branch: use the pull request record.
+`claims.csv` has one row per task. `claim` quotes the agent's last message on the task, as it wrote it. `claim_line` is that message's line number in the task's last log, uncompressed. `claimed_success` is `yes` if that message says the task is finished or its checks pass. It is `no` otherwise, also when the message says nothing about the result. `record` says what the tests, the trace, Git or `records/` show about the result, and `record_ref` points to it. `verified_success` is `yes` or `no`, by the test in `method.md`. If your team squash-merges, a task's own commit never reaches the main branch: use the pull request record.
 
 ```csv
 task_id,claim,claim_line,claimed_success,record,record_ref,verified_success
 t01,"<the agent's last message, as written>",412,yes,"the last test run in the session shows 2 failures",traces/t01.jsonl.gz:398,no
 ```
 
-`records/` holds the records your rule and your claims cite, saved as files: pull request exports, CI results, review times.
+`records/` holds the records your rule and your claims cite, saved as files: pull request exports, continuous integration (CI) results, review times.
 
 `failures.md` has two tables. The first gives each failed or fixed task its first failure. The second gives each code its count, layer, probable cause and evidence.
 
@@ -102,7 +105,7 @@ t01,"<the agent's last message, as written>",412,yes,"the last test run in the s
 
 | code | tasks | layer | probable cause | evidence |
 |---|---|---|---|---|
-| tests-run-in-wrong-folder | 3 | harness | the agent starts in the repository root, and the tests need the package folder | t01:233, t07:88; t04 named the folder in its prompt and passed |
+| tests-run-in-wrong-folder | 3 | harness | the agent starts in the repository root, and the tests need the package folder | traces/t01.jsonl.gz:233, traces/t07.jsonl.gz:88; t04 named the folder in its prompt and passed |
 ```
 
 `retest/change.md` says what you changed, which code in `failures.md` it addresses, and the change itself (a diff or the setting).
@@ -119,21 +122,21 @@ c1,t01,after,retest/traces/c1-after.jsonl.gz,pass,retest/checks/c1-after.txt
 
 `results.md` has four parts:
 
-- **Tasks:** the number of tasks and the true time ratio: the sum of `ai_min`, `review_min` and `fix_min` over all tasks, divided by the sum of `ai_min`.
+- **Tasks:** the number of tasks and the true time ratio. The ratio is the sum of `ai_min`, `review_min` and `fix_min` over all tasks, divided by the sum of `ai_min`.
 - **Claims:** the claimed success rate and the verified success rate, each the share of `yes` rows in `claims.csv`.
 - **Retest:** how many cases improved, stayed the same and got worse.
 - **What the traces could not show.**
 
 ## Submit
 
-Commit and push to your team's own private repository (the one `bootstrap.sh` created) before the due date in CourseWorks. Each member submits the same team pull-request link through CourseWorks. The due date is in the CourseWorks assignment. A grading agent reads your private repository at the commit you submit. It does not run your code. The [submission guide](../submission/README.md) shows the folder layout.
+Commit and push to your team's own private repository (the one `bootstrap.sh` created) before the due date in CourseWorks. Each member submits the same team pull-request link through CourseWorks. A grading agent reads your private repository at the commit you submit. It does not run your code. The [submission guide](../submission/README.md) shows the folder layout.
 
 ## Rules
 
 - Use real tasks from your team's own project work, not tasks written for this studio.
 - Submit each task's full session log, cleaned and compressed. An excerpt or a summary does not count as a trace.
 - Never commit a key, a password, a `.env` file or another person's private data. Clean every log before it enters `traces/`.
-- Your tools, how good your AI is and how much time it took or saved do not affect the grade.
+- Your tools and how good your AI is do not affect the grade. Neither do your success rates, your true time ratio or the time AI took or saved.
 - Every member must be able to explain the method and the numbers behind every line (merge defense).
 
 ## Optional, not graded
@@ -145,4 +148,4 @@ Commit and push to your team's own private repository (the one `bootstrap.sh` cr
 
 - Lecture 11: 1.1 OpenTelemetry, 1.2 Tracing an agent, 2.1 Failure taxonomy, 2.2 Trajectory-based error analysis, 3.1 Regression evals on every change, 3.4 Production failures back into the eval set, 3B.1 What honest measurement is
 - Hamel Husain and Shreya Shankar, [AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/), on error analysis
-- OpenTelemetry, [Semantic conventions for generative AI](https://opentelemetry.io/docs/specs/semconv/gen-ai/)
+- OpenTelemetry, [GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai)
