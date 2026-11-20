@@ -1,0 +1,124 @@
+{
+  "run_id": "research-update-20261014-202318-40f0bd",
+  "started_at": "2026-10-14T20:23:18.712383-04:00",
+  "timezone": "America/New_York",
+  "window": {
+    "start_inclusive": "2026-10-07",
+    "end_inclusive": "2026-10-13",
+    "run_date_excluded": "2026-10-14"
+  },
+  "status": "incomplete",
+  "model": {
+    "provider": "Codex CLI",
+    "name": "gpt-6-luna",
+    "invoked": true,
+    "status": "succeeded",
+    "not_called_reason": null,
+    "log_id": "codex-20261015T002336Z-c4a3ac86",
+    "raw_log_dir": "/Users/xingrul2/.local/share/4995-logs/studio01/20261014-202318/baseline",
+    "error": null
+  },
+  "source_selection_notice": null,
+  "sources": [
+    {
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news",
+      "outcome": "checked",
+      "detail": "source checked successfully",
+      "candidates": 30,
+      "eligible_articles": 5,
+      "failure_kind": null
+    },
+    {
+      "name": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering",
+      "outcome": "partial",
+      "detail": "1 article page(s) could not be fetched (request_failure: 1)",
+      "candidates": 30,
+      "eligible_articles": 1,
+      "failure_kind": "article_page_failure"
+    },
+    {
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/",
+      "outcome": "checked",
+      "detail": "source checked successfully",
+      "candidates": 30,
+      "eligible_articles": 12,
+      "failure_kind": null
+    }
+  ],
+  "articles": [
+    {
+      "title": "Helping small businesses put AI to work",
+      "publication_date": "2026-10-13",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/helping-small-businesses-put-ai-to-work/",
+      "summary": "OpenAI plans to train about 150 America’s SBDC advisors and reach at least 1,000 small businesses through hands-on AI workshops and advising. Its report says roughly 4 million employees at firms with fewer than 500 people used OpenAI tools in one September week, with small-business agentic output tokens rising from one-third of the total in April to two-thirds in August."
+    },
+    {
+      "title": "Redesigning source control at Anthropic",
+      "publication_date": "2026-10-12",
+      "source": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering/redesigning-source-control",
+      "summary": "Anthropic says its code merges rose from about 2,500 per day in May 2026 to over 30,000 in September, prompting a five-month migration of its monorepo from Git to Scion. Scion uses online, server-centered operations, sparse or virtualized checkouts, content-addressed data, and derived indexes to reduce local repository copies and support high-throughput source control."
+    },
+    {
+      "title": "SentinelOne cuts malware analysis from weeks to hours",
+      "publication_date": "2026-10-09",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/sentinelone/",
+      "summary": "SentinelOne reports using OpenAI Daybreak to reduce malware reverse-engineering work that could take researchers four to six weeks to roughly eight hours, creating capacity to analyze more samples and compare threats. The company says humans remain accountable for consequential decisions such as architectural changes."
+    },
+    {
+      "title": "Our approach to EU text provenance rules",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/eu-text-provenance/",
+      "summary": "OpenAI describes textGrain, a statistical watermark in model word choices, and says it will roll it out for eligible ChatGPT and Codex text in the EU while allowing API customers globally to opt in; detector access will initially be limited to approved researchers and expert organizations. In its evaluations, detection fell for shorter or constrained text and after synonym edits, and a watermark does not establish authorship, ownership, accuracy, or user identity."
+    },
+    {
+      "title": "LegalOn halves Codex costs while maintaining development speed",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/legalon-halves-codex-costs/",
+      "summary": "LegalOn says it cut estimated daily Codex costs by about 65% while maintaining development speed by routing tasks among GPT-6 Luna, GPT-6.1 Sol, and GPT-6 Astra, restricting Fast mode by default, and setting budgets based on business needs. It is also developing a metric that connects AI costs per feature release to customer value."
+    },
+    {
+      "title": "Introducing the Anthropic Cyber Mission",
+      "publication_date": "2026-10-08",
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/anthropic-cyber-mission",
+      "summary": "Anthropic launched its Cyber Mission with a Critical Infrastructure Defense Program that provides frontier models, on-site engineers, and threat research through partner organizations, plus OSS Scanner, a free opt-in service that periodically scans enrolled open-source projects. OSS Scanner reports are model-generated without human review, and Anthropic says they may contain inaccuracies while targeting a true-positive rate above 90%."
+    },
+    {
+      "title": "How Third Moment Research runs 10,000 agents for 36+ hours",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/third-moment-research/",
+      "summary": "Third Moment Research says it uses Codex and GPT-6 models to run 10,000 agents concurrently on 36–48-hour research sessions, with an outer harness deciding whether unfinished tasks should be retried, terminated, or escalated. Codex helped reduce one backtest from about three hours to three to five minutes, while Daybreak is used to test whether agents can escape their research environments."
+    },
+    {
+      "title": "Building on our commitment to American scientific discovery",
+      "publication_date": "2026-10-08",
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/genesis-mission-commitment",
+      "summary": "Anthropic committed $150 million over three years to the U.S. Genesis Mission, providing Claude, Claude Code, API credits, training, and technical support to several hundred research projects across more than 15 federal agencies. The stated priority areas include fusion energy and quantum computing."
+    },
+    {
+      "title": "Asana cuts model costs 76x in browser tests with GPT‑6.1 Sol",
+      "publication_date": "2026-10-08",
+      "source": "OpenAI News",
+      "url": "https://openai.com/index/asana-browser-agent/",
+      "summary": "In a 144-run study, Asana used GPT-6 Astra in Codex to optimize a browser-agent workflow; the resulting GPT-6.1 Sol setup averaged $0.47 and about four minutes per run, reported as 76 times cheaper and five times faster than the original production setup. The changes included caching browsing history, retaining more text, and removing screenshots in batches; all optimized runs completed the task correctly."
+    },
+    {
+      "title": "2026 Usage Policy update",
+      "publication_date": "2026-10-08",
+      "source": "Anthropic News",
+      "url": "https://www.anthropic.com/news/2026-usage-policy-update",
+      "summary": "Anthropic’s revised Usage Policy, effective November 12, consolidates rules against deceptive campaigns, clarifies restrictions on weapons software and surveillance, and specifies requirements for high-risk uses and autonomous physical actions. It also adds a narrow prohibition on sustained, needless abusive behavior toward models and clarifies supported-region restrictions."
+    }
+  ],
+  "report_file": "research-update-20261014-202318-40f0bd.md"
+}

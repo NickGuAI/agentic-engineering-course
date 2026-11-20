@@ -1,0 +1,5 @@
+I defined the task, context, success criteria, and restrictions in the delegation card, then prompted the Codex CLI agent to implement a script that collects up to 10 recent news articles from three default websites or user-specified websites, covering the previous seven complete calendar days in Eastern Time.
+
+In the baseline run using the three default websites, I noticed issues with date recognition, including incorrect publication dates and articles falling outside the requested time window. For the changed-condition run, I provided an invalid custom URL. The script successfully detected the invalid URL and fell back to the default websites, but the date-related issues remained.
+
+I then asked the agent to address these issues and ran the corrected version. The results showed improved date accuracy in some of the cases I checked, although problems such as incomplete article extraction, missing summaries, and skipped articles still remained. 
