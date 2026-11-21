@@ -1,0 +1,76 @@
+{
+  "collected_on": "2026-09-18",
+  "collector": "Local Codex desktop agent using web browsing tools in the current task",
+  "provenance": "Compact agent-authored reading record, not a raw tool transcript or downloaded page corpus. Date and summary verification is by agent reading, not independently checked by Python.",
+  "sources": {
+    "anthropic-news": {
+      "url": "https://www.anthropic.com/news",
+      "status": "read",
+      "note": "News listing and two recent linked articles read.",
+      "articles": [
+        {
+          "title": "Measurements for understanding the pace of AI development inside frontier labs",
+          "date": "2026-09-17",
+          "url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development",
+          "summary": "Anthropic proposes measuring how much AI research is automated, how agents are monitored, and how computing resources are allocated. The company presents internal measurements and discusses independent verification and limits to comparisons between labs.",
+          "date_evidence": "Publication date displayed on the Anthropic News listing; article body read separately.",
+          "read": true
+        },
+        {
+          "title": "Introducing the Life Sciences Verification Program",
+          "date": "2026-09-17",
+          "url": "https://www.anthropic.com/news/life-sciences-verification-program",
+          "summary": "Anthropic announced a beta program giving verified life-science teams access to models with safeguards adjusted for biology work. Applicants are reviewed, and access is tied to specified uses with ongoing monitoring.",
+          "date_evidence": "Article heading displays Sep 17, 2026.",
+          "read": true
+        }
+      ]
+    },
+    "anthropic-engineering": {
+      "url": "https://www.anthropic.com/engineering",
+      "status": "read",
+      "note": "Engineering listing read; featured article dated May 25, 2026, outside the window. Other visible dated entries were older.",
+      "articles": [
+        {
+          "title": "How we contain Claude across products",
+          "date": "2026-05-25",
+          "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+          "summary": "Anthropic describes limiting what agents can access through isolated computing environments and network controls. These technical boundaries complement monitoring of agent behavior.",
+          "date_evidence": "Article displays Published May 25, 2026; excluded from September window.",
+          "read": true
+        }
+      ]
+    },
+    "openai-news": {
+      "url": "https://openai.com/news/",
+      "status": "read",
+      "note": "News listing and three recent linked articles read. Another September 16 item was not selected because five eligible articles were already available across sources.",
+      "articles": [
+        {
+          "title": "Introducing Astra for Law",
+          "date": "2026-09-17",
+          "url": "https://openai.com/index/astra-for-law/",
+          "summary": "OpenAI announced a legal-work configuration of GPT-6 Astra combining the model with legal search, specialized instructions, and controls for confidential work. Initial access is for selected firms through ChatGPT and Codex, with API access planned; an API lets software interact with the model programmatically.",
+          "date_evidence": "Article heading displays September 17, 2026.",
+          "read": true
+        },
+        {
+          "title": "Reimagining advertising with AI",
+          "date": "2026-09-16",
+          "url": "https://openai.com/index/reimagining-advertising-with-ai/",
+          "summary": "OpenAI is testing Sponsored Agents, clearly labeled conversations with business-sponsored agents after an ad click. It also announced tools for creating and managing ads, plus integrations with HubSpot and Shopify.",
+          "date_evidence": "Article heading displays September 16, 2026.",
+          "read": true
+        },
+        {
+          "title": "Our framework for reporting model misalignment",
+          "date": "2026-09-16",
+          "url": "https://openai.com/index/model-misalignment-reporting-framework/",
+          "summary": "OpenAI introduced a process for investigating and publishing reports of model misalignment: behavior that departs from intended goals or constraints. It released six examples and cautioned that individual incidents do not establish how frequently these behaviors occur.",
+          "date_evidence": "Article heading displays September 16, 2026.",
+          "read": true
+        }
+      ]
+    }
+  }
+}

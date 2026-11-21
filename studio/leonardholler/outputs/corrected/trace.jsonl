@@ -1,0 +1,10 @@
+{"event": "source_checked", "source": "anthropic-news", "url": "https://www.anthropic.com/news", "note": "News listing and two recent linked articles read."}
+{"event": "source_checked", "source": "anthropic-engineering", "url": "https://www.anthropic.com/engineering", "note": "Engineering listing read; featured article dated May 25, 2026, outside the window. Other visible dated entries were older."}
+{"event": "article_excluded", "url": "https://www.anthropic.com/engineering/how-we-contain-claude", "reason": "outside_date_window"}
+{"event": "source_checked", "source": "openai-news", "url": "https://openai.com/news/", "note": "News listing and three recent linked articles read. Another September 16 item was not selected because five eligible articles were already available across sources."}
+{"event": "article_selected", "url": "https://openai.com/index/astra-for-law/", "reason": "eligible"}
+{"event": "article_selected", "url": "https://www.anthropic.com/news/life-sciences-verification-program", "reason": "eligible"}
+{"event": "article_selected", "url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development", "reason": "eligible"}
+{"event": "article_selected", "url": "https://openai.com/index/model-misalignment-reporting-framework/", "reason": "eligible"}
+{"event": "article_selected", "url": "https://openai.com/index/reimagining-advertising-with-ai/", "reason": "eligible"}
+{"event": "checks", "results": {"at_most_five": true, "unique_urls": true, "dates_in_window": true, "required_fields": true, "all_sources_available": true}, "limitation": "Checks validate recorded metadata, not factual accuracy or current link availability; those require article reading."}
