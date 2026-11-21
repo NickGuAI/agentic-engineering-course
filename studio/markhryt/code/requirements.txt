@@ -1,0 +1,2 @@
+# Only needed for LLM summaries. The pipeline runs offline (--no-llm) with the stdlib alone.
+anthropic>=1.0
