@@ -1,0 +1,8 @@
+2026-09-18 00:31:27,062 WARNING Failed to read source index Anthropic News: HTTP Error 500: Simulated HTTP failure
+2026-09-18 00:31:27,062 WARNING Failed to read source index Anthropic Engineering: HTTP Error 500: Simulated HTTP failure
+2026-09-18 00:31:27,062 WARNING Failed to read source index OpenAI News: HTTP Error 500: Simulated HTTP failure
+2026-09-18 00:31:27,062 INFO run complete: 0 new articles, 3 failures
+2026-09-18 00:32:43,766 WARNING Failed to read source index Anthropic News: HTTP Error 500: Simulated HTTP failure
+2026-09-18 00:32:43,766 WARNING Failed to read source index Anthropic Engineering: HTTP Error 500: Simulated HTTP failure
+2026-09-18 00:32:43,766 WARNING Failed to read source index OpenAI News: HTTP Error 500: Simulated HTTP failure
+2026-09-18 00:32:43,767 INFO run complete: 0 new articles, 3 failures
