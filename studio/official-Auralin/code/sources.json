@@ -1,0 +1,5 @@
+[
+  {"id":"anthropic-news","name":"Anthropic News","url":"https://www.anthropic.com/news","format":"html"},
+  {"id":"anthropic-engineering","name":"Anthropic Engineering","url":"https://www.anthropic.com/engineering","format":"html"},
+  {"id":"openai-news","name":"OpenAI News","url":"https://openai.com/news/","feed":"https://openai.com/news/rss.xml","format":"rss"}
+]
