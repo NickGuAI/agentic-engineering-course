@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "source_hashes_match": true,
+    "all_citations_resolve": true,
+    "card_exactly_four_fields": true,
+    "missing_input_has_no_digest": true,
+    "recovery_matches_baseline": true,
+    "reflection_draft_disclosed": true,
+    "changed_source_stops": true,
+    "existing_run_rejected": true
+  },
+  "citation_count": 21,
+  "passed": true,
+  "scope": "Technical evidence only; does not verify student authorship or complete submission."
+}

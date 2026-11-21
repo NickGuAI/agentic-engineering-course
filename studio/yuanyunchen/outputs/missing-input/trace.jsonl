@@ -1,0 +1,3 @@
+{"time_utc": "2026-09-16T18:51:39.285968+00:00", "event": "start", "runner": "offline deterministic renderer", "inputs": "outputs/missing-inputs"}
+{"time_utc": "2026-09-16T18:51:39.286297+00:00", "event": "source_verified", "file": "Studio01.md", "sha256": "b510dc0758744f2d6ad019a16029c81bc1ddbfcf37de37b609387e7f6ed14ab5"}
+{"time_utc": "2026-09-16T18:51:39.286339+00:00", "event": "stop", "reason": "missing_input", "file": "workspace.md"}

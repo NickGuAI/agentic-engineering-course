@@ -1,0 +1,17 @@
+{
+  "upstream_commit": "474fbf7b7ad1229e90dfc8f54fccb8abe30545a4",
+  "sources": {
+    "Studio01.md": {
+      "sha256": "b510dc0758744f2d6ad019a16029c81bc1ddbfcf37de37b609387e7f6ed14ab5",
+      "url": "https://github.com/NickGuAI/agentic-engineering-course/blob/474fbf7b7ad1229e90dfc8f54fccb8abe30545a4/studio/Studio01.md"
+    },
+    "workspace.md": {
+      "sha256": "873bed4c48b9ca26713582790d43acdda64582a6574b414b85e1d86ca5a82c5e",
+      "url": "https://github.com/NickGuAI/agentic-engineering-course/blob/474fbf7b7ad1229e90dfc8f54fccb8abe30545a4/studio/README.md"
+    },
+    "course-prep.md": {
+      "sha256": "f1b395f1de590be81b87af25685147eb431bc2c3bf9d81075d920d668d686668",
+      "url": "https://github.com/NickGuAI/agentic-engineering-course/blob/474fbf7b7ad1229e90dfc8f54fccb8abe30545a4/docs/course-prep.md"
+    }
+  }
+}
