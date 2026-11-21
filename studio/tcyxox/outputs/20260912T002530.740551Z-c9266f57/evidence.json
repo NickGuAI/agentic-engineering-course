@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "run_id": "20260912T002530.740551Z-c9266f57",
+  "started_at": "2026-09-12T00:25:30Z",
+  "finished_at": "2026-09-12T00:25:31Z",
+  "configured_sources": [
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "url": "https://www.anthropic.com/news"
+    },
+    {
+      "id": "anthropic-engineering",
+      "name": "Anthropic Engineering",
+      "url": "https://www.anthropic.com/engineering"
+    },
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/"
+    }
+  ],
+  "sources_attempted": [
+    {
+      "id": "anthropic-news",
+      "name": "Anthropic News",
+      "configured_url": "https://www.anthropic.com/news",
+      "attempted": true,
+      "attempted_at": "2026-09-12T00:25:30Z",
+      "landing_http_status": null,
+      "landing_final_url": null,
+      "status": "FAILED",
+      "items_discovered": 0,
+      "items_processed": 0,
+      "selected_count": 0,
+      "warnings": [],
+      "errors": [
+        "Anthropic News landing page failed: URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>"
+      ]
+    },
+    {
+      "id": "anthropic-engineering",
+      "name": "Anthropic Engineering",
+      "configured_url": "https://www.anthropic.com/engineering",
+      "attempted": true,
+      "attempted_at": "2026-09-12T00:25:31Z",
+      "landing_http_status": null,
+      "landing_final_url": null,
+      "status": "FAILED",
+      "items_discovered": 0,
+      "items_processed": 0,
+      "selected_count": 0,
+      "warnings": [],
+      "errors": [
+        "Anthropic Engineering landing page failed: URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>"
+      ]
+    },
+    {
+      "id": "openai-news",
+      "name": "OpenAI News",
+      "configured_url": "https://openai.com/news/",
+      "attempted": true,
+      "attempted_at": "2026-09-12T00:25:31Z",
+      "landing_http_status": null,
+      "landing_final_url": null,
+      "status": "FAILED",
+      "items_discovered": 0,
+      "items_processed": 0,
+      "selected_count": 0,
+      "warnings": [],
+      "errors": [
+        "OpenAI News landing page failed: URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>"
+      ]
+    }
+  ],
+  "counts": {
+    "sources_configured": 3,
+    "sources_succeeded": 0,
+    "sources_failed": 3,
+    "items_discovered": 0,
+    "items_processed": 0,
+    "items_selected": 0
+  },
+  "selected_items": [],
+  "warnings": [],
+  "errors": [
+    "Anthropic News landing page failed: URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>",
+    "Anthropic Engineering landing page failed: URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>",
+    "OpenAI News landing page failed: URLError: <urlopen error [WinError 10013] 以一种访问权限不允许的方式做了一个访问套接字的尝试。>",
+    "Required verification failed: selected_items_present"
+  ],
+  "generated_output_path": "E:\\Columbia\\Course\\2026 Fall\\COMS4995_Agentic_Engineering\\agentic-engineering-course\\studio\\tcyxox\\outputs\\20260912T002530.740551Z-c9266f57\\digest.md",
+  "event_log_path": "E:\\Columbia\\Course\\2026 Fall\\COMS4995_Agentic_Engineering\\agentic-engineering-course\\studio\\tcyxox\\outputs\\20260912T002530.740551Z-c9266f57\\events.jsonl",
+  "verification_checks": {
+    "digest_exists": true,
+    "digest_nonempty": true,
+    "all_configured_sources_attempted": true,
+    "each_source_has_explicit_status": true,
+    "selected_items_present": false,
+    "selected_items_have_required_fields": true,
+    "selected_counts_consistent": true
+  },
+  "final_status": "FAILED"
+}
