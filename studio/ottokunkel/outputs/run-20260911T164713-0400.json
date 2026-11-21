@@ -1,0 +1,17 @@
+{
+  "briefing": "briefing-20260911T164713-0400.md",
+  "codex_binary": "/opt/homebrew/bin/codex",
+  "codex_exit_code": 0,
+  "delivery_budget_met": true,
+  "delivery_budget_seconds": 120,
+  "duration_seconds": 58.48,
+  "finished_at": "2026-09-11T16:48:11.832497-04:00",
+  "run_id": "20260911T164713-0400",
+  "source_count": 4,
+  "started_at": "2026-09-11T16:47:13.352924-04:00",
+  "status": "succeeded",
+  "story_count": 5,
+  "trace": "trace-20260911T164713-0400.jsonl",
+  "window_end": "2026-09-11T16:47:13.352924-04:00",
+  "window_start": "2026-09-10T16:47:13.352924-04:00"
+}
