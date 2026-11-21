@@ -1,0 +1,79 @@
+{
+  "test": "synthetic adapter smoke test, not news",
+  "elapsed_seconds": 8.53,
+  "tool_surface_audit": {
+    "provider": "local no-auth listener",
+    "tools": [],
+    "tool_count": 0
+  },
+  "identity": {
+    "backend": "codex-cli",
+    "model": "gpt-6-astra",
+    "reasoning": "low",
+    "cli_version": "codex-cli 0.154.0-alpha.6.2",
+    "adapter_version": "codex-summary-1",
+    "prompt_sha256": "552ca7ffbb4573891009121df62281d6ec2a860e6fcc53fb2e6ae521bbcac52e",
+    "schema_sha256": "da7afd40dd72c52656679a63d8bdb232047ed9943e09eb1b62289329e6cdb868",
+    "sandbox": "read-only",
+    "disabled_features": [
+      "shell_tool",
+      "hooks",
+      "plugins",
+      "remote_plugin",
+      "apps",
+      "enable_mcp_apps",
+      "browser_use",
+      "browser_use_external",
+      "browser_use_full_cdp_access",
+      "computer_use",
+      "image_generation",
+      "view_image",
+      "multi_agent",
+      "multi_agent_v2",
+      "code_mode",
+      "code_mode_host",
+      "goals",
+      "sleep_tool",
+      "skill_search",
+      "skill_mcp_dependency_install",
+      "tool_suggest",
+      "workspace_dependencies",
+      "shell_snapshot",
+      "in_app_browser",
+      "memories",
+      "request_permissions_tool",
+      "unbounded_connection_retries",
+      "token_budget",
+      "current_time_reminder",
+      "deferred_executor",
+      "standalone_web_search",
+      "code_mode_only",
+      "code_mode_prewarm"
+    ],
+    "unified_exec_feature": true,
+    "shell_tools_gate": "shell_tool=false and shell_type=disabled",
+    "capability_overrides": {
+      "shell_type": "disabled",
+      "apply_patch_tool_type": null,
+      "experimental_supported_tools": [],
+      "tool_mode": "direct",
+      "node_repl_disabled": true,
+      "supports_search_tool": false
+    },
+    "catalog_sha256": "c757581c877ad4c02ab9df5746853985d7a203ada9f0a5736ec5623bf8323f90",
+    "mcp_preflight": "all_configured_servers_disabled",
+    "provider_token_ceiling": false
+  },
+  "application_input_bytes": 2104,
+  "result_summary": {
+    "item_count": 1,
+    "usage": {
+      "input_tokens": 6196,
+      "cached_input_tokens": 0,
+      "output_tokens": 132,
+      "reasoning_output_tokens": 0,
+      "total_tokens": 6328
+    },
+    "usage_known": true
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "run_id": "live-replay-20260918",
+  "mode": "snapshot_replay",
+  "as_of": "2026-09-18T18:29:31.127944+00:00",
+  "window": "2026-09-12 through 2026-09-18 (America/New_York)",
+  "status": "partial",
+  "coverage_summary": "2/3 sources checked successfully; at most 5 selected updates.",
+  "warnings": [
+    "Source unavailable: openai_news (http_403).",
+    "Collection coverage limit: article_fetch_limit.",
+    "Article omitted because essential evidence did not fit its allowance: Measurements for understanding the pace of AI development inside frontier labs."
+  ],
+  "items": [
+    {
+      "article_id": "a-a3c8e138d995ff55",
+      "evidence_ids": [
+        "p001",
+        "p003",
+        "p013",
+        "p014",
+        "p015",
+        "p017",
+        "p018"
+      ],
+      "insufficient_evidence": false,
+      "relevance": "Interpretation: The program could reduce interruptions for legitimate biology research, while verification, monitoring, retention requirements, and availability restrictions may shape which institutions can adopt it.",
+      "summary": "Anthropic says its beta Life Sciences Verification Program gives verified teams access to models with more permissive biology safeguards. Access is available through its first-party API console and Claude Enterprise and Team plans; individual plans, third-party platforms, and BAA-enabled organizations are excluded. The program monitors usage against approved use cases and requires 30-day data retention, with retained data excluded from model training.",
+      "title": "Introducing the Life Sciences Verification Program",
+      "url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "published_at": "2026-09-17"
+    }
+  ]
+}

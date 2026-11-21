@@ -1,0 +1,7 @@
+{
+  "passed": false,
+  "failures": [
+    "source_failure_policy_stop"
+  ],
+  "human_review": "pending"
+}

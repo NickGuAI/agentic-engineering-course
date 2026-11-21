@@ -1,0 +1,16 @@
+{
+  "mode": "synthetic_fixture",
+  "snapshot_hash": "b77b51bd9a1062c5666601d67270f5e54ce3c674731fd006b6df0da8678f0b09",
+  "required_facts": [
+    "research assistant",
+    "cited reading list",
+    "source identifiers",
+    "activity report"
+  ],
+  "required_caveats": [
+    "limited preview",
+    "cannot independently verify publisher claims",
+    "human evidence review"
+  ],
+  "human_review": "pending"
+}

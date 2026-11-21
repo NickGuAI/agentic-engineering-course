@@ -1,0 +1,295 @@
+{
+  "run_id": "web-20260918T185003Z-02938b1e",
+  "mode": "live",
+  "team": "jamieYe0317",
+  "as_of": "2026-09-18T18:50:03.398936+00:00",
+  "policy": {
+    "version": "research-policy-v1",
+    "team": "jamieYe0317",
+    "timezone": "America/New_York",
+    "days": 7,
+    "max_items": 5,
+    "max_candidates": 30,
+    "max_article_fetches": 10,
+    "max_http_attempts": 16,
+    "max_http_requests": 16,
+    "http_timeout_seconds": 10,
+    "max_response_bytes": 2097152,
+    "max_http_retries": 3,
+    "max_actions": 50,
+    "max_model_calls": 2,
+    "max_run_seconds": 300,
+    "model_timeout_seconds": 120,
+    "summary_reasoning": "low",
+    "initial_input_tokens": 8000,
+    "initial_input_bytes": 49152,
+    "repair_input_tokens": 4000,
+    "repair_input_bytes": 24576,
+    "max_application_input_tokens": 12000,
+    "observed_total_token_alert": 40000,
+    "article_evidence_tokens": 1200,
+    "total_evidence_tokens": 6000,
+    "summary_min_words": 40,
+    "summary_max_words": 70,
+    "relevance_max_words": 35,
+    "source_failure_policy": "partial"
+  },
+  "policy_hash": "0e2cee779c9d4718caa0ddf56998947edea807da644ccf65e76e165512e1c9f1",
+  "model": {
+    "backend": "codex-cli",
+    "model": "gpt-6-astra",
+    "reasoning": "low",
+    "cli_version": "codex-cli 0.154.0-alpha.6.2",
+    "adapter_version": "codex-summary-1",
+    "prompt_sha256": "552ca7ffbb4573891009121df62281d6ec2a860e6fcc53fb2e6ae521bbcac52e",
+    "schema_sha256": "da7afd40dd72c52656679a63d8bdb232047ed9943e09eb1b62289329e6cdb868",
+    "sandbox": "read-only",
+    "disabled_features": [
+      "shell_tool",
+      "hooks",
+      "plugins",
+      "remote_plugin",
+      "apps",
+      "enable_mcp_apps",
+      "browser_use",
+      "browser_use_external",
+      "browser_use_full_cdp_access",
+      "computer_use",
+      "image_generation",
+      "view_image",
+      "multi_agent",
+      "multi_agent_v2",
+      "code_mode",
+      "code_mode_host",
+      "goals",
+      "sleep_tool",
+      "skill_search",
+      "skill_mcp_dependency_install",
+      "tool_suggest",
+      "workspace_dependencies",
+      "shell_snapshot",
+      "in_app_browser",
+      "memories",
+      "request_permissions_tool",
+      "unbounded_connection_retries",
+      "token_budget",
+      "current_time_reminder",
+      "deferred_executor",
+      "standalone_web_search",
+      "code_mode_only",
+      "code_mode_prewarm"
+    ],
+    "unified_exec_feature": true,
+    "shell_tools_gate": "shell_tool=false and shell_type=disabled",
+    "capability_overrides": {
+      "shell_type": "disabled",
+      "apply_patch_tool_type": null,
+      "experimental_supported_tools": [],
+      "tool_mode": "direct",
+      "node_repl_disabled": true,
+      "supports_search_tool": false
+    },
+    "catalog_sha256": "c757581c877ad4c02ab9df5746853985d7a203ada9f0a5736ec5623bf8323f90",
+    "mcp_preflight": "all_configured_servers_disabled",
+    "provider_token_ceiling": false
+  },
+  "implementation": {
+    "git_commit": "42f6e1248de225f053916636b13d14ecb0ab4045",
+    "files": {
+      "code/evidence.py": "e2f5f842d83b00af5802adcdfbc05dbc7f17267836268517a9e0a4aeef70f183",
+      "code/experiments.py": "db5df68325ec7040bb6392c1f7108d0581ee5b26575f3612554abd58db2f895d",
+      "code/harness.py": "a400c7ad1f4eff8b814c9c4647ab0ad8b6b17bf43c1aed4c75017158ba7e620e",
+      "code/model.py": "16f8b2fa19f2d42b117e2aeb5f67825aefe806c9a451ac413d18e9a3abd978a5",
+      "code/run.py": "83eeb4963fd81afed65b0505a5f6808c7006faeed60bdcfd7071f069a26ced69",
+      "code/server.py": "f25e209865abbdd12f0acf0e244c96fb9b731cecb9f7ae31a8399e7e48597def",
+      "code/sources.py": "dd32f0279c62fb204c48d2f6a616a2f71a77745f0fb2d67461313e76067d4c34",
+      "code/verify.py": "2e758ad8390c41d7502143076579ffdf69026eac1021e3384411e62620722b1a",
+      "prompts/summarize.md": "552ca7ffbb4573891009121df62281d6ec2a860e6fcc53fb2e6ae521bbcac52e",
+      "prompts/summary.schema.json": "da7afd40dd72c52656679a63d8bdb232047ed9943e09eb1b62289329e6cdb868"
+    },
+    "hash": "f4a34bce70cfad93277681d9ba15382c2e6dc33828c3df6d3d38d37e6c0f965e"
+  },
+  "sources": [
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/news/",
+      "status": "error",
+      "error_code": "http_403",
+      "candidate_count": 9
+    },
+    {
+      "source_id": "anthropic_news",
+      "url": "https://www.anthropic.com/news",
+      "status": "ok",
+      "candidate_count": 2
+    },
+    {
+      "source_id": "anthropic_engineering",
+      "url": "https://www.anthropic.com/engineering",
+      "status": "ok",
+      "candidate_count": 1
+    }
+  ],
+  "selected_articles": [
+    {
+      "article_id": "a-a3c8e138d995ff55",
+      "source_id": "anthropic_news",
+      "url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "title": "Introducing the Life Sciences Verification Program",
+      "published_at": "2026-09-17",
+      "date_precision": "date",
+      "date_provenance": [
+        "discovery:index:time",
+        "html:visible_publication_date"
+      ],
+      "content_hash": "d29108dc1c775708ce4bd5e22ffad975a47b33bd6796f72c7cd26debf6332ff4",
+      "parser_version": "publisher-html-v1",
+      "requested_url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "final_url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "retrieved_at": "2026-09-18T18:50:05.126224+00:00",
+      "http_status": 200,
+      "packet": {
+        "article_id": "a-a3c8e138d995ff55",
+        "evidence": [
+          {
+            "id": "p001",
+            "text_hash": "f1a53418e1c0182ec981b2fcec4fc0f75e786f0d9417c0a8824f426690d5df35"
+          },
+          {
+            "id": "p002",
+            "text_hash": "f769ebee74fb3bfc3539522fa739d856ea41cf9a149037cbc4b88b27e5154d7b"
+          },
+          {
+            "id": "p003",
+            "text_hash": "b0b58288b4c1eee7365401d18b1fb41a39e06a438178170dca94a14f83091e87"
+          },
+          {
+            "id": "p004",
+            "text_hash": "076b4cdddb2e031ee09822920982bc3e755ae178ab97f52ecd5ac8b68d8733ca"
+          },
+          {
+            "id": "p005",
+            "text_hash": "9630e98b1640f97f0ef938f572187ca30ae82d2daab2a27af643f392e89d286c"
+          },
+          {
+            "id": "p006",
+            "text_hash": "c0f42b340705699c7b9c52003592a0cdff425c52dfe2909521fcd485e0f14573"
+          },
+          {
+            "id": "p008",
+            "text_hash": "04900dfe743c1053a77e34e8d7e600ac8909a7217b1307be7ef77f1a7983e59d"
+          },
+          {
+            "id": "p011",
+            "text_hash": "156572d165d474c668d765bd15dfc0c758c72f2b2793e81ab278c22ca6c21c1b"
+          },
+          {
+            "id": "p012",
+            "text_hash": "7d76efcf2c8ba9a7cd9d67d96178bbca67394cdf094ad8d361613edee63a183d"
+          },
+          {
+            "id": "p013",
+            "text_hash": "e60a7b978a606ae47310f7b2752a3cde6a73ba4b5f83e368569094699b6f8e08"
+          },
+          {
+            "id": "p014",
+            "text_hash": "bfcafcc4bdf5681b4dc82cc61b7efafcaea1e4a2c092538b6f4cc77bab712f63"
+          },
+          {
+            "id": "p015",
+            "text_hash": "d318b19dde22b254654ec9d854d761776975d762705e0274da608c7afc9636e8"
+          },
+          {
+            "id": "p017",
+            "text_hash": "9e0c709fcc61046be87422dea56be05aa2ba63db3aadc1146e00c30fd8d5a32f"
+          },
+          {
+            "id": "p018",
+            "text_hash": "57ef1045e576fd660367987993f2a6c05f968bffc0c5d517a6862f7630a09a54"
+          },
+          {
+            "id": "p019",
+            "text_hash": "2644f8d29419676b30886a319ec048021c2b3bd7bc1c87a2f280cd24c2a2cd9e"
+          },
+          {
+            "id": "p020",
+            "text_hash": "ca91eae7a7ec882053016eaf5bf77793cb424c3c3a7e78e34157eaa8ed73331f"
+          }
+        ]
+      },
+      "packet_hash": "d7b570d1f03a324e11452a73f7497974b356274b0ffe4525614c3b3378977e78"
+    }
+  ],
+  "coverage_limited": true,
+  "snapshot_id": null,
+  "fault_injection": null,
+  "source_failure_policy": "partial",
+  "evidence_mode": "compact",
+  "human_acceptance": "pending",
+  "input_snapshot_hash": "ffc7942460dac276830e2253f7406a4a0a0f0cbe2ad0ad606a1c6b61347e14bc",
+  "local_snapshot_id": "web-20260918T185003Z-02938b1e",
+  "source_exclusions": [
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/perplexity-improving-accuracy-with-astra",
+      "reason": "article_fetch_limit"
+    },
+    {
+      "source_id": "anthropic_engineering",
+      "url": "https://www.anthropic.com/engineering/how-we-contain-claude",
+      "reason": "article_fetch_limit"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/cooley-gopublic",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/astra-for-law",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/model-misalignment-reporting-framework",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/reimagining-advertising-with-ai",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/unlocking-new-ways-of-working",
+      "reason": "http_403"
+    },
+    {
+      "source_id": "openai_news",
+      "url": "https://openai.com/index/fyxer",
+      "reason": "http_403"
+    }
+  ],
+  "coverage_reasons": [
+    "article_fetch_limit"
+  ],
+  "article_evidence_allowance": 3000,
+  "exclusions": [
+    {
+      "article_id": "a-044e6af5229b5573",
+      "reason": "essential_evidence_exceeds_budget"
+    }
+  ],
+  "summary_failures": {},
+  "cache_hits": 1
+}

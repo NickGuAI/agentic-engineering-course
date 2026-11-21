@@ -1,0 +1,143 @@
+{
+  "runs": [
+    {
+      "run_id": "fixture-541c4909-full",
+      "mode": "synthetic_fixture",
+      "status": "complete",
+      "as_of": "2026-09-18T16:00:00+00:00",
+      "model": {
+        "backend": "scripted_fixture",
+        "model": "fixture-v1",
+        "reasoning": "none"
+      },
+      "source_failure_policy": "partial",
+      "fault_injection": null,
+      "snapshot_hash": "aa8ea6e43ead659f4e47b2c0d1bfeacc68f3d5a34a5af539b3c5ef55139eea42",
+      "evidence_mode": "full",
+      "implementation": "b248b1b66c99b86bea06f616c261d271702ccf44bb4bb4d068be26bb7c48d5e8",
+      "selected_items": 5,
+      "selected_article_ids": [
+        "fixture-0",
+        "fixture-1",
+        "fixture-2",
+        "fixture-3",
+        "fixture-4"
+      ],
+      "automated_checks_passed": true,
+      "application_count_method": "utf8_bytes_div_3_estimate",
+      "usage_kind": "simulated_fixture",
+      "counters": {
+        "actions": 4,
+        "http_requests": 0,
+        "model_calls": 1,
+        "application_input_tokens": 6754,
+        "application_input_bytes": 20260,
+        "observed_total_tokens": 7801
+      },
+      "cache_hits": 0,
+      "provider_usage": [
+        {
+          "invocation_id": 1,
+          "usage_known": true,
+          "usage": {
+            "input_tokens": 6754,
+            "output_tokens": 1047,
+            "total_tokens": 7801,
+            "cached_input_tokens": 0,
+            "reasoning_output_tokens": 0
+          }
+        }
+      ]
+    },
+    {
+      "run_id": "fixture-541c4909-compact",
+      "mode": "synthetic_fixture",
+      "status": "complete",
+      "as_of": "2026-09-18T16:00:00+00:00",
+      "model": {
+        "backend": "scripted_fixture",
+        "model": "fixture-v1",
+        "reasoning": "none"
+      },
+      "source_failure_policy": "partial",
+      "fault_injection": null,
+      "snapshot_hash": "aa8ea6e43ead659f4e47b2c0d1bfeacc68f3d5a34a5af539b3c5ef55139eea42",
+      "evidence_mode": "compact",
+      "implementation": "b248b1b66c99b86bea06f616c261d271702ccf44bb4bb4d068be26bb7c48d5e8",
+      "selected_items": 5,
+      "selected_article_ids": [
+        "fixture-0",
+        "fixture-1",
+        "fixture-2",
+        "fixture-3",
+        "fixture-4"
+      ],
+      "automated_checks_passed": true,
+      "application_count_method": "utf8_bytes_div_3_estimate",
+      "usage_kind": "simulated_fixture",
+      "counters": {
+        "actions": 4,
+        "http_requests": 0,
+        "model_calls": 1,
+        "application_input_tokens": 1650,
+        "application_input_bytes": 4950,
+        "observed_total_tokens": 2697
+      },
+      "cache_hits": 0,
+      "provider_usage": [
+        {
+          "invocation_id": 1,
+          "usage_known": true,
+          "usage": {
+            "input_tokens": 1650,
+            "output_tokens": 1047,
+            "total_tokens": 2697,
+            "cached_input_tokens": 0,
+            "reasoning_output_tokens": 0
+          }
+        }
+      ]
+    },
+    {
+      "run_id": "fixture-541c4909-warm",
+      "mode": "synthetic_fixture",
+      "status": "complete",
+      "as_of": "2026-09-18T16:00:00+00:00",
+      "model": {
+        "backend": "scripted_fixture",
+        "model": "fixture-v1",
+        "reasoning": "none"
+      },
+      "source_failure_policy": "partial",
+      "fault_injection": null,
+      "snapshot_hash": "aa8ea6e43ead659f4e47b2c0d1bfeacc68f3d5a34a5af539b3c5ef55139eea42",
+      "evidence_mode": "compact",
+      "implementation": "b248b1b66c99b86bea06f616c261d271702ccf44bb4bb4d068be26bb7c48d5e8",
+      "selected_items": 5,
+      "selected_article_ids": [
+        "fixture-0",
+        "fixture-1",
+        "fixture-2",
+        "fixture-3",
+        "fixture-4"
+      ],
+      "automated_checks_passed": true,
+      "application_count_method": "utf8_bytes_div_3_estimate",
+      "usage_kind": "simulated_fixture",
+      "counters": {
+        "actions": 3,
+        "http_requests": 0,
+        "model_calls": 0,
+        "application_input_tokens": 0,
+        "application_input_bytes": 0,
+        "observed_total_tokens": 0
+      },
+      "cache_hits": 5,
+      "provider_usage": []
+    }
+  ],
+  "application_input_reduction": 0.755700325732899,
+  "counts_are_estimates": true,
+  "quality_review": "pending",
+  "notes": "Fixture usage is simulated. Live usage, if present, is provider reported. Quality must be reviewed separately."
+}

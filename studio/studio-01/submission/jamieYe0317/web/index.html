@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Jamie’s Research Desk</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#briefing">Skip to briefing</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Research Desk home"><span class="brand-mark" aria-hidden="true">r<span>·</span></span><span>RESEARCH DESK<span class="brand-sub">Jamie’s corner of the signal</span></span></a>
+    <span class="local-label"><span class="status-dot" aria-hidden="true"></span>Running locally</span>
+  </header>
+
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Research controls and saved runs">
+      <section class="control-card">
+        <div class="eyebrow">YOUR RESEARCH AGENT</div>
+        <h1>Jamie’s<br>Research Desk<span class="title-dot">.</span></h1>
+        <p class="intro">A concise AI briefing.<br>Approved sources. Evidence attached.</p>
+        <form id="research-form">
+          <div class="form-fields">
+            <label for="days">Look back<select id="days" name="days"><option value="1">Today</option><option value="2">Past 2 days</option><option value="3">Past 3 days</option><option value="4">Past 4 days</option><option value="5">Past 5 days</option><option value="6">Past 6 days</option><option value="7" selected>Past 7 days</option></select></label>
+            <label for="max-items">Briefing size<select id="max-items" name="max_items"><option value="1">Up to 1 update</option><option value="2">Up to 2 updates</option><option value="3">Up to 3 updates</option><option value="4">Up to 4 updates</option><option value="5" selected>Up to 5 updates</option></select></label>
+          </div>
+          <button class="button primary" id="run-button" type="submit"><span>Run research</span><span aria-hidden="true">↗</span></button>
+          <p class="control-note">Uses your Codex login and existing usage allowance.</p>
+          <button class="button secondary" id="demo-button" type="button">Try an offline demo</button>
+          <p class="demo-note">Fixed synthetic examples · no model usage.<br>The demo ignores the lookback and briefing size above.</p>
+        </form>
+        <div id="job-status" class="job-status" role="status" aria-live="polite" hidden></div>
+      </section>
+
+      <section class="history-section" aria-labelledby="history-title">
+        <div class="section-label"><h2 id="history-title">Saved runs</h2><button id="refresh-button" class="text-button" type="button" aria-label="Refresh saved runs">Refresh <span aria-hidden="true">↻</span></button></div>
+        <div id="run-history" class="run-history"><p class="muted small">Loading saved runs…</p></div>
+      </section>
+      <div class="sidebar-footer"><span class="footer-symbol" aria-hidden="true">⌘</span><div>Built for a quieter reading list.<br><span>Studio 01 · jamieYe0317</span></div></div>
+    </aside>
+
+    <main id="briefing" class="main-content" tabindex="-1">
+      <div id="connection-error" class="notice error-notice" role="alert" hidden></div>
+      <header class="briefing-header">
+        <div><div class="eyebrow">THE READING ROOM</div><h2 id="briefing-title">Your research briefing</h2><p id="briefing-date" class="muted">Opening your saved research…</p></div>
+        <div id="run-badges" class="run-badges"></div>
+      </header>
+      <div id="demo-notice" class="notice demo-notice" hidden><strong>Offline demonstration</strong><span>These articles and responses are synthetic. They demonstrate the harness, not current news or real model usage.</span></div>
+      <div id="summary-metrics" class="summary-metrics" aria-label="Run at a glance"></div>
+      <section id="coverage-section" class="coverage-section" aria-labelledby="coverage-title" hidden>
+        <div class="section-label"><h3 id="coverage-title">Source coverage</h3><span id="coverage-summary" class="small muted"></span></div>
+        <div id="source-list" class="source-list"></div>
+      </section>
+      <section id="warning-section" class="warning-section" hidden></section>
+      <section class="articles-section" aria-labelledby="articles-title">
+        <div class="section-label articles-heading"><h3 id="articles-title">The digest</h3><span id="article-count" class="small muted"></span></div>
+        <div id="articles" class="articles"><div class="empty-state"><span class="empty-mark" aria-hidden="true">◌</span><h3>Opening the reading room</h3><p>Your saved briefings will appear here.</p></div></div>
+      </section>
+      <section id="run-details" class="run-details" aria-labelledby="details-title" hidden>
+        <div class="section-label"><h3 id="details-title">Behind this briefing</h3><span class="small muted">Observable by design</span></div>
+        <div class="details-grid"><div><div class="detail-label">TOKEN ACCOUNTING</div><dl id="token-details"></dl><p id="token-note" class="detail-note"></p></div><div><div class="detail-label">HARNESS CHECKS</div><div id="verification-details"></div><p class="detail-note">Checks validate structure and provenance. Factual support still needs comparison with the cited sources.</p></div></div>
+        <div id="run-identity" class="run-identity"></div>
+      </section>
+      <footer class="main-footer">Thoughtfully summarized. Always worth checking the source.<span>Private workspace · America/New_York</span></footer>
+    </main>
+  </div>
+</body>
+</html>

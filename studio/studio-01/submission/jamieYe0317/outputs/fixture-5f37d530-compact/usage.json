@@ -1,0 +1,33 @@
+{
+  "model": {
+    "backend": "scripted_fixture",
+    "model": "fixture-v1",
+    "reasoning": "none"
+  },
+  "usage_kind": "simulated_fixture",
+  "application_count_method": "utf8_bytes_div_3_estimate",
+  "application_counts_exact": false,
+  "provider_usage": [
+    {
+      "invocation_id": 1,
+      "usage_known": true,
+      "usage": {
+        "input_tokens": 1650,
+        "output_tokens": 1047,
+        "total_tokens": 2697,
+        "cached_input_tokens": 0,
+        "reasoning_output_tokens": 0
+      }
+    }
+  ],
+  "counters": {
+    "actions": 4,
+    "http_requests": 0,
+    "model_calls": 1,
+    "application_input_tokens": 1650,
+    "application_input_bytes": 4950,
+    "observed_total_tokens": 2697
+  },
+  "cache_hits": 0,
+  "hard_total_token_cap": false
+}

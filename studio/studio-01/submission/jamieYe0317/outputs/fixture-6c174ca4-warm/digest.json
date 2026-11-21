@@ -1,0 +1,76 @@
+{
+  "run_id": "fixture-6c174ca4-warm",
+  "mode": "synthetic_fixture",
+  "as_of": "2026-09-18T16:00:00+00:00",
+  "window": "2026-09-12 through 2026-09-18 (America/New_York)",
+  "status": "complete",
+  "coverage_summary": "3/3 sources checked successfully; at most 5 selected updates.",
+  "warnings": [],
+  "items": [
+    {
+      "article_id": "fixture-4",
+      "evidence_ids": [
+        "p001",
+        "p002"
+      ],
+      "insufficient_evidence": false,
+      "relevance": "Inspecting the cited evidence could help students practice evaluating automated research while recognizing the limits of a preview tool.",
+      "summary": "In this synthetic fixture, Example Lab announces a research assistant that organizes technical announcements into a cited reading list. The preview includes source identifiers and an activity report for inspection. Availability remains limited, and the assistant cannot independently verify publisher claims, so students must review the evidence before trusting its summaries.",
+      "title": "Synthetic fixture 4: research assistant preview",
+      "url": "https://www.anthropic.com/news/synthetic-fixture-4",
+      "published_at": "2026-09-15"
+    },
+    {
+      "article_id": "fixture-1",
+      "evidence_ids": [
+        "p001",
+        "p002"
+      ],
+      "insufficient_evidence": false,
+      "relevance": "Inspecting the cited evidence could help students practice evaluating automated research while recognizing the limits of a preview tool.",
+      "summary": "In this synthetic fixture, Example Lab announces a research assistant that organizes technical announcements into a cited reading list. The preview includes source identifiers and an activity report for inspection. Availability remains limited, and the assistant cannot independently verify publisher claims, so students must review the evidence before trusting its summaries.",
+      "title": "Synthetic fixture 1: research assistant preview",
+      "url": "https://www.anthropic.com/news/synthetic-fixture-1",
+      "published_at": "2026-09-15"
+    },
+    {
+      "article_id": "fixture-2",
+      "evidence_ids": [
+        "p001",
+        "p002"
+      ],
+      "insufficient_evidence": false,
+      "relevance": "Inspecting the cited evidence could help students practice evaluating automated research while recognizing the limits of a preview tool.",
+      "summary": "In this synthetic fixture, Example Lab announces a research assistant that organizes technical announcements into a cited reading list. The preview includes source identifiers and an activity report for inspection. Availability remains limited, and the assistant cannot independently verify publisher claims, so students must review the evidence before trusting its summaries.",
+      "title": "Synthetic fixture 2: research assistant preview",
+      "url": "https://www.anthropic.com/engineering/synthetic-fixture-2",
+      "published_at": "2026-09-15"
+    },
+    {
+      "article_id": "fixture-3",
+      "evidence_ids": [
+        "p001",
+        "p002"
+      ],
+      "insufficient_evidence": false,
+      "relevance": "Inspecting the cited evidence could help students practice evaluating automated research while recognizing the limits of a preview tool.",
+      "summary": "In this synthetic fixture, Example Lab announces a research assistant that organizes technical announcements into a cited reading list. The preview includes source identifiers and an activity report for inspection. Availability remains limited, and the assistant cannot independently verify publisher claims, so students must review the evidence before trusting its summaries.",
+      "title": "Synthetic fixture 3: research assistant preview",
+      "url": "https://openai.com/index/synthetic-fixture-3",
+      "published_at": "2026-09-15"
+    },
+    {
+      "article_id": "fixture-0",
+      "evidence_ids": [
+        "p001",
+        "p002"
+      ],
+      "insufficient_evidence": false,
+      "relevance": "Inspecting the cited evidence could help students practice evaluating automated research while recognizing the limits of a preview tool.",
+      "summary": "In this synthetic fixture, Example Lab announces a research assistant that organizes technical announcements into a cited reading list. The preview includes source identifiers and an activity report for inspection. Availability remains limited, and the assistant cannot independently verify publisher claims, so students must review the evidence before trusting its summaries.",
+      "title": "Synthetic fixture 0: research assistant preview",
+      "url": "https://openai.com/index/synthetic-fixture-0",
+      "published_at": "2026-09-15"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "live_run": "live-20260918",
+  "live_replay": "live-replay-20260918",
+  "fixture_prefix": "fixture-6c174ca4",
+  "tests_passed": true,
+  "tests_run": 79,
+  "live_verification": true,
+  "replay_verification": true,
+  "live_tokens": 7817,
+  "replay_model_calls": 0,
+  "fixture_input_reduction": 0.755700325732899,
+  "fixture_counts": "estimated; scripted output; no provider calls",
+  "human_review": "pending",
+  "personal_explanation": "present; existing student file preserved unchanged",
+  "local_browser_demo_prefix": "fixture-4279eebe",
+  "local_hosting_evidence": "local-hosting.json"
+}

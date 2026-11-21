@@ -1,0 +1,22 @@
+{
+  "checked_at": "2026-09-18T18:47:28.224993+00:00",
+  "url": "http://127.0.0.1:8765",
+  "bind": "127.0.0.1",
+  "http_static_and_saved_run_smoke": "passed",
+  "browser_demo": "passed",
+  "browser_demo_prefix": "fixture-4279eebe",
+  "new_live_model_calls": 0,
+  "saved_live_run_displayed": "live-20260918",
+  "saved_live_provider_tokens_displayed": 7817,
+  "browser_current_verification_displayed": true,
+  "web_files_sha256": {
+    "web/app.js": "9ef0e12518b04f06bb435be5ec3bfda39b4b2d1320e7f83021916d5a6cef3bec",
+    "web/index.html": "d8f232aa02f5474d78e69487bc231ebdb73778c8fec99379ceb0c43833020f50",
+    "web/style.css": "7a5348bc911cce72c376597a750c1317808614ff152955e98aa740a1e76acc8a"
+  },
+  "full_python_suite": {
+    "tests": 79,
+    "failures": 0,
+    "errors": 0
+  }
+}
