@@ -1,0 +1,1 @@
+{"error": "Internal error: 1 validation error for call[tavily_search]\ninclude_raw_content\n  Input should be a valid boolean, unable to interpret input [type=bool_parsing, input_value='markdown', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/bool_parsing"}
