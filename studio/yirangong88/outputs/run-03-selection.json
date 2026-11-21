@@ -1,0 +1,36 @@
+{
+  "input_sha256": "68d4696f6159f13458f8bcd0f47a4fac15fd93e7315c20ffce34970827bacf55",
+  "target_date": "2026-09-16",
+  "decisions": [
+    {
+      "url": "https://openai.com/index/reimagining-advertising-with-ai/",
+      "date": "2026-09-16",
+      "decision": "include"
+    },
+    {
+      "url": "https://openai.com/index/how-to-connect-ai-usage-to-business-value/",
+      "date": "2026-09-16",
+      "decision": "include"
+    },
+    {
+      "url": "https://openai.com/index/model-misalignment-reporting-framework/",
+      "date": "2026-09-16",
+      "decision": "include"
+    },
+    {
+      "url": "https://openai.com/index/astra-for-law/",
+      "date": "2026-09-17",
+      "decision": "outside target date"
+    },
+    {
+      "url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development",
+      "date": "2026-09-17",
+      "decision": "outside target date"
+    },
+    {
+      "url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "date": "2026-09-17",
+      "decision": "outside target date"
+    }
+  ]
+}

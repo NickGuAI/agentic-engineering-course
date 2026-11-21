@@ -1,0 +1,54 @@
+{
+  "as_of": "2026-09-17T21:41:28Z",
+  "clarification": "Previous calendar day: Sept 16",
+  "date_policy": "Match publisher calendar label to previous America/New_York date; no exact timestamp conversion claimed.",
+  "candidates": [
+    {
+      "title": "Reimagining advertising with AI",
+      "url": "https://openai.com/index/reimagining-advertising-with-ai/",
+      "publisher_date": "2026-09-16",
+      "fact": "OpenAI says it is testing Sponsored Agents with selected US advertisers and adding ad creation tools plus HubSpot and Shopify integrations. Sponsored conversations are labeled and separate from the original ChatGPT conversation.",
+      "product": "Existing merchant tools provide distribution; separating sponsored interactions helps users understand whose interests the agent represents.",
+      "engineering": "Test conversation isolation and advertiser permissions before measuring conversion.",
+      "evidence_location": "Original article: date line 13; paragraphs at lines 38, 45\u201358 in retrieved text."
+    },
+    {
+      "title": "How to connect AI usage to business value",
+      "url": "https://openai.com/index/how-to-connect-ai-usage-to-business-value/",
+      "publisher_date": "2026-09-16",
+      "fact": "OpenAI describes Admin Console analytics combining usage, cost, task insights, and outcomes for ChatGPT Work and Codex. Insights classifies sampled messages; Outcomes tracks contributions to merged code.",
+      "product": "Adoption metrics need quality and business-outcome baselines before they support expansion decisions.",
+      "engineering": "Compare coding activity with defects, review time, and rework; contribution counts alone do not establish productivity gains.",
+      "evidence_location": "Original article: date line 13; paragraphs at lines 43\u201351 and 65\u201379."
+    },
+    {
+      "title": "Our framework for reporting model misalignment",
+      "url": "https://openai.com/index/model-misalignment-reporting-framework/",
+      "publisher_date": "2026-09-16",
+      "fact": "OpenAI announces a disclosure framework and six reports on concerning model behavior observed over the preceding six months. It cautions that individual cases do not establish how frequently misalignment occurs.",
+      "product": "Incident disclosure can become part of product trust even while causes and mitigations remain uncertain.",
+      "engineering": "Use disclosed failure modes to design regression evaluations, while avoiding prevalence estimates from selected incidents.",
+      "evidence_location": "Original article: date line 13; paragraphs at lines 33\u201339 and 43\u201350."
+    },
+    {
+      "title": "Introducing Astra for Law",
+      "url": "https://openai.com/index/astra-for-law/",
+      "publisher_date": "2026-09-17"
+    },
+    {
+      "title": "Measurements for understanding the pace of AI development inside frontier labs",
+      "url": "https://www.anthropic.com/institute/measuring-pace-of-ai-development",
+      "publisher_date": "2026-09-17"
+    },
+    {
+      "title": "Introducing the Life Sciences Verification Program",
+      "url": "https://www.anthropic.com/news/life-sciences-verification-program",
+      "publisher_date": "2026-09-17"
+    }
+  ],
+  "coverage_note": "- **Anthropic:** no September 16 entries appeared in the retrieved news index. This is a coverage observation, not proof that no update existed anywhere on its sites.",
+  "questions": [
+    "For Sponsored Agents, which trust metric would you track alongside conversion, and what result would make you pause the rollout?",
+    "If Codex\u2019s share of merged code rose while rework also increased, what experiment would distinguish useful assistance from added review burden?"
+  ]
+}
